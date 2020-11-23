@@ -9,7 +9,7 @@ $cutOffLine: #e7e9ea;
   color: $lightGray;
   background-color: unset;
   border-color: $cutOffLine;
-  & + th::before {
+  & + th:not(:last-child)::before {
     position: absolute;
     top: 50%;
     left: 0;

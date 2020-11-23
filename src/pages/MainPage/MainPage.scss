@@ -29,8 +29,11 @@ $gap: 6px;
       .ant-table-wrapper {
         flex: 1;
         .ant-table-body {
-          max-height: 510px;
-          overflow-y: auto;
+          // max-height: 510px;
+          // overflow-y: auto;
+          &::-webkit-scrollbar {
+            width: 0 !important;
+          }
         }
         .ant-table-tbody > tr > td {
           border: 0;

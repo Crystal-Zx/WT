@@ -1,4 +1,6 @@
 $cutOffLine: #e7e9ea;
+$tableRow: #f7f7f7;
+$tableFont: #363636;
 
 .ant-table-thead > tr > th {
   position: relative;
@@ -19,4 +21,22 @@ $cutOffLine: #e7e9ea;
     height: 11px;
     background-color: $cutOffLine;
   }
+}
+
+.ant-table-tbody { 
+  .ant-table-row {
+    &.dark-row {
+      background-color: $tableRow;
+    }
+    .ant-table-cell {
+      height: 30px;
+      padding: 0;
+      font-size: 12px;
+      color: $tableFont;
+      &:not(:first-child) {
+        text-align: center;
+      }
+    }
+  }
+
 }

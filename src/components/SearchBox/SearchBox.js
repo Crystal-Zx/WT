@@ -1,4 +1,5 @@
 import { Input } from 'antd'
+import IconFont from '../../utils/iconfont/iconfont'
 import './SearchBox.scss'
 
 const { Search } = Input
@@ -8,12 +9,12 @@ export default function SearchBox () {
     console.log(value)
   }
   return (
-    <div className="search-container">
+    <>
       <Search 
         placeholder="搜索例如EURCHF" 
         allowClear
         onSearch={onSearch}
       />
-    </div>
+    </>
   )
 }

@@ -514,6 +514,7 @@ module.exports = function (webpackEnv) {
                     options: {
                       resources: [
                         path.resolve(__dirname, '../src/assets/style/variables.scss'),
+                        path.resolve(__dirname, '../src/assets/style/reset.scss')
                       ]
                     }
                   }

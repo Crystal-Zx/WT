@@ -1,11 +1,8 @@
-
+.iconSquare {
+  font-size: 14px;
+}
 
 .search-container {
-  height: 24px;
-  margin: 0 37px 13px 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   .ant-input-search {
     .ant-input-affix-wrapper,.ant-btn-icon-only {
       height: 24px;
@@ -23,8 +20,10 @@
         border-color: $themeBlue;
       }
       .ant-input {
+        font-size: 12px;
         color: $lightGray;
         &::placeholder {
+          font-size: 12px;
           color: $lightGray;
         }
       }
@@ -35,17 +34,21 @@
         border-color: currentColor;
       }
     }
-    // 取消按钮点击光晕效果
-    button[ant-click-animating-without-extra-node]:after {  
-      border: 0 none;
-      opacity: 0;
-      animation:none 0 ease 0 1 normal;
-    }
     .ant-btn-icon-only {
       svg {
         vertical-align: -1px;
       }
     }
   }
-
+  .btn-more {
+    position: absolute;
+    right: -18px;
+    top: 50%;
+    transform: translate(50%, -50%);
+    padding: 0;
+    display: inline-block;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
 }

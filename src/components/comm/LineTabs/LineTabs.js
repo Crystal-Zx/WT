@@ -6,8 +6,8 @@ const { TabPane } = Tabs
 
 
 export default function LineTabs (props) {
-  const { initialPanes } = props
-  const [activeKey, setActiveKey] = useState(initialPanes[0].key)
+  const { initialPanes,defaultActiveKey } = props
+  const [activeKey, setActiveKey] = useState(defaultActiveKey || initialPanes[0].key)
   const [panes, setPanes] = useState(initialPanes)
   // func
   const onChange = (key) => {

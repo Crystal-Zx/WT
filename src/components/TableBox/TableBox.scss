@@ -1,10 +1,26 @@
 $cutOffLine: #e7e9ea;
 $tableRow: #f7f7f7;
-$tableFont: #363636;
 
+// 控制表格滚动区域高度
+.ant-table-wrapper {
+  height: calc(100% - 37px);
+  * {
+    height: 100%;
+    .ant-table-header,.ant-table-header * {
+      height: unset;
+    }
+    .ant-table-body {
+      max-height: calc(100% - 26px);
+      overflow: auto;
+      * {
+        height: unset;
+      }
+    }
+  }
+}
 .ant-table-thead > tr > th {
   position: relative;
-  height: 26px;
+  height: 26px !important;
   padding: 0;
   text-align: center;
   font-size: 12px;
@@ -32,7 +48,7 @@ $tableFont: #363636;
       height: 30px;
       padding: 0;
       font-size: 12px;
-      color: $tableFont;
+      color: $fontColor;
       &:not(:first-child) {
         text-align: center;
       }

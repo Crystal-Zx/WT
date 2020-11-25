@@ -1,6 +1,5 @@
 $spreadColor: #e7e9ea;
-$sellColor: #fc3131;
-$buyColor: #00b276;
+
 
 // reset
 .ant-table-expanded-row > .ant-table-cell {
@@ -64,6 +63,7 @@ $buyColor: #00b276;
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
+    background-color: #fff;
     .qe-val {
       height: 100%;
       padding: 0 6px;

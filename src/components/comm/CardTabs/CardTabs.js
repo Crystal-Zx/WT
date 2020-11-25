@@ -5,7 +5,8 @@ import './CardTabs.scss'
 const { TabPane } = Tabs
 
 export default function CardTabs (props) {
-  const { initialPanes } = props
+  console.log(props)
+  const { className,type = "card", initialPanes,tabPosition = "top", tabBarGutter = 0 } = props
   const [activeKey, setActiveKey] = useState(initialPanes[0].key)
   const [panes, setPanes] = useState(initialPanes)
 
@@ -25,13 +26,16 @@ export default function CardTabs (props) {
     setPanes(newPanes)
   }
 
+  
   return (
     <Tabs
-      type="card"
+      className={className}
+      type={type}
       hideAdd={true}
       onChange={onChange}
       activeKey={activeKey}
-      tabBarGutter="0"
+      tabBarGutter={tabBarGutter}
+      tabPosition={tabPosition}
     >
       {panes.map(pane => (
         <TabPane 

@@ -1,9 +1,8 @@
 
 import { Table } from 'antd'
-import { useState, useEffect } from 'react'
 import IconFont from '../../utils/iconfont/iconfont'
 import './TableBox.scss'
-import QuoteTr from '../QuoteTr/QuoteTr.js'
+import QuoteTr from '../Main/QuoteTr/QuoteTr.js'
 
 const columns = [
   {
@@ -82,20 +81,120 @@ const data = [
     sell: '0.89221',
     buy: '0.89244',
     desc: '展开内容'
-  }
+  },
+  {
+    key: '7',
+    symbol: 'AUDUSD',
+    spread: '-0.00%',
+    sell: '0.72631',
+    buy: '0.72659',
+    desc: '展开内容'
+  },
+  {
+    key: '8',
+    symbol: 'EURGBP',
+    spread: '-0.02%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
+  {
+    key: '9',
+    symbol: 'GBPAUD',
+    spread: '+0.03%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
+  {
+    key: '10',
+    symbol: 'AUDUSD',
+    spread: '-0.00%',
+    sell: '0.72631',
+    buy: '0.72659',
+    desc: '展开内容'
+  },
+  {
+    key: '11',
+    symbol: 'EURGBP',
+    spread: '-0.02%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
+  {
+    key: '12',
+    symbol: 'GBPAUD',
+    spread: '+0.03%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
+  {
+    key: '13',
+    symbol: 'AUDUSD',
+    spread: '-0.00%',
+    sell: '0.72631',
+    buy: '0.72659',
+    desc: '展开内容'
+  },
+  {
+    key: '14',
+    symbol: 'EURGBP',
+    spread: '-0.02%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
+  {
+    key: '15',
+    symbol: 'GBPAUD',
+    spread: '+0.03%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
+  {
+    key: '16',
+    symbol: 'AUDUSD',
+    spread: '-0.00%',
+    sell: '0.72631',
+    buy: '0.72659',
+    desc: '展开内容'
+  },
+  {
+    key: '17',
+    symbol: 'EURGBP',
+    spread: '-0.02%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
+  {
+    key: '18',
+    symbol: 'GBPAUD',
+    spread: '+0.03%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
+  {
+    key: '19',
+    symbol: 'GBPAUD',
+    spread: '+0.03%',
+    sell: '0.89221',
+    buy: '0.89244',
+    desc: '展开内容'
+  },
 ]
 
-export default function TableBox () {
-  const [sh, setSh] = useState(0)
-  useEffect(() => {
-    setSh(document.getElementsByClassName("ant-table-wrapper")[0].clientHeight - 26)
-  })
+function TableBox () {
+  
   return (
-    <Table 
+    <Table
       columns={columns} 
       dataSource={data} 
       pagination={false}
-      scroll={{ y: sh }}
       sticky={true}
       rowClassName={(record, index) => index % 2 ? '' : 'dark-row'}
       expandIconAsCell={false}
@@ -108,3 +207,5 @@ export default function TableBox () {
     />
   )
 }
+
+export default TableBox

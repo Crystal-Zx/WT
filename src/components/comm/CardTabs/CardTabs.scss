@@ -1,8 +1,8 @@
 
 
 // 覆盖组件样式
-.card-container {
-  & > .ant-tabs-card {
+// .card-container {
+  .ant-tabs-card {
     height: 100%;
     .ant-tabs-content {
       height: calc(100% + 16px);
@@ -41,4 +41,4 @@
       }
     }
   }
-}
+// }

@@ -130,6 +130,7 @@ $bottomH: 4.3vh;
       justify-content: center;
       align-items: flex-start;
       font-size: 12px;
+      line-height: 1.4em;
       & + .ai-li {
         margin-left: 70px;
       }
@@ -187,11 +188,11 @@ $bottomH: 4.3vh;
 }
 
 
-@media screen and (max-height: 850px) {
-  .ai-li {
-    flex-direction: row !important;
-    & > :nth-child(2) {
-      margin-left: 1em;
-    }
-  }
-}
+// @media screen and (max-height: 850px) {
+//   .ai-li {
+//     flex-direction: row !important;
+//     & > :nth-child(2) {
+//       margin-left: 1em;
+//     }
+//   }
+// }

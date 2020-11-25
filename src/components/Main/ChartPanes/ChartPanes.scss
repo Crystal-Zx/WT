@@ -6,21 +6,30 @@
   &.ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
     width: 100%;
     height: 30px;
-    // padding-top: 2px;
+    padding-top: 2px;
+    box-sizing: border-box;
     background: $mainBgColor;
     .ant-tabs-tab {
       flex: 1;
+      height: 100%;
+      padding: 0 8px 0 24px;
+      display: flex;
+      justify-content: space-between;
       color: $fontColor;
-      border-color: transparent;
-      border-top-color: $mainBgColor;
-      border-width: 2px;
+      border: 0;
+      // border-top: 2px solid $mainBgColor;
       background: #f7f7f7;
       &.ant-tabs-tab-active {
-        // margin-top: -2px;
-        // padding-top: 2px;
         background: #fff;
-        border-top-color: #fff;
+        // border-top-color: #fff;
       }
+      &:nth-last-child(2) {
+        margin-right: 0 !important;  /* 覆盖tabBarGutter */
+      }
+    }
+    .ant-tabs-ink-bar {
+      background: #fff;
+      visibility: visible;
     }
   }
 

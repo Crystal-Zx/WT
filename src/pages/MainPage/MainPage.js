@@ -7,10 +7,8 @@ import QuotePanes from '../../components/Main/QuotePanes/QuotePanes.js'
 import TopRPanes from '../../components/Main/TopRPanes/TopRPanes.js';
 import IconFont from '../../utils/iconfont/iconfont';
 
-import webSocket from '../../websocket.js'
+import socket from '../../socket.js'
 import { useState, useEffect } from 'react';
-
-
 
 const middlePanes = [
   { title: '持仓单', content: '持仓单', key: '1' },
@@ -52,38 +50,20 @@ function MainPage () {
   }]
   const [symbols, setSymbols] = useState(["EURUSD.GBPUSD"])
   const [quotes, setQuotes] = useState([])
-  useEffect(() => {
-    ws = new webSocket({
-      socketUrl: "ws://47.113.231.12:5885/",
-      timeout: 5000,
-      socketMessage: (receive) => {
-        console.log(receive.data)
-        // if(true) {
-        //   handleQuotes(receive.data)
-        // }
-      },
-      socketClose: (msg) => {
-        // console.log(msg)
-      },
-      socketError: () => {
-        console.log("连接建立失败")
-      },
-      socketOpen: () => {
-        console.log("连接建立成功")
-        ws.sendMessage({
-          "cmd": "quote", "args": symbols
-        })
-      }
-    })
-    try {
-      // ws.connection()
-    } catch (e) {
-      console.log(e)
-    }
-    return () => {
-      ws.onclose()
-    }
-  },[symbols])
+  // useEffect(() => {
+  //   console.log("开始建立ws")
+  //   ws = new socket({ url: "ws://47.113.231.12:5885/" })
+  //   console.log(ws)
+  //   ws.doOpen()
+  //   ws.on('open', () => {
+  //     ws.send({ "cmd": "req", "args": ["candle.M1.XAUUSD"] })
+  //     // ws.send({ "cmd": "quote", "args": ["EURUSD.GBPUSD"] })
+  //   })
+  //   ws.on('message', ws.onMessage)
+  //   return () => {
+  //     ws.onClose()
+  //   }
+  // },[symbols])
   
   const handleQuotes = (_quote) => {
     for(var quote of quotes) {

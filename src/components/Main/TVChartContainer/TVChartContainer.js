@@ -20,7 +20,7 @@ export default class TVChartContainer extends React.PureComponent {
     interval: localStorage.getItem('tradingview.resolution') || '15',
     containerId: 'tv_chart_container',
     libraryPath: '/charting_library/',
-    datafeedUrl: datafeed,
+    datafeedUrl: "ws://47.113.231.12:5885/",
     // chartsStorageUrl: 'https://saveload.tradingview.com',
     disabled_features: [
       "header_symbol_search",
@@ -51,7 +51,7 @@ export default class TVChartContainer extends React.PureComponent {
         symbol: this.props.symbol,  // 图表的初始商品
         interval: resolution,  // 图表的初始周期
         container_id: 'tv_chart_container',
-        datafeed: new window.Datafeeds.UDFCompatibleDatafeed(this.props.datafeedUrl),
+        datafeed: new datafeed(this),
         library_path: '/charting_library/',  // static文件夹的路径              
         enabled_features: [],  // 在默认情况下启用/禁用（disabled_features）名称的数组
         timezone: 'Asia/Shanghai',

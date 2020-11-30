@@ -71,6 +71,7 @@ class datafeeds extends React.Component {
         ticker: symbolInfoName,
         pricescale: 10000,
       }
+      console.log(this.props)
       const {
         points
       } = this.props.props
@@ -79,6 +80,7 @@ class datafeeds extends React.Component {
         symbolInfo.pricescale = 10 ** array[0].pricePrecision
       }
       symbolInfo = Object.assign(this.defaultConfiguration(), symbolInfo)
+      console.log(symbolInfo)
       resolve(symbolInfo)
     }).then(data => onSymbolResolvedCallback(data)).catch(err => onResolveErrorCallback(err))
   }

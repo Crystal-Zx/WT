@@ -31,6 +31,9 @@ export default class TVChartContainer extends React.PureComponent {
     this.isLoading = true
     this.isHistory = {}
     this.paramary = {}
+
+    this.init = this.init.bind(this)
+
     const that = this
     // this.socket.doOpen()
     // this.socket.on('open', function () {

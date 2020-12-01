@@ -21,7 +21,7 @@ class datafeeds extends React.Component {
    * `onReady` should return result asynchronously.
    */
   onReady(callback) {
-    console.log('=============onReady running ，',callback)
+    console.log('=============onReady running')
     return new Promise((resolve) => {
       let configuration = this.defaultConfiguration()
       if (this.self.getConfig) {
@@ -60,27 +60,25 @@ class datafeeds extends React.Component {
    */
   resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
     return new Promise((resolve) => {
-      console.log('=============resolveSymbol running ，',this)
+      console.log('=============resolveSymbol running ，',this.self)
       // reject
       let symbolInfoName
-      if (this.self.symbolName) {
-        symbolInfoName = this.self.symbolName
+      if (this.self.symbol) {
+        symbolInfoName = this.self.symbol
       }
       let symbolInfo = {
         name: symbolInfoName,
         ticker: symbolInfoName,
         pricescale: 10000,
       }
-      console.log(this.props)
-      const {
-        points
-      } = this.props.props
-      const array = points.filter(item => item.name === symbolInfoName)
-      if (array) {
-        symbolInfo.pricescale = 10 ** array[0].pricePrecision
-      }
+      // const {
+      //   points
+      // } = this.props.props
+      // const array = points.filter(item => item.name === symbolInfoName)
+      // if (array) {
+      //   symbolInfo.pricescale = 10 ** array[0].pricePrecision
+      // }
       symbolInfo = Object.assign(this.defaultConfiguration(), symbolInfo)
-      console.log(symbolInfo)
       resolve(symbolInfo)
     }).then(data => onSymbolResolvedCallback(data)).catch(err => onResolveErrorCallback(err))
   }
@@ -111,7 +109,7 @@ class datafeeds extends React.Component {
       timezone: 'Asia/Shanghai',
       minmov: 1,
       minmov2: 0,
-      description: 'www.coinoak.com',
+      // description: 'www.coinoak.com',
       pointvalue: 1,
       volume_precision: 4,
       hide_side_toolbar: false,

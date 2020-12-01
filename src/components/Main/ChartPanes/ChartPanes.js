@@ -6,15 +6,15 @@ import './ChartPanes.scss'
 const chartSPanes = [
   { 
     title: 'AUDUSD（D1）', 
-    content: <TVChartContainer />,
+    content: <TVChartContainer symbol='AUDUSD' />,
     key: '1' ,
     closable: true
   },
-  { title: 'GBPAUD（1h）', content: '<TVChartContainer />', key: '2',
+  { title: 'GBPAUD（1h）', content: "<TVChartContainer symbol='GBPAUD' />", key: '2',
   closable: true },
-  { title: 'XAUUSD（30m）', content: '<TVChartContainer />', key: '3',
+  { title: 'XAUUSD（30m）', content: "<TVChartContainer symbol='XAUUSD' />", key: '3',
   closable: true },
-  { title: 'CADUSD（15m）', content: '<TVChartContainer />', key: '4',
+  { title: 'CADUSD（15m）', content: "<TVChartContainer symbol='CADUSD' />", key: '4',
   closable: true }
 ]
 

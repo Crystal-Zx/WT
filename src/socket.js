@@ -1,21 +1,22 @@
 class socket {
-  constructor(options) {
+  constructor(urls) {
     this.heartBeatTimer = null
-    this.options = options
+    this.urls = urls
     this.messageMap = {}
     this.connState = 0
     this.socket = null
   }
   doOpen() {
+    console.log("socket's doOpen()被调用了，调用者： ", this)
     if (this.connState) return
     this.connState = 1
     this.afterOpenEmit = []
     const BrowserWebSocket = window.WebSocket || window.MozWebSocket
-    const socketArg = new BrowserWebSocket(this.options.url)
+    const socketArg = new BrowserWebSocket(this.urls)
     socketArg.binaryType = 'arraybuffer'  // 显式指定收到的二进制数据类型为ArrayBuffer对象
-    socketArg.onopen = evt => this.onOpen(evt)
-    socketArg.onclose = evt => this.onClose(evt)
-    socketArg.onmessage = evt => this.onMessage(evt.data)
+    // socketArg.onopen = evt => this.onOpen(evt)
+    // socketArg.onclose = evt => this.onClose(evt)
+    // socketArg.onmessage = evt => this.onMessage(evt.data)
     // socketArg.onerror = err => this.onError(err)
     this.socket = socketArg
   }
@@ -51,7 +52,6 @@ class socket {
   onMessage(message) {
     try {
       const data = JSON.parse(message)
-      console.log(data)
       this.onReceiver({
         Event: 'message',
         Data: data

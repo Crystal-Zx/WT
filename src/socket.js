@@ -14,9 +14,9 @@ class socket {
     const BrowserWebSocket = window.WebSocket || window.MozWebSocket
     const socketArg = new BrowserWebSocket(this.urls)
     socketArg.binaryType = 'arraybuffer'  // 显式指定收到的二进制数据类型为ArrayBuffer对象
-    // socketArg.onopen = evt => this.onOpen(evt)
-    // socketArg.onclose = evt => this.onClose(evt)
-    // socketArg.onmessage = evt => this.onMessage(evt.data)
+    socketArg.onopen = evt => this.onOpen(evt)
+    socketArg.onclose = evt => this.onClose(evt)
+    socketArg.onmessage = evt => this.onMessage(evt.data)
     // socketArg.onerror = err => this.onError(err)
     this.socket = socketArg
   }

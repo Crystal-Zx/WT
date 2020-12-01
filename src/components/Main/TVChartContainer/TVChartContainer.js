@@ -33,30 +33,40 @@ export default class TVChartContainer extends React.PureComponent {
     this.paramary = {}
 
     this.init = this.init.bind(this)
+    this.initMessage = this.initMessage.bind(this)
+    this.sendMessage = this.sendMessage.bind(this)
+    this.getklinelist = this.getklinelist.bind(this)
+    this.initLimit = this.initLimit.bind(this)
+    this.getBars = this.getBars.bind(this)
+    this.onMessage = this.onMessage.bind(this)
+    this.unSubscribe = this.unSubscribe.bind(this)
+    this.subscribe = this.subscribe.bind(this)
+    this.onClose = this.onClose.bind(this)
 
     const that = this
-    // this.socket.doOpen()
-    // this.socket.on('open', function () {
-    //   //页面初始化的时候，为了快速加载，先请求150条记录
-    //   if (that.interval < 60) {
-    //     that.socket.send({
-    //       cmd: 'req',
-    //       args: ["candle.M" + that.interval + "." + that.symbol]
-    //     })
-    //   } else if (that.interval >= 60) {
-    //     that.socket.send({
-    //       cmd: 'req',
-    //       args: ["candle.H" + (that.interval / 60) + "." + that.symbol]
-    //     })
-    //   } else {
-    //     that.socket.send({
-    //       cmd: 'req',
-    //       args: ["candle.D1." + that.symbol]
-    //     })
-    //   }
-    // })
-    // this.socket.on('message', that.onMessage.bind(this))
-    // this.socket.on('close', that.onClose.bind(this))
+    console.log(this.socket)
+    this.socket.doOpen()
+    this.socket.on('open', function () {
+      //页面初始化的时候，为了快速加载，先请求150条记录
+      if (that.interval < 60) {
+        that.socket.send({
+          cmd: 'req',
+          args: ["candle.M" + that.interval + "." + that.symbol]
+        })
+      } else if (that.interval >= 60) {
+        that.socket.send({
+          cmd: 'req',
+          args: ["candle.H" + (that.interval / 60) + "." + that.symbol]
+        })
+      } else {
+        that.socket.send({
+          cmd: 'req',
+          args: ["candle.D1." + that.symbol]
+        })
+      }
+    })
+    this.socket.on('message', that.onMessage.bind(this))
+    this.socket.on('close', that.onClose.bind(this))
   }
 
   init = () => {

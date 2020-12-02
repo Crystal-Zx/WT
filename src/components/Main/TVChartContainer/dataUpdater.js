@@ -24,12 +24,13 @@ class dataUpdater {
     }
   }
   updateDataForSubscriber(listenerGuid) {
+    const that = this
     return new Promise(function (resolve, reject) {
-      var subscriptionRecord = this.subscribers[listenerGuid];
+      var subscriptionRecord = that.subscribers[listenerGuid];
       var rangeEndTime = parseInt((Date.now() / 1000).toString());
-      var rangeStartTime = rangeEndTime - this.periodLengthSeconds(subscriptionRecord.resolution, 10);
-      this.historyProvider.getBars(subscriptionRecord.symbolInfo, subscriptionRecord.resolution, rangeStartTime, rangeEndTime, function (bars) {
-        this.onSubscriberDataReceived(listenerGuid, bars);
+      var rangeStartTime = rangeEndTime - that.periodLengthSeconds(subscriptionRecord.resolution, 10);
+      that.historyProvider.getBars(subscriptionRecord.symbolInfo, subscriptionRecord.resolution, rangeStartTime, rangeEndTime, function (bars) {
+        that.onSubscriberDataReceived(listenerGuid, bars);
         resolve();
       }, function () {
         reject();
@@ -51,7 +52,6 @@ class dataUpdater {
       subscriptionRecord.listener(previousBar)
     }
     subscriptionRecord.lastBarTime = lastBar.time
-    console.log(lastBar)
     subscriptionRecord.listener(lastBar)
   }
   periodLengthSeconds = (resolution, requiredPeriodsCount) => {

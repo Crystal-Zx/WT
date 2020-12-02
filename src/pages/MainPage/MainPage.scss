@@ -87,6 +87,12 @@ $bottomH: 4.3vh;
   }
   .right-x {
     flex: 1;
+    overflow: hidden;
+    .ant-tabs-tabpane:first-child {
+      display: flex;
+      flex-direction: column;
+      background-color: unset !important;
+    }
   }
 }
 

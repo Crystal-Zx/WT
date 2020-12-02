@@ -17,14 +17,13 @@ export default class TVChartContainer extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    console.log("===========TVC constructor")
     const symbol = props.symbol
     this.tvWidget = null
     this.socket = new socket("ws://47.113.231.12:5885/")
     this.datafeeds = new Datafeed(this)
     this.widgets = null
-    this.symbol = symbol || 'XAUUSD'
-    this.interval = localStorage.getItem('tradingview.resolution') || '5'
+    this.symbol = symbol || 'EURUSD'
+    this.interval = localStorage.getItem('tradingview.resolution') || '1'
     this.cacheData = {}
     this.lastTime = null
     this.getBarTimer = null
@@ -35,38 +34,38 @@ export default class TVChartContainer extends React.PureComponent {
     this.init = this.init.bind(this)
 
     const that = this
-    // this.socket.doOpen()
-    // this.socket.on('open', function () {
-    //   //页面初始化的时候，为了快速加载，先请求150条记录
-    //   if (that.interval < 60) {
-    //     that.socket.send({
-    //       cmd: 'req',
-    //       args: ["candle.M" + that.interval + "." + that.symbol]
-    //     })
-    //   } else if (that.interval >= 60) {
-    //     that.socket.send({
-    //       cmd: 'req',
-    //       args: ["candle.H" + (that.interval / 60) + "." + that.symbol]
-    //     })
-    //   } else {
-    //     that.socket.send({
-    //       cmd: 'req',
-    //       args: ["candle.D1." + that.symbol]
-    //     })
-    //   }
-    // })
-    // this.socket.on('message', that.onMessage.bind(this))
-    // this.socket.on('close', that.onClose.bind(this))
+    this.socket.doOpen()
+    this.socket.on('open', function () {
+      //页面初始化的时候，为了快速加载，先请求150条记录
+      if (that.interval < 60) {
+        that.socket.send({
+          cmd: 'req',
+          args: ["candle.M" + that.interval + "." + that.symbol]
+        })
+      } else if (that.interval >= 60) {
+        that.socket.send({
+          cmd: 'req',
+          args: ["candle.H" + (that.interval / 60) + "." + that.symbol]
+        })
+      } else {
+        that.socket.send({
+          cmd: 'req',
+          args: ["candle.D1." + that.symbol]
+        })
+      }
+    })
+    this.socket.on('message', that.onMessage.bind(this))
+    this.socket.on('close', that.onClose.bind(this))
   }
 
   init = () => {
-    var resolution = localStorage.getItem('tradingview.resolution') || '5';
+    const that = this
     // var chartType = (localStorage.getItem('tradingview.chartType') || '1') * 1;
     if (!this.tvWidget) {
       this.tvWidget = new widget({
         autosize: true,
         symbol: this.symbol, // 图表的初始商品
-        interval: resolution, // 图表的初始周期
+        interval: this.interval, // 图表的初始周期
         container_id: 'tv_chart_container',
         datafeed: this.datafeeds,
         library_path: '/charting_library/', // static文件夹的路径              
@@ -123,13 +122,14 @@ export default class TVChartContainer extends React.PureComponent {
               }
               this.className = `${this.className} active`
               thats.chart().setResolution(button.resolution, function onReadyCallback() {})
-            }).parent().addClass('my-group' + (button.resolution == this.paramary.resolution ? ' active' : ''))
+            }).parent().addClass('my-group' + (button.resolution == that.paramary.resolution ? ' active' : ''))
         })(buttons[i])
       }
     }
   }
 
-  initMessage = throttle((symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback) => {
+  initMessage = (symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback) => {
+    console.log("=======initMsg")
     let that = this
     //保留当前回调
     that.cacheData['onLoadedCallback'] = onLoadedCallback;
@@ -156,8 +156,8 @@ export default class TVChartContainer extends React.PureComponent {
         // 获取全部记录时的参数
       }
     }
-    this.getklinelist(param)
-  }, 1000)
+    // this.getklinelist(param)
+  }
 
   sendMessage = (data) => {
     var that = this;
@@ -172,10 +172,23 @@ export default class TVChartContainer extends React.PureComponent {
   }
 
   getklinelist = (param) => {
-    // this.socket.send({
-    //   cmd: 'req',
-    //   args: ["candle.D1." + that.symbol, 150, parseInt(Date.now() / 1000)]
-    // })
+    const that = this
+    if (that.interval < 60) {
+      that.socket.send({
+        cmd: 'req',
+        args: ["candle.M" + that.interval + "." + that.symbol]
+      })
+    } else if (that.interval >= 60) {
+      that.socket.send({
+        cmd: 'req',
+        args: ["candle.H" + (that.interval / 60) + "." + that.symbol]
+      })
+    } else {
+      that.socket.send({
+        cmd: 'req',
+        args: ["candle.D1." + that.symbol]
+      })
+    }
   }
 
   initLimit = (resolution, rangeStartDate, rangeEndDate) => {
@@ -199,12 +212,14 @@ export default class TVChartContainer extends React.PureComponent {
 
   getBars = (symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback) => {
     const timeInterval = resolution // 当前时间维度
+    // console.log("resolution = ",resolution)
     this.interval = resolution
     let ticker = `${this.symbol}-${resolution}`
     let tickerload = `${ticker}load`
     var tickerstate = `${ticker}state`
     this.cacheData[tickerload] = rangeStartDate
-    //如果缓存没有数据，而且未发出请求，记录当前节点开始时间
+
+    // 如果缓存没有数据，而且未发出请求，记录当前节点开始时间
     // 切换时间或币种
     if (!this.cacheData[ticker] && !this.cacheData[tickerstate]) {
       this.cacheData[tickerload] = rangeStartDate
@@ -250,28 +265,49 @@ export default class TVChartContainer extends React.PureComponent {
   }
 
   // 渲染数据
-  onMessage = (data) => { // 通过参数将数据传递进来
-    console.log("============onMessage", data)
+  onMessage = (data) => { // 通过参数将数据传递进来    
     let thats = this
     if (data === []) {
       return
     }
+    // 计算当前resolution
+    let _type = data.data.ticks ? data.data.id : data.data.type
+    data.resolution = _type.split(".")[1].slice(1)
     // 引入新数据的原因，是我想要加入缓存，这样在大数据量的时候，切换时间维度可以大大的优化请求时间
     let newdata = []
-    if (data && data.data) {
-      newdata = data.data
-    }
-    const ticker = `${thats.symbolName}-${thats.interval}`
+    // if (data.data || data.data.ticks) {
+      if(data.data.ticks) {
+        data.data.ticks.forEach(tick => {
+          newdata.push({
+            time: tick.id * 1000,
+            open: tick.open,
+            high: tick.high,
+            low: tick.low,
+            close: tick.close,
+            volume: tick.quote_vol || 0
+          })
+        }, thats);
+      } else {
+        newdata[0] = data.data
+      }
+    // }
+    const ticker = `${thats.symbol}-${thats.interval}`
     // 第一次全部更新(增量数据是一条一条推送，等待全部数据拿到后再请求)
-    if (newdata && newdata.length >= 1 && !thats.cacheData[ticker] && data.firstHisFlag === 'true') {
+    if (newdata && newdata.length >= 1 && !thats.cacheData[ticker]) {  //  && data.firstHisFlag === 'true'
       // websocket返回的值，数组代表时间段历史数据，不是增量
-      var tickerstate = `${ticker}state`
+      var tickerstate = `${ticker}state`,
+          tickerCallback = `${ticker}Callback`,
+          onLoadedCallback = thats.cacheData[onLoadedCallback]
       // 如果没有缓存数据，则直接填充，发起订阅
       if (!thats.cacheData[ticker]) {
         thats.cacheData[ticker] = newdata
         thats.subscribe() // 这里去订阅增量数据！！！！！！！
       }
       // 新数据即当前时间段需要的数据，直接喂给图表插件
+      if (onLoadedCallback) {
+        onLoadedCallback(newdata);
+        delete thats.cacheData[tickerCallback];
+      }
       // 如果出现历史数据不见的时候，就说明 onLoadedCallback 是undefined
       if (thats.cacheData['onLoadedCallback']) { // ToDo
         thats.cacheData['onLoadedCallback'](newdata)
@@ -282,14 +318,21 @@ export default class TVChartContainer extends React.PureComponent {
       thats.lastTime = thats.cacheData[ticker][thats.cacheData[ticker].length - 1].time
     }
     // 更新历史数据 (这边是添加了滑动按需加载，后面我会说明)
-    if (newdata && newdata.length > 1 && data.firstHisFlag === 'true' && this.paramary.klineId === data.klineId && this.paramary.resolution === data.resolution && thats.cacheData[ticker] && this.isHistory.isRequestHistory) {
+    if (newdata && newdata.length > 1 && data.type === "update" && this.paramary.resolution === data.resolution && thats.cacheData[ticker] && this.isHistory.isRequestHistory) {  //  && this.paramary.klineId === data.klineId && data.firstHisFlag === 'true'
       thats.cacheData[ticker] = newdata.concat(thats.cacheData[ticker])
       this.isHistory.isRequestHistory = false
     }
     // 单条数据()
-    if (newdata && newdata.length === 1 && data.hasOwnProperty('firstHisFlag') === false && data.klineId === this.paramary.klineId && this.paramary.resolution === data.resolution) {
+    if (newdata && newdata.length === 1 && this.paramary.resolution === data.resolution) {  // && data.klineId === this.paramary.klineId && data.hasOwnProperty('firstHisFlag') === false
       //构造增量更新数据
-      let barsData = newdata[0]
+      let barsData = {
+        time: data.data.id * 1000,
+        open: data.data.open,
+        high: data.data.high,
+        low: data.data.low,
+        close: data.data.close,
+        volume: data.data.quote_vol
+      }
       //如果增量更新数据的时间大于缓存时间，而且缓存有数据，数据长度大于0
       if (barsData.time > thats.lastTime && thats.cacheData[ticker] && thats.cacheData[ticker].length) {
         //增量更新的数据直接加入缓存数组
@@ -319,17 +362,17 @@ export default class TVChartContainer extends React.PureComponent {
     if (interval < 60) {
       this.sendMessage({
         cmd: 'unsub',
-        args: ["candle.M" + interval + "." + this.symbol.toLowerCase()]
+        args: ["candle.M" + interval + "." + this.symbol.toUpperCase()]
       })
     } else if (interval >= 60) {
       this.sendMessage({
         cmd: 'unsub',
-        args: ["candle.H" + (interval / 60) + "." + this.symbol.toLowerCase()]
+        args: ["candle.H" + (interval / 60) + "." + this.symbol.toUpperCase()]
       })
     } else {
       this.sendMessage({
         cmd: 'unsub',
-        args: ["candle.D1." + this.symbol.toLowerCase()]
+        args: ["candle.D1." + this.symbol.toUpperCase()]
       })
     }
   }
@@ -337,17 +380,17 @@ export default class TVChartContainer extends React.PureComponent {
     if (this.interval < 60) {
       this.sendMessage({
         cmd: 'sub',
-        args: ["candle.M" + this.interval + "." + this.symbol.toLowerCase()],
+        args: ["candle.M" + this.interval + "." + this.symbol.toUpperCase()],
       })
     } else if (this.interval >= 60) {
       this.sendMessage({
         cmd: 'sub',
-        args: ["candle.H" + (this.interval / 60) + "." + this.symbol.toLowerCase()],
+        args: ["candle.H" + (this.interval / 60) + "." + this.symbol.toUpperCase()],
       })
     } else {
       this.sendMessage({
         cmd: 'sub',
-        args: ["candle.D1." + this.symbol.toLowerCase()],
+        args: ["candle.D1." + this.symbol.toUpperCase()],
       })
     }
   }
@@ -364,7 +407,7 @@ export default class TVChartContainer extends React.PureComponent {
 
   componentDidMount() {
     console.log("==========componentDidMount")
-    // this.init()
+    this.init()
     // this.initMessage()
   }
 
@@ -378,8 +421,9 @@ export default class TVChartContainer extends React.PureComponent {
   render() {
 		return (
 			<div
-				id='tv_chart_container'
-				className={ 'TVChartContainer' }
+				id="tv_chart_container"
+				className="TVChartContainer"
+        style={{ flex: 1 }}
 			/>
 		);
 	}

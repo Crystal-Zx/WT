@@ -4,3 +4,7 @@ button[ant-click-animating-without-extra-node]:after {
   opacity: 0;
   animation: none 0 ease 0 1 normal;
 }
+.btn-reset {
+  border: 0;
+  background-color: unset;
+}

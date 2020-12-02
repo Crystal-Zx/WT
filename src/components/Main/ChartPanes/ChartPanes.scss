@@ -2,41 +2,88 @@
 // .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
 //   border-top: 0;
 // }
-.chartpanes-x {
-  &.ant-tabs > .ant-tabs-nav {
-    margin-top: 0;
-    .ant-tabs-nav-list {
-      width: 100%;
+// .chartpanes-x {
+//   &.ant-tabs > .ant-tabs-nav {
+//     margin-top: 0;
+//     .ant-tabs-nav-list {
+//       width: 100%;
+//       height: 30px;
+//       padding-top: 2px;
+//       box-sizing: border-box;
+//       background: $mainBgColor;
+//       .ant-tabs-tab {
+//         flex: 1;
+//         height: 100%;
+//         padding: 0 8px 0 24px;
+//         display: flex;
+//         justify-content: space-between;
+//         color: $fontColor;
+//         border: 0;
+//         // border-top: 2px solid $mainBgColor;
+//         background: #f7f7f7;
+//         &.ant-tabs-tab-active {
+//           background: #fff;
+//           // border-top-color: #fff;
+//         }
+//         &:nth-last-child(2) {
+//           margin-right: 0 !important;  /* 覆盖tabBarGutter */
+//         }
+//       }
+//       .ant-tabs-ink-bar {
+//         background: #fff;
+//         visibility: visible;
+//       }
+//     }
+//   }
+//   .ant-tabs-content {
+//     height: 100%;
+//     margin-top: 0;
+//   }
+// }
+
+
+
+.iconDelete {
+  font-size: 12px;
+}
+
+.symbol-x {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    height: 0 !important;
+  }
+  .symbol-ul {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    .symbol-li {
       height: 30px;
-      padding-top: 2px;
-      box-sizing: border-box;
-      background: $mainBgColor;
-      .ant-tabs-tab {
-        flex: 1;
-        height: 100%;
-        padding: 0 8px 0 24px;
-        display: flex;
-        justify-content: space-between;
-        color: $fontColor;
-        border: 0;
-        // border-top: 2px solid $mainBgColor;
-        background: #f7f7f7;
-        &.ant-tabs-tab-active {
-          background: #fff;
-          // border-top-color: #fff;
-        }
-        &:nth-last-child(2) {
-          margin-right: 0 !important;  /* 覆盖tabBarGutter */
-        }
+      padding: 0 8px 0 24px;
+      box-sizing: content-box;
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f7f7f7;
+      border-top: 2px solid $mainBgColor;
+      cursor: pointer;
+      &.active {
+        border-top-color: $bgColor;
+        background-color: $bgColor;
       }
-      .ant-tabs-ink-bar {
-        background: #fff;
-        visibility: visible;
+      & + .symbol-li {
+        margin-left: 2px;
+      }
+      & > span {
+        font-size: 13px;
+        font-weight: bold;
+        color: $fontColor;
+      }
+      .btn-symbol-delete {
+        height: unset;
+        padding: unset;
       }
     }
-  }
-  .ant-tabs-content {
-    height: 100%;
-    margin-top: 0;
   }
 }

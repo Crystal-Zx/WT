@@ -32,6 +32,15 @@ export default class TVChartContainer extends React.PureComponent {
     this.paramary = {}
 
     this.init = this.init.bind(this)
+    this.initMessage = this.initMessage.bind(this)
+    this.sendMessage = this.sendMessage.bind(this)
+    this.getklinelist = this.getklinelist.bind(this)
+    this.initLimit = this.initLimit.bind(this)
+    this.getBars = this.getBars.bind(this)
+    this.onMessage = this.onMessage.bind(this)
+    this.unSubscribe = this.unSubscribe.bind(this)
+    this.subscribe = this.subscribe.bind(this)
+    this.onClose = this.onClose.bind(this)
 
     const that = this
     this.socket.doOpen()

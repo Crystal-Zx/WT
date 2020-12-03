@@ -6,6 +6,7 @@ import {
 import Datafeed from './datafees'
 import socket from '../../../socket'
 import throttle from 'lodash/throttle'
+import { createEvent } from '@testing-library/react';
 
 function getLanguageFromURL() {
   const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -17,13 +18,13 @@ export default class TVChartContainer extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    const symbol = props.symbol
+    console.log(props)
     this.tvWidget = null
     this.socket = new socket("ws://47.113.231.12:5885/")
     this.datafeeds = new Datafeed(this)
     this.widgets = null
-    this.symbol = symbol || 'EURUSD'
-    this.interval = localStorage.getItem('tradingview.resolution') || '1'
+    this.symbol = props.symbol || 'EURUSD'
+    this.interval = props.resolution || '1'
     this.cacheData = {}
     this.lastTime = null
     this.getBarTimer = null
@@ -44,25 +45,27 @@ export default class TVChartContainer extends React.PureComponent {
 
     const that = this
     this.socket.doOpen()
-    this.socket.on('open', function () {
-      //页面初始化的时候，为了快速加载，先请求150条记录
-      if (that.interval < 60) {
-        that.socket.send({
-          cmd: 'req',
-          args: ["candle.M" + that.interval + "." + that.symbol]
-        })
-      } else if (that.interval >= 60) {
-        that.socket.send({
-          cmd: 'req',
-          args: ["candle.H" + (that.interval / 60) + "." + that.symbol]
-        })
-      } else {
-        that.socket.send({
-          cmd: 'req',
-          args: ["candle.D1." + that.symbol]
-        })
-      }
-    })
+    // this.socket.on('open', that.getklinelist.bind(this)
+    //   // function () {
+    //   //   //页面初始化的时候，为了快速加载，先请求150条记录
+    //   //   if (that.interval < 60) {
+    //   //     that.socket.send({
+    //   //       cmd: 'req',
+    //   //       args: ["candle.M" + that.interval + "." + that.symbol]
+    //   //     })
+    //   //   } else if (that.interval >= 60) {
+    //   //     that.socket.send({
+    //   //       cmd: 'req',
+    //   //       args: ["candle.H" + (that.interval / 60) + "." + that.symbol]
+    //   //     })
+    //   //   } else {
+    //   //     that.socket.send({
+    //   //       cmd: 'req',
+    //   //       args: ["candle.D1." + that.symbol]
+    //   //     })
+    //   //   }
+    //   // }
+    // )
     this.socket.on('message', that.onMessage.bind(this))
     this.socket.on('close', that.onClose.bind(this))
   }
@@ -84,22 +87,31 @@ export default class TVChartContainer extends React.PureComponent {
         locale: getLanguageFromURL() || 'en', // 图表的本地化处理
         debug: false,
         disabled_features: [
-          "header_symbol_search",
-          "header_saveload",
-          "header_screenshot",
-          "header_chart_type",
-          "header_compare",
-          "header_undo_redo",
-          "timeframes_toolbar",
-          "volume_force_overlay",
-          "header_resolutions",
-        ]
+          'header_symbol_search',
+          'header_saveload',
+          'header_screenshot',
+          'header_chart_type',
+          'header_compare',
+          'header_undo_redo',
+          'timeframes_toolbar',
+          'volume_force_overlay',
+          'header_resolutions',
+        ],
+        overrides: {
+          'paneProperties.background': '#131722',
+          'mainSeriesProperties.candleStyle.upColor': '#00b276',
+          'mainSeriesProperties.candleStyle.downColor': '#fc3131'
+        },
+        studies_overrides: {
+          'MA Cross.short:plot.color': '#6B3798',
+          'MA Cross.long:plot.color': '#708957',
+        }
       })
     }
     const thats = this.tvWidget;
 
     thats.onChartReady(function () {
-      console.log("=============> onChartReady")
+      // console.log("=============> onChartReady")
       createButton(buttons);
     })
 
@@ -108,7 +120,10 @@ export default class TVChartContainer extends React.PureComponent {
       {title:'1m',resolution:'1',chartType:1},
       {title:'15m',resolution:'15',chartType:1},
       {title:'1h',resolution:'60',chartType:1},
-      {title:'1D',resolution:'1D',chartType:1},
+      // {title:'H4',resolution:'240',chartType:1},
+      {title:'1d',resolution:'1D',chartType:1},
+      // {title:'W1',resolution:'1W',chartType:1},
+      // {title:'MN',resolution:'1M',chartType:1},
     ];
 
     // 创建按钮(这里是时间维度)，并对选中的按钮加上样式
@@ -117,28 +132,32 @@ export default class TVChartContainer extends React.PureComponent {
         (function (button) {
           let defaultClass =
             thats.createButton()
-            .attr('title', button.title).addClass(`mydate ${button.resolution === '15' ? 'active' : ''}`)
+            .attr('title', button.title)
+            .attr('data-rsl', button.resolution).addClass(`rsl-date ${button.resolution === that.paramary.resolution ? 'active' : ''}`)
             .text(button.title)
             .on('click', function (e) {
               if (this.className.indexOf('active') > -1) { // 已经选中
                 return false
               }
-              let curent = e.currentTarget.parentNode.parentElement.childNodes
+              let curent = e.currentTarget.parentNode.parentNode.childNodes
               for (let index of curent) {
-                if (index.className.indexOf('my-group') > -1 && index.childNodes[0].className.indexOf('active') > -1) {
+                if (index.className.indexOf('rsl-group') > -1 && index.childNodes[0].className.indexOf('active') > -1) {
                   index.childNodes[0].className = index.childNodes[0].className.replace('active', '')
                 }
               }
               this.className = `${this.className} active`
-              thats.chart().setResolution(button.resolution, function onReadyCallback() {})
-            }).parent().addClass('my-group' + (button.resolution == that.paramary.resolution ? ' active' : ''))
+              console.log(that.interval)
+              thats.chart().setResolution(button.resolution, function onReadyCallback() {
+                that.props.onChangeResolution(button.resolution)
+              })
+            }).parent().addClass('rsl-group' + (button.resolution == that.paramary.resolution ? ' active' : ''))
         })(buttons[i])
       }
     }
   }
 
   initMessage = (symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback) => {
-    console.log("=======initMsg")
+    // console.log("=======initMsg")
     let that = this
     //保留当前回调
     that.cacheData['onLoadedCallback'] = onLoadedCallback;
@@ -146,6 +165,7 @@ export default class TVChartContainer extends React.PureComponent {
     let limit = that.initLimit(resolution, rangeStartDate, rangeEndDate)
     //如果当前时间节点已经改变，停止上一个时间节点的订阅，修改时间节点值
     if (that.interval !== resolution) {
+      that.unSubscribe(that.interval)
       that.interval = resolution
       this.paramary.endTime = parseInt((Date.now() / 1000), 10)
     } else {
@@ -156,21 +176,21 @@ export default class TVChartContainer extends React.PureComponent {
     this.paramary.resolution = resolution
     let param
     // 分批次获取历史(这边区分了历史记录分批加载的请求)
-    if (this.isHistory.isRequestHistory) {
-      param = {
-        // 获取历史记录时的参数(与全部主要区别是时间戳)
-      }
-    } else {
-      param = {
-        // 获取全部记录时的参数
-      }
-    }
-    // this.getklinelist(param)
+    // if (this.isHistory.isRequestHistory) {
+    //   param = {
+    //     // 获取历史记录时的参数(与全部主要区别是时间戳)
+    //   }
+    // } else {
+    //   param = {
+    //     // 获取全部记录时的参数
+    //   }
+    // }
+    this.getklinelist(param)
   }
 
   sendMessage = (data) => {
     var that = this;
-    console.log("这是要发送的数据：" + JSON.stringify(data))
+    // console.log("这是要发送的数据：" + JSON.stringify(data))
     if (this.socket.checkOpen()) {
       this.socket.send(data)
     } else {
@@ -181,6 +201,7 @@ export default class TVChartContainer extends React.PureComponent {
   }
 
   getklinelist = (param) => {
+    // console.log("=======getKlinelist", this.interval)
     const that = this
     if (that.interval < 60) {
       that.socket.send({
@@ -221,13 +242,11 @@ export default class TVChartContainer extends React.PureComponent {
 
   getBars = (symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback) => {
     const timeInterval = resolution // 当前时间维度
-    // console.log("resolution = ",resolution)
-    this.interval = resolution
+    // this.interval = resolution
     let ticker = `${this.symbol}-${resolution}`
     let tickerload = `${ticker}load`
     var tickerstate = `${ticker}state`
     this.cacheData[tickerload] = rangeStartDate
-
     // 如果缓存没有数据，而且未发出请求，记录当前节点开始时间
     // 切换时间或币种
     if (!this.cacheData[ticker] && !this.cacheData[tickerstate]) {
@@ -358,6 +377,7 @@ export default class TVChartContainer extends React.PureComponent {
   }
 
   unSubscribe = (interval) => {
+    // console.log("======unSubscribe")
     var thats = this;
     //停止订阅，删除过期缓存、缓存时间、缓存状态
     var ticker = thats.symbol + "-" + interval;
@@ -385,6 +405,7 @@ export default class TVChartContainer extends React.PureComponent {
       })
     }
   }
+
   subscribe = () => {
     if (this.interval < 60) {
       this.sendMessage({
@@ -415,9 +436,8 @@ export default class TVChartContainer extends React.PureComponent {
   }
 
   componentDidMount() {
-    console.log("==========componentDidMount")
     this.init()
-    // this.initMessage()
+
   }
 
   componentWillUnmount() {
@@ -425,6 +445,29 @@ export default class TVChartContainer extends React.PureComponent {
       this.tvWidget.remove();
       this.tvWidget = null;
     }
+  }
+
+  // 当props中的symbol或resolution改变时，更新图表
+  componentDidUpdate(prevProps) {
+    if(prevProps.symbol !== this.props.symbol) {
+      console.log("symbol changed")
+      // 取消上一个货币对的订阅
+      this.unSubscribe(this.interval)
+      // 更新当前symbol
+      this.symbol = this.props.symbol
+      // 通知图标symbol更新
+      this.tvWidget.chart().setSymbol(this.symbol.toUpperCase(), function onReadyCallback() {})
+      if(prevProps.resolution !== this.props.resolution) {
+        // 当切换symbol时，将时间周期切换至其上一次选中值resolution
+        const tvIframeName = document.querySelector("#tv_chart_container iframe").name
+        console.log(tvIframeName)
+        const tvIframe = document.getElementById(tvIframeName).contentWindow
+        const el = tvIframe.document.querySelector(`.header-chart-panel-content .rsl-group .rsl-date[data-rsl='${this.props.resolution}']`)
+        const evt = document.createEvent("MouseEvents")
+        evt.initEvent("click", false, true)
+        el.dispatchEvent(evt)
+      }
+    } 
   }
 
   render() {

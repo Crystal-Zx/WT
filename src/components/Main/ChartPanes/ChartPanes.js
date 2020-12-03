@@ -23,38 +23,42 @@ const chartSPanes = [
 
 
 export default function ChartPanes () {
-  console.log("=========chartPanes")
   const _symbolList = [
     {
       symbol: 'EURUSD',
-      resolution: '1D',
+      resolution: '1',
       closable: true,
-      key: '1'
+      key: '1',
+      pricePrecision: 5
     },
     {
-      symbol: 'GBPAUD',
-      resolution: '1H',
+      symbol: 'GBPUSD',
+      resolution: '15',
       closable: true,
-      key: '2'
-    },
-    {
-      symbol: 'XAUUSD',
-      resolution: '30m',
-      closable: true,
-      key: '3'
-    },
-    {
-      symbol: 'USDJPY',
-      resolution: '5m',
-      closable: true,
-      key: '4'
-    },
-    {
-      symbol: 'JPYGBP',
-      resolution: '45s',
-      closable: true,
-      key: '5'
+      key: '2',
+      pricePrecision: 5
     }
+    // {
+    //   symbol: 'XAUUSD',
+    //   resolution: '30',
+    //   closable: true,
+    //   key: '3',
+    //   pricePrecision: 5
+    // },
+    // {
+    //   symbol: 'USDJPY',
+    //   resolution: '5',
+    //   closable: true,
+    //   key: '4',
+    //   pricePrecision: 5
+    // },
+    // {
+    //   symbol: 'JPYGBP',
+    //   resolution: '45',
+    //   closable: true,
+    //   key: '5',
+    //   pricePrecision: 5
+    // }
   ]
 
   const [symbolList, setSymbolList] = useState(_symbolList)
@@ -82,8 +86,10 @@ export default function ChartPanes () {
     return style
   })(symbolList)
 
-  const changeSymbol = (activeKey) => {
-    setActiveKey(activeKey)
+  const changeSymbol = (sb) => {
+    const { key,symbol } = sb
+    setActiveKey(key)
+    setSymbol(symbol)
   }
   // 删除当前选中项，则删除后默认选中前一项。当仅剩一项，则不能再次进行删除
   const deleteSymbol = (e,targetKey) => {
@@ -103,6 +109,59 @@ export default function ChartPanes () {
     setSymbolList(newSbl)
   }
 
+  /**
+   * 更改当前货币的时间周期 --- 传递给子组件，在子组件调用
+   * @param {string} resolution 子组件传递过来的值：当前货币的时间周期resolution
+   */
+  const onChangeResolution = (resolution) => {
+    try {
+      symbolList.forEach((sb) => {
+        console.log(sb.symbol,symbol)
+        if(sb.symbol === symbol) {
+          sb.resolution = resolution
+          throw new Error("break")
+        }
+      })
+    } catch(e) {
+      if(e.message === "break") {
+        setSymbolList(symbolList.concat([]))
+        console.log("symbolList",symbolList)
+      } else {
+        throw e
+      }
+    }
+  }
+
+  /**
+   * 根据货币名称返回其 当前/上一次 选中的时间周期
+   * @param {string} symbol 当前货币名称
+   * @returns resolution 值为tradingview所需格式
+   */
+  const getResolutionBySymbol = (symbol) => {
+    for(var sb of symbolList) {
+      if(sb.symbol === symbol) {
+        return sb.resolution
+      }
+    }
+  }
+
+  /**
+   * 
+   * @param {string} resolution 
+   */
+  const getResolutionForCh = (resolution) => {
+    let resolutionCh
+    if(!isNaN(Number(resolution))) {  // 纯数字 || 小时 ==> 分钟
+      resolutionCh = resolution < 60 ? `${resolution}m` : `${resolution / 60}h`
+    } else { // 其余时间周期
+      // 除 年 以外均直接显示参数值
+      if(resolution.toLowerCase().indexOf("m") !== -1 && parseInt(resolution) >= 12) {
+        resolutionCh = Math.floor(parseInt(resolution) / 12) + "年"
+      }
+    }
+    return resolutionCh || resolution.toLowerCase()
+  }
+
   return (
     <>
       {/* <CardTabs 
@@ -112,7 +171,12 @@ export default function ChartPanes () {
         tabPosition="bottom"
         tabBarGutter={2}
       /> */}
-      <TVChartContainer symbol={symbol} />
+      <TVChartContainer 
+        symbol={symbol} 
+        resolution={getResolutionBySymbol(symbol)}
+        symbolList={symbolList} 
+        onChangeResolution={onChangeResolution}
+      />
       <div className="symbol-x">
         <div className="symbol-ul">
           {
@@ -120,9 +184,9 @@ export default function ChartPanes () {
               <div
                 className={'symbol-li' + (activeKey == sb.key ? ' active' : '')}
                 style={sbStyle}
-                onClick={() => changeSymbol(sb.key)}
+                onClick={() => changeSymbol(sb)}
               >
-                <span>{sb.symbol}（{sb.resolution}）</span>
+                <span>{sb.symbol}（{getResolutionForCh(sb.resolution)}）</span>
                 {
                   sb.closable
                   && 

@@ -21,7 +21,7 @@ class datafeeds extends React.Component {
    * `onReady` should return result asynchronously.
    */
   onReady(callback) {
-    console.log('=============onReady running')
+    // console.log('=============onReady running')
     return new Promise((resolve) => {
       let configuration = this.defaultConfiguration()
       if (this.self.getConfig) {
@@ -41,7 +41,7 @@ class datafeeds extends React.Component {
    * @param {*Function} onErrorCallback  回调函数
    */
   getBars(symbolInfo, resolution, rangeStartDate, rangeEndDate, onDataCallback) {
-    console.log('=============getBars running')
+    // console.log('=============getBars running')
     const onLoadedCallback = (data) => {
       data && data.length ? onDataCallback(data, {
         noData: false
@@ -59,8 +59,8 @@ class datafeeds extends React.Component {
    * `resolveSymbol` should return result asynchronously.
    */
   resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
+    const that = this
     return new Promise((resolve) => {
-      console.log('=============resolveSymbol running ，')
       // reject
       let symbolInfoName
       if (this.self.symbol) {
@@ -68,17 +68,18 @@ class datafeeds extends React.Component {
       }
       let symbolInfo = {
         name: symbolInfoName,
-        ticker: symbolInfoName,
-        pricescale: 10000,
+        ticker: symbolInfoName, // 此商品的唯一标识符，用于所有数据请求；如未指定，则被视为等于symbol
+        pricescale: 100000,     // 价格精度
       }
-      // const {
-      //   points
-      // } = this.props.props
-      // const array = points.filter(item => item.name === symbolInfoName)
-      // if (array) {
-      //   symbolInfo.pricescale = 10 ** array[0].pricePrecision
-      // }
+      const {
+        symbolList
+      } = that.props.props
+      const array = symbolList.filter(item => item.symbol === symbolInfoName)
+      if (array) {
+        symbolInfo.pricescale = 10 ** array[0].pricePrecision
+      }
       symbolInfo = Object.assign(this.defaultConfiguration(), symbolInfo)
+      // console.log('=============resolveSymbol running', symbolInfo)
       resolve(symbolInfo)
     }).then(data => onSymbolResolvedCallback(data)).catch(err => onResolveErrorCallback(err))
   }
@@ -106,14 +107,14 @@ class datafeeds extends React.Component {
    */
   defaultConfiguration = () => {
     const object = {
-      session: '24x7',
-      timezone: 'Asia/Shanghai',
-      minmov: 1,
-      minmov2: 0,
-      // description: 'www.coinoak.com',
+      session: '24x7',  // 商品交易时间
+      timezone: 'Asia/Shanghai',  // 这个商品的交易所时区
+      minmov: 1,  // 最小波动，MinimalPossiblePriceChange（最小可能价格变动） = minmov / pricescale
+      minmov2: 0,  // 不同种类价格最小波动参数，常见为0，ZFM2014五年期国债为4
+      // description: 'www.coinoak.com',  // 商品说明,这个商品说明将被打印在图表的标题栏中
       pointvalue: 1,
-      volume_precision: 4,
-      hide_side_toolbar: false,
+      volume_precision: 4,  // 整数显示此商品的成交量数字的小数位。0表示只显示整数。
+      hide_side_toolbar: false,  // 文档中没有找到相关参数，存疑。（修改值也没有起什么作用）
       fractional: false,
       supports_search: false,
       supports_group_request: false,

@@ -26,8 +26,8 @@ const quotePanes = [
   }
 ]
 
-export default function QuotePanes () {
-
+export default function QuotePanes (props) {
+  const { socket } = props
   return (
     <div className="left-x card-container">
       <CardTabs initialPanes={quotePanes}></CardTabs>

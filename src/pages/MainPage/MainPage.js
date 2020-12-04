@@ -39,7 +39,7 @@ const menu = (
 );
 
 function MainPage () {
-  let ws,taskRemindInterval = null
+  let socket,taskRemindInterval = null
   let quote = [{
     "symbol": "EURUSD",
     "ask": 1.18221,
@@ -50,20 +50,18 @@ function MainPage () {
   }]
   const [symbols, setSymbols] = useState(["EURUSD.GBPUSD"])
   const [quotes, setQuotes] = useState([])
-  // useEffect(() => {
-  //   console.log("开始建立ws")
-  //   ws = new socket({ url: "ws://47.113.231.12:5885/" })
-  //   console.log(ws)
-  //   ws.doOpen()
-  //   ws.on('open', () => {
-  //     ws.send({ "cmd": "req", "args": ["candle.M1.XAUUSD"] })
-  //     // ws.send({ "cmd": "quote", "args": ["EURUSD.GBPUSD"] })
-  //   })
-  //   ws.on('message', ws.onMessage)
-  //   return () => {
-  //     ws.onClose()
-  //   }
-  // },[symbols])
+  useEffect(() => {
+    console.log("开始建立socket")
+    socket = new socket({ url: "socket://47.113.231.12:5885/" })
+    socket.doOpen()
+    // socket.on('open', () => {
+      
+    // })
+    // socket.on('message', socket.onMessage)
+    // return () => {
+    //   socket.onClose()
+    // }
+  })
   
   const handleQuotes = (_quote) => {
     for(var quote of quotes) {
@@ -85,8 +83,8 @@ function MainPage () {
   return (
     <div className="main-x">
       <div className="top-x">
-        <QuotePanes />
-        <TopRPanes />
+        <QuotePanes socket={socket} />
+        <TopRPanes socket={socket} />
         {/* <div className="right-x card-container">
           <CardTabs initialPanes={topRPanes}></CardTabs>
         </div> */}

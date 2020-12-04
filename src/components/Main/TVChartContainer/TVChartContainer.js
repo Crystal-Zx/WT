@@ -1,12 +1,14 @@
 import * as React from 'react';
 import './TVChartContainer.css';
 import {
-  widget
+  widget, version, onready
 } from '../../../charting_library.min'
 import Datafeed from './datafees'
 import socket from '../../../socket'
 import throttle from 'lodash/throttle'
-import { createEvent } from '@testing-library/react';
+import {
+  createEvent
+} from '@testing-library/react';
 
 function getLanguageFromURL() {
   const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -18,7 +20,6 @@ export default class TVChartContainer extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    console.log(props)
     this.tvWidget = null
     this.socket = new socket("ws://47.113.231.12:5885/")
     this.datafeeds = new Datafeed(this)
@@ -73,55 +74,74 @@ export default class TVChartContainer extends React.PureComponent {
   init = () => {
     const that = this
     // var chartType = (localStorage.getItem('tradingview.chartType') || '1') * 1;
+    const theme = 'white'
     if (!this.tvWidget) {
       this.tvWidget = new widget({
-        autosize: true,
         symbol: this.symbol, // 图表的初始商品
         interval: this.interval, // 图表的初始周期
+        allow_symbol_change: true,
         container_id: 'tv_chart_container',
         datafeed: this.datafeeds,
         library_path: '/charting_library/', // static文件夹的路径              
-        enabled_features: [], // 在默认情况下启用/禁用（disabled_features）名称的数组
         timezone: 'Asia/Shanghai',
-        // custom_css_url: './css/tradingview_'+skin+'.css',  // 本地css样式，放在public下
+        autosize: true,
+        // custom_css_url: './css/tradingview_'+ theme +'.css',  // 本地css样式，放在public下
         locale: getLanguageFromURL() || 'en', // 图表的本地化处理
-        debug: false,
+        toolbar_bg: '#fff',
+        // studies_overrides: {
+        //   'volume.volume.color.0': 'rgba(29, 178, 112,1)',
+        //   'volume.volume.color.1': 'rgba(239, 64, 52, 1)'
+        // },
+        // overrides: that.getOverrides(theme),  // 1.12版本设置overrides无效！！！使用applyOverrides
+        enabled_features: [ // 在默认情况下启用/禁用（disabled_features）名称的数组
+          'left_toolbar',
+          'side_toolbar_in_fullscreen_mode', // 全屏模式启用绘图工具
+          'keep_left_toolbar_visible_on_small_screens' // 防止左侧工具栏在小屏幕上小时
+        ],
         disabled_features: [
-          'header_symbol_search',
-          'header_saveload',
-          'header_screenshot',
-          'header_chart_type',
+          'header_symbol_search', // 品种搜索框
+          'header_saveload', // "保存/加载图表"按钮
+          'header_screenshot', // 截屏按钮
+          'header_chart_type', // 显示“图表类型”按钮
           'header_compare',
-          'header_undo_redo',
+          'header_undo_redo', // 撤销/重做按钮
           'timeframes_toolbar',
-          'volume_force_overlay',
+          // 'volume_force_overlay',  // 在主数据量列的窗格上放置成交量指标
           'header_resolutions',
         ],
-        overrides: {
-          'paneProperties.background': '#131722',
-          'mainSeriesProperties.candleStyle.upColor': '#00b276',
-          'mainSeriesProperties.candleStyle.downColor': '#fc3131'
-        },
-        studies_overrides: {
-          'MA Cross.short:plot.color': '#6B3798',
-          'MA Cross.long:plot.color': '#708957',
-        }
+        debug: true
       })
     }
     const thats = this.tvWidget;
 
     thats.onChartReady(function () {
-      // console.log("=============> onChartReady")
-      createButton(buttons);
+      createButton(buttons)
+      // 设定图表自定义样式
+      thats.applyOverrides(that.getOverrides(theme))
     })
 
     // chartType: 0 => Bar; 1 => Candle; 2 => Line; 3 => Area
-    var buttons = [
-      {title:'1m',resolution:'1',chartType:1},
-      {title:'15m',resolution:'15',chartType:1},
-      {title:'1h',resolution:'60',chartType:1},
+    var buttons = [{
+        title: '1m',
+        resolution: '1',
+        chartType: 1
+      },
+      {
+        title: '15m',
+        resolution: '15',
+        chartType: 1
+      },
+      {
+        title: '1h',
+        resolution: '60',
+        chartType: 1
+      },
       // {title:'H4',resolution:'240',chartType:1},
-      {title:'1d',resolution:'1D',chartType:1},
+      {
+        title: '1d',
+        resolution: '1D',
+        chartType: 1
+      },
       // {title:'W1',resolution:'1W',chartType:1},
       // {title:'MN',resolution:'1M',chartType:1},
     ];
@@ -146,7 +166,6 @@ export default class TVChartContainer extends React.PureComponent {
                 }
               }
               this.className = `${this.className} active`
-              console.log(that.interval)
               thats.chart().setResolution(button.resolution, function onReadyCallback() {
                 that.props.onChangeResolution(button.resolution)
               })
@@ -294,64 +313,64 @@ export default class TVChartContainer extends React.PureComponent {
 
   // 渲染数据
   onMessage = (data) => { // 通过参数将数据传递进来    
-    let thats = this
-    if (data === []) {
+    let that = this
+    if (data === [] || data.type === "ping") {
       return
     }
     // 计算当前resolution
     let _type = data.data.ticks ? data.data.id : data.data.type
-    data.resolution = _type.split(".")[1].slice(1)
+    data.resolution = that.getResolutionByCh(_type.split(".")[1])
     // 引入新数据的原因，是我想要加入缓存，这样在大数据量的时候，切换时间维度可以大大的优化请求时间
     let newdata = []
     // if (data.data || data.data.ticks) {
-      if(data.data.ticks) {
-        data.data.ticks.forEach(tick => {
-          newdata.push({
-            time: tick.id * 1000,
-            open: tick.open,
-            high: tick.high,
-            low: tick.low,
-            close: tick.close,
-            volume: tick.quote_vol || 0
-          })
-        }, thats);
-      } else {
-        newdata[0] = data.data
-      }
+    if (data.data.ticks) {
+      data.data.ticks.forEach(tick => {
+        newdata.push({
+          time: tick.id * 1000,
+          open: tick.open,
+          high: tick.high,
+          low: tick.low,
+          close: tick.close,
+          volume: tick.quote_vol || 0
+        })
+      }, that);
+    } else {
+      newdata[0] = data.data
+    }
     // }
-    const ticker = `${thats.symbol}-${thats.interval}`
+    const ticker = `${that.symbol}-${that.interval}`
     // 第一次全部更新(增量数据是一条一条推送，等待全部数据拿到后再请求)
-    if (newdata && newdata.length >= 1 && !thats.cacheData[ticker]) {  //  && data.firstHisFlag === 'true'
+    if (newdata && newdata.length >= 1 && !that.cacheData[ticker]) { //  && data.firstHisFlag === 'true'
       // websocket返回的值，数组代表时间段历史数据，不是增量
       var tickerstate = `${ticker}state`,
-          tickerCallback = `${ticker}Callback`,
-          onLoadedCallback = thats.cacheData[onLoadedCallback]
+        tickerCallback = `${ticker}Callback`,
+        onLoadedCallback = that.cacheData[onLoadedCallback]
       // 如果没有缓存数据，则直接填充，发起订阅
-      if (!thats.cacheData[ticker]) {
-        thats.cacheData[ticker] = newdata
-        thats.subscribe() // 这里去订阅增量数据！！！！！！！
+      if (!that.cacheData[ticker]) {
+        that.cacheData[ticker] = newdata
+        that.subscribe() // 这里去订阅增量数据！！！！！！！
       }
       // 新数据即当前时间段需要的数据，直接喂给图表插件
       if (onLoadedCallback) {
         onLoadedCallback(newdata);
-        delete thats.cacheData[tickerCallback];
+        delete that.cacheData[tickerCallback];
       }
       // 如果出现历史数据不见的时候，就说明 onLoadedCallback 是undefined
-      if (thats.cacheData['onLoadedCallback']) { // ToDo
-        thats.cacheData['onLoadedCallback'](newdata)
+      if (that.cacheData['onLoadedCallback']) { // ToDo
+        that.cacheData['onLoadedCallback'](newdata)
       }
       //请求完成，设置状态为false
-      thats.cacheData[tickerstate] = false
+      that.cacheData[tickerstate] = false
       //记录当前缓存时间，即数组最后一位的时间
-      thats.lastTime = thats.cacheData[ticker][thats.cacheData[ticker].length - 1].time
+      that.lastTime = that.cacheData[ticker][that.cacheData[ticker].length - 1].time
     }
     // 更新历史数据 (这边是添加了滑动按需加载，后面我会说明)
-    if (newdata && newdata.length > 1 && data.type === "update" && this.paramary.resolution === data.resolution && thats.cacheData[ticker] && this.isHistory.isRequestHistory) {  //  && this.paramary.klineId === data.klineId && data.firstHisFlag === 'true'
-      thats.cacheData[ticker] = newdata.concat(thats.cacheData[ticker])
+    if (newdata && newdata.length > 1 && data.type === "update" && this.paramary.resolution === data.resolution && that.cacheData[ticker] && this.isHistory.isRequestHistory) { //  && this.paramary.klineId === data.klineId && data.firstHisFlag === 'true'
+      that.cacheData[ticker] = newdata.concat(that.cacheData[ticker])
       this.isHistory.isRequestHistory = false
     }
     // 单条数据()
-    if (newdata && newdata.length === 1 && this.paramary.resolution === data.resolution) {  // && data.klineId === this.paramary.klineId && data.hasOwnProperty('firstHisFlag') === false
+    if (newdata && newdata.length === 1 && this.paramary.resolution === data.resolution) { // && data.klineId === this.paramary.klineId && data.hasOwnProperty('firstHisFlag') === false
       //构造增量更新数据
       let barsData = {
         time: data.data.id * 1000,
@@ -362,32 +381,32 @@ export default class TVChartContainer extends React.PureComponent {
         volume: data.data.quote_vol
       }
       //如果增量更新数据的时间大于缓存时间，而且缓存有数据，数据长度大于0
-      if (barsData.time > thats.lastTime && thats.cacheData[ticker] && thats.cacheData[ticker].length) {
+      if (barsData.time > that.lastTime && that.cacheData[ticker] && that.cacheData[ticker].length) {
         //增量更新的数据直接加入缓存数组
-        thats.cacheData[ticker].push(barsData)
+        that.cacheData[ticker].push(barsData)
         //修改缓存时间
-        thats.lastTime = barsData.time
-      } else if (barsData.time == thats.lastTime && thats.cacheData[ticker] && thats.cacheData[ticker].length) {
+        that.lastTime = barsData.time
+      } else if (barsData.time == that.lastTime && that.cacheData[ticker] && that.cacheData[ticker].length) {
         //如果增量更新的时间等于缓存时间，即在当前时间颗粒内产生了新数据，更新当前数据
-        thats.cacheData[ticker][thats.cacheData[ticker].length - 1] = barsData
+        that.cacheData[ticker][that.cacheData[ticker].length - 1] = barsData
       }
       // 通知图表插件，可以开始增量更新的渲染了
-      thats.datafeeds.barsUpdater.updateData()
+      that.datafeeds.barsUpdater.updateData()
     }
   }
 
   unSubscribe = (interval) => {
     // console.log("======unSubscribe")
-    var thats = this;
+    var that = this;
     //停止订阅，删除过期缓存、缓存时间、缓存状态
-    var ticker = thats.symbol + "-" + interval;
+    var ticker = that.symbol + "-" + interval;
     var tickertime = ticker + "load";
     var tickerstate = ticker + "state";
     var tickerCallback = ticker + "Callback";
-    delete thats.cacheData[ticker];
-    delete thats.cacheData[tickertime];
-    delete thats.cacheData[tickerstate];
-    delete thats.cacheData[tickerCallback];
+    delete that.cacheData[ticker];
+    delete that.cacheData[tickertime];
+    delete that.cacheData[tickerstate];
+    delete that.cacheData[tickerCallback];
     if (interval < 60) {
       this.sendMessage({
         cmd: 'unsub',
@@ -426,18 +445,132 @@ export default class TVChartContainer extends React.PureComponent {
   }
 
   onClose = () => {
-    var thats = this;
+    var that = this;
     console.log(' >> : 连接已断开... 正在重连')
-    thats.socket.doOpen()
-    thats.socket.on('open', function () {
+    that.socket.doOpen()
+    that.socket.on('open', function () {
       console.log(' >> : 已重连')
-      thats.subscribe()
+      that.subscribe()
     });
+  }
+
+  getResolutionByCh = (resolutionCh) => {
+    let resolution
+    // if(!isNaN(Number(resolutionCh))) {
+    //   resolution = resolutionCh
+    // } else {
+    resolutionCh = resolutionCh.toUpperCase()
+    if (resolutionCh.indexOf("M") > -1) {
+      resolution = resolutionCh.slice(1)
+    } else if (resolutionCh.indexOf("H") > -1) {
+      resolution = resolutionCh.slice(1) * 60
+    } else if (resolutionCh.indexOf("D") > -1) {
+      resolution = resolutionCh.slice(1) + "D"
+    }
+    // }
+    return resolution + ""
+  }
+
+  getOverrides = (theme) => {
+    var themes = {
+      "white": {
+        //url: "day.css",
+        up: "#00b276",
+        down: "#fc3131",
+        bg: "#fff",
+        grid: "#dadde0",
+        cross: "#23283D",
+        border: "#dadde0",
+        text: "#9ea4a9",
+        areatop: "rgba(71, 78, 112, 0.1)",
+        areadown: "rgba(71, 78, 112, 0.02)",
+        line: "#737375"
+      },
+      "black": {
+        //url: "night.css",
+        up: "#589065",
+        down: "#ae4e54",
+        bg: "#181B2A",
+        grid: "#1f2943",
+        cross: "#9194A3",
+        border: "#4e5b85",
+        text: "#61688A",
+        areatop: "rgba(122, 152, 247, .1)",
+        areadown: "rgba(122, 152, 247, .02)",
+        line: "#737375"
+      },
+      "mobile": {
+        //url: "mobile.css",
+        up: "#03C087",
+        down: "#E76D42",
+        bg: "#ffffff",
+        grid: "#f7f8fa",
+        cross: "#23283D",
+        border: "#C5CFD5",
+        text: "#8C9FAD",
+        areatop: "rgba(71, 78, 112, 0.1)",
+        areadown: "rgba(71, 78, 112, 0.02)",
+        showLegend: !0
+      }
+    };
+    var t = themes[theme];
+    return {
+      "scalesProperties.lineColor": t.text,
+      "scalesProperties.textColor": t.text,
+      "paneProperties.background": t.bg,
+      "paneProperties.vertGridProperties.color": t.grid,
+      "paneProperties.horzGridProperties.color": t.grid,
+      "paneProperties.crossHairProperties.color": t.cross,
+      "paneProperties.legendProperties.showLegend": !!t.showLegend,
+      "paneProperties.legendProperties.showStudyArguments": !0,
+      "paneProperties.legendProperties.showStudyTitles": !0,
+      "paneProperties.legendProperties.showStudyValues": !0,
+      "paneProperties.legendProperties.showSeriesTitle": !0,
+      "paneProperties.legendProperties.showSeriesOHLC": !0,
+      "mainSeriesProperties.candleStyle.upColor": t.up,
+      "mainSeriesProperties.candleStyle.downColor": t.down,
+      "mainSeriesProperties.candleStyle.drawWick": !0,
+      "mainSeriesProperties.candleStyle.drawBorder": !0,
+      "mainSeriesProperties.candleStyle.borderColor": t.border,
+      "mainSeriesProperties.candleStyle.borderUpColor": t.up,
+      "mainSeriesProperties.candleStyle.borderDownColor": t.down,
+      "mainSeriesProperties.candleStyle.wickUpColor": t.up,
+      "mainSeriesProperties.candleStyle.wickDownColor": t.down,
+      "mainSeriesProperties.candleStyle.barColorsOnPrevClose": !1,
+      "mainSeriesProperties.hollowCandleStyle.upColor": t.up,
+      "mainSeriesProperties.hollowCandleStyle.downColor": t.down,
+      "mainSeriesProperties.hollowCandleStyle.drawWick": !0,
+      "mainSeriesProperties.hollowCandleStyle.drawBorder": !0,
+      "mainSeriesProperties.hollowCandleStyle.borderColor": t.border,
+      "mainSeriesProperties.hollowCandleStyle.borderUpColor": t.up,
+      "mainSeriesProperties.hollowCandleStyle.borderDownColor": t.down,
+      "mainSeriesProperties.hollowCandleStyle.wickColor": t.line,
+      "mainSeriesProperties.haStyle.upColor": t.up,
+      "mainSeriesProperties.haStyle.downColor": t.down,
+      "mainSeriesProperties.haStyle.drawWick": !0,
+      "mainSeriesProperties.haStyle.drawBorder": !0,
+      "mainSeriesProperties.haStyle.borderColor": t.border,
+      "mainSeriesProperties.haStyle.borderUpColor": t.up,
+      "mainSeriesProperties.haStyle.borderDownColor": t.down,
+      "mainSeriesProperties.haStyle.wickColor": t.border,
+      "mainSeriesProperties.haStyle.barColorsOnPrevClose": !1,
+      "mainSeriesProperties.barStyle.upColor": t.up,
+      "mainSeriesProperties.barStyle.downColor": t.down,
+      "mainSeriesProperties.barStyle.barColorsOnPrevClose": !1,
+      "mainSeriesProperties.barStyle.dontDrawOpen": !1,
+      "mainSeriesProperties.lineStyle.color": t.border,
+      "mainSeriesProperties.lineStyle.linewidth": 1,
+      "mainSeriesProperties.lineStyle.priceSource": "close",
+      "mainSeriesProperties.areaStyle.color1": t.areatop,
+      "mainSeriesProperties.areaStyle.color2": t.areadown,
+      "mainSeriesProperties.areaStyle.linecolor": t.border,
+      "mainSeriesProperties.areaStyle.linewidth": 1,
+      "mainSeriesProperties.areaStyle.priceSource": "close"
+    }
   }
 
   componentDidMount() {
     this.init()
-
   }
 
   componentWillUnmount() {
@@ -449,25 +582,23 @@ export default class TVChartContainer extends React.PureComponent {
 
   // 当props中的symbol或resolution改变时，更新图表
   componentDidUpdate(prevProps) {
-    if(prevProps.symbol !== this.props.symbol) {
-      console.log("symbol changed")
+    if (prevProps.symbol !== this.props.symbol) {
       // 取消上一个货币对的订阅
       this.unSubscribe(this.interval)
       // 更新当前symbol
       this.symbol = this.props.symbol
       // 通知图标symbol更新
       this.tvWidget.chart().setSymbol(this.symbol.toUpperCase(), function onReadyCallback() {})
-      if(prevProps.resolution !== this.props.resolution) {
+      if (prevProps.resolution !== this.props.resolution) {
         // 当切换symbol时，将时间周期切换至其上一次选中值resolution
         const tvIframeName = document.querySelector("#tv_chart_container iframe").name
-        console.log(tvIframeName)
         const tvIframe = document.getElementById(tvIframeName).contentWindow
         const el = tvIframe.document.querySelector(`.header-chart-panel-content .rsl-group .rsl-date[data-rsl='${this.props.resolution}']`)
         const evt = document.createEvent("MouseEvents")
         evt.initEvent("click", false, true)
         el.dispatchEvent(evt)
       }
-    } 
+    }
   }
 
   render() {

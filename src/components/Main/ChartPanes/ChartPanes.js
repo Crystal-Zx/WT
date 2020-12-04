@@ -1,25 +1,25 @@
 import { useState } from 'react'
 import IconFont from '../../../utils/iconfont/iconfont.js'
-import CardTabs from '../../comm/CardTabs/CardTabs.js'
+// import CardTabs from '../../comm/CardTabs/CardTabs.js'
 import { Button } from 'antd'
 import TVChartContainer from '../TVChartContainer/TVChartContainer.js'
 
 import './ChartPanes.scss'
 
-const chartSPanes = [
-  { 
-    title: 'EURUSD（D1）', 
-    content: <TVChartContainer symbol='EURUSD' />,
-    key: '1' ,
-    closable: true
-  },
-  { title: 'GBPAUD（1h）', content: "<TVChartContainer symbol='GBPAUD' />", key: '2',
-  closable: true },
-  { title: 'XAUUSD（30m）', content: "<TVChartContainer symbol='XAUUSD' />", key: '3',
-  closable: true },
-  { title: 'CADUSD（15m）', content: "<TVChartContainer symbol='CADUSD' />", key: '4',
-  closable: true }
-]
+// const chartSPanes = [
+//   { 
+//     title: 'EURUSD（D1）', 
+//     content: <TVChartContainer symbol='EURUSD' />,
+//     key: '1' ,
+//     closable: true
+//   },
+//   { title: 'GBPAUD（1h）', content: "<TVChartContainer symbol='GBPAUD' />", key: '2',
+//   closable: true },
+//   { title: 'XAUUSD（30m）', content: "<TVChartContainer symbol='XAUUSD' />", key: '3',
+//   closable: true },
+//   { title: 'CADUSD（15m）', content: "<TVChartContainer symbol='CADUSD' />", key: '4',
+//   closable: true }
+// ]
 
 
 export default function ChartPanes () {
@@ -96,12 +96,12 @@ export default function ChartPanes () {
     e.stopPropagation()
     let lastIndex
     symbolList.forEach((sb,i) => {
-      if(sb.key == targetKey) {
+      if(sb.key === targetKey) {
         lastIndex = i > 1 ? i - 1 : 0
       }
     })
-    const newSbl = symbolList.filter(sb => sb.key != targetKey)
-    if(newSbl.length && targetKey == activeKey) {
+    const newSbl = symbolList.filter(sb => sb.key !== targetKey)
+    if(newSbl.length && targetKey === activeKey) {
       setActiveKey(newSbl[lastIndex].key)
       setSymbol(newSbl[lastIndex].symbol)
     }
@@ -182,7 +182,8 @@ export default function ChartPanes () {
           {
             symbolList.map(sb => (
               <div
-                className={'symbol-li' + (activeKey == sb.key ? ' active' : '')}
+                key={sb.key}
+                className={'symbol-li' + (activeKey === sb.key ? ' active' : '')}
                 style={sbStyle}
                 onClick={() => changeSymbol(sb)}
               >

@@ -4,6 +4,7 @@ import MainPage from './pages/MainPage/MainPage';
 import SettingsPage from './pages/SettingsPage/SettingsPage';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { connect } from 'react-redux';
 
 function App() {
   return (
@@ -15,4 +16,4 @@ function App() {
 }
 
 
-export default App;
+export default connect()(App);

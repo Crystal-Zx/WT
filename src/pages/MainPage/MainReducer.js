@@ -9,5 +9,8 @@ function MainReducer (state = [], action) {
         ...state, action.payload
       ]
     }
+    default: return state
   }
 }
+
+export default MainReducer

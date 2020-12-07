@@ -47,7 +47,7 @@ function MainPage () {
   }]
   const [symbols, setSymbols] = useState(["EURUSD.GBPUSD"])
   const [quotes, setQuotes] = useState([])
-  
+
   return (
     <div className="main-x">
       <div className="top-x">

@@ -1,7 +1,8 @@
 import { Button } from 'antd'
-import SearchBox from '../../SearchBox/SearchBox.js'
-import TableBox from '../../TableBox/TableBox.js'
-import IconFont from '../../../utils/iconfont/iconfont.js'
+import SearchBox from '../../../../components/SearchBox/SearchBox.js'
+import TableBox from '../../../../components/TableBox/TableBox.js'
+import IconFont from '../../../../utils/iconfont/iconfont'
+import QuoteTr from '../QuoteTr/QuoteTr.js'
 
 export default function QuoteSPane () {
   
@@ -13,7 +14,7 @@ export default function QuoteSPane () {
           <IconFont type="iconSquare" className="iconSquare" />
         </Button>
       </div>
-      <TableBox></TableBox>
+      <TableBox expandedRowRender={<QuoteTr />}></TableBox>
     </div>
   )
 }

@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import IconFont from '../../../utils/iconfont/iconfont.js'
-// import CardTabs from '../../comm/CardTabs/CardTabs.js'
+import IconFont from '../../../../utils/iconfont/iconfont'
 import { Button } from 'antd'
 import TVChartContainer from '../TVChartContainer/TVChartContainer.js'
 
@@ -116,7 +115,6 @@ export default function ChartPanes () {
   const onChangeResolution = (resolution) => {
     try {
       symbolList.forEach((sb) => {
-        console.log(sb.symbol,symbol)
         if(sb.symbol === symbol) {
           sb.resolution = resolution
           throw new Error("break")
@@ -125,7 +123,6 @@ export default function ChartPanes () {
     } catch(e) {
       if(e.message === "break") {
         setSymbolList(symbolList.concat([]))
-        console.log("symbolList",symbolList)
       } else {
         throw e
       }

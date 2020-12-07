@@ -1,13 +1,11 @@
 import './MainPage.scss';
 import { Avatar, Image, Menu, Dropdown, Button } from 'antd';
 import { UserOutlined, StarFilled } from '@ant-design/icons';
-import CardTabs from '../../components/comm/CardTabs/CardTabs';
-import LineTabs from '../../components/comm/LineTabs/LineTabs';
-import QuotePanes from '../../components/Main/QuotePanes/QuotePanes.js'
-import TopRPanes from '../../components/Main/TopRPanes/TopRPanes.js';
+import CardTabs from '../../components/CardTabs/CardTabs.js';
+import QuotePanes from './components/QuotePanes/QuotePanes.js'
+import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import IconFont from '../../utils/iconfont/iconfont';
 
-import socket from '../../socket.js'
 import { useState, useEffect } from 'react';
 
 const middlePanes = [
@@ -39,7 +37,6 @@ const menu = (
 );
 
 function MainPage () {
-  let socket,taskRemindInterval = null
   let quote = [{
     "symbol": "EURUSD",
     "ask": 1.18221,
@@ -50,41 +47,12 @@ function MainPage () {
   }]
   const [symbols, setSymbols] = useState(["EURUSD.GBPUSD"])
   const [quotes, setQuotes] = useState([])
-  useEffect(() => {
-    console.log("开始建立socket")
-    socket = new socket({ url: "socket://47.113.231.12:5885/" })
-    socket.doOpen()
-    // socket.on('open', () => {
-      
-    // })
-    // socket.on('message', socket.onMessage)
-    // return () => {
-    //   socket.onClose()
-    // }
-  })
-  
-  const handleQuotes = (_quote) => {
-    for(var quote of quotes) {
-      if(quote.symbol === _quote.symbol) {
-        
-      }
-    }
-    // quotes.map((quote) => {
-    //   if(quote.includes(_quote.symbol)) {
-    //     return _quote
-    //   } else {
-
-    //     return quote
-    //   }
-    // })
-    console.log(quotes)
-  }
   
   return (
     <div className="main-x">
       <div className="top-x">
-        <QuotePanes socket={socket} />
-        <TopRPanes socket={socket} />
+        <QuotePanes />
+        <TopRPanes />
         {/* <div className="right-x card-container">
           <CardTabs initialPanes={topRPanes}></CardTabs>
         </div> */}

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import './TVChartContainer.css';
+import './TVChartContainer.scss';
 import {
-  widget, version, onready
-} from '../../../charting_library.min'
+  widget
+} from '../../../../charting_library.min'
 import Datafeed from './datafees'
-import socket from '../../../socket'
+import socket from '../../../../socket'
 import throttle from 'lodash/throttle'
 import {
   createEvent

@@ -1,7 +1,7 @@
 import { StarFilled } from '@ant-design/icons';
 
-import CardTabs from '../../comm/CardTabs/CardTabs.js'
-import LineTabs from '../../comm/LineTabs/LineTabs.js'
+import CardTabs from '../../../../components/CardTabs/CardTabs.js'
+import LineTabs from '../../../../components/LineTabs/LineTabs.js'
 import QuoteSPanes from '../QuoteSPanes/QuoteSPanes.js'
 
 const quoteSPanes = [
@@ -27,7 +27,6 @@ const quotePanes = [
 ]
 
 export default function QuotePanes (props) {
-  const { socket } = props
   return (
     <div className="left-x card-container">
       <CardTabs initialPanes={quotePanes}></CardTabs>

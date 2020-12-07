@@ -2,7 +2,7 @@
 import { Table } from 'antd'
 import IconFont from '../../utils/iconfont/iconfont'
 import './TableBox.scss'
-import QuoteTr from '../Main/QuoteTr/QuoteTr.js'
+// import QuoteTr from '../../pages/MainPage/components/QuoteTr/QuoteTr.js'
 
 const columns = [
   {
@@ -188,8 +188,8 @@ const data = [
   },
 ]
 
-function TableBox () {
-  
+function TableBox (props) {
+  const expandedRowRender = props.expandedRowRender
   return (
     <Table
       columns={columns} 
@@ -201,7 +201,7 @@ function TableBox () {
       expandIconColumnIndex={-1}
       expandedRowClassName={(record, index) => 'quote-expand-tr'}
       expandable={{
-        expandedRowRender: record => <QuoteTr quote={record} />
+        expandedRowRender: record => expandedRowRender
       }}
       expandRowByClick={true}
     />

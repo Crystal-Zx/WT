@@ -4,7 +4,7 @@ import './QuoteTr.scss'
 
 
 export default function QuoteTr (props) {
-  const [quote, setQuote] = useState(props.quote)
+  // const [quote, setQuote] = useState(props.quote)
   return (
     <>
       <div className="qe-row-1">

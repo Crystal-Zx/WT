@@ -1,4 +1,4 @@
-import CardTabs from '../../comm/CardTabs/CardTabs.js'
+import CardTabs from '../../../../components/CardTabs/CardTabs.js'
 import ChartPanes from '../ChartPanes/ChartPanes.js'
 
 

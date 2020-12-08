@@ -6,7 +6,7 @@ import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import IconFont from '../../utils/iconfont/iconfont';
 
-import { useState, useEffect } from 'react';
+import { _getSymbols, _login } from '../../services/index'
 
 const middlePanes = [
   { title: '持仓单', content: '持仓单', key: '1' },
@@ -45,17 +45,12 @@ function MainPage () {
     "point": 1e-05,
     "trans_price":5
   }]
-  const [symbols, setSymbols] = useState(["EURUSD.GBPUSD"])
-  const [quotes, setQuotes] = useState([])
 
   return (
     <div className="main-x">
       <div className="top-x">
         <QuotePanes />
         <TopRPanes />
-        {/* <div className="right-x card-container">
-          <CardTabs initialPanes={topRPanes}></CardTabs>
-        </div> */}
       </div>
       <div className="middle-x card-container">
         <CardTabs initialPanes={middlePanes}></CardTabs>

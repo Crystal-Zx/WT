@@ -6,9 +6,6 @@ import {
 import Datafeed from './datafees'
 import socket from '../../../../socket'
 import throttle from 'lodash/throttle'
-import {
-  createEvent
-} from '@testing-library/react';
 
 function getLanguageFromURL() {
   const regex = new RegExp('[\\?&]lang=([^&#]*)');

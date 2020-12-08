@@ -1,27 +1,30 @@
 import { combineReducers } from 'redux'
 import {
   SELECT_QUOTETYPE,
-  GET_QUOTEBYTYPE,
-  RECEIVE_QUOTEBYTYPE
+  GET_QUOTE,
+  RECEIVE_QUOTE
 } from './MainAction'
 
+// isFetching -> 是否在抓取数据
+// didInvalidate -> 数据是否过时
+// lastUpdate -> 上一次更新时间
+// 操作开始时，送出一个action，触发state更新为“正在操作”的状态，View重新渲染；结束后，再送出一个action，触发state更新为“操作结束”的状态，Viwe再一次更新
 const initialState = {
-  token: 'MTE5MjI6MTYwNzM5ODc1Mjo5ODY3YWFiYTg4N2JkOWRiOTFiODFkZDQ3NzUzNzU2NA==',
-  visibilityFilter: 'SHOW_FX',
-  symbolCategory: ['<StarFilled />', 'FX', 'IND', 'STO', 'ALL'],
-  symbolList: [
-    {
-      symbol: 'Starbucks',
-      spread: '-0.02%',
-      sell: '0.72631',
-      buy: '0.72659',
-      volume: '0.01'
+  selectedQuoteType: 'Indexes',
+  postByQuoteType: {
+    Indexes: {
+      isFetching: false,  
+      items: []
+    },
+    CFD: {
+      isFetching: false,
+      items: []
     }
-  ]
+  }
 }
 
 // 选择显示哪一类报价列表
-function selecteQuoteCategory (state, action) {
+function selecteQuoteType (state, action) {
   const { type, payload } = action
   const { qType }  = payload
   switch(type) {
@@ -32,43 +35,44 @@ function selecteQuoteCategory (state, action) {
   }
 }
 
-// 获取指定类别报价列表 （暂无）
-// function postQuote (
-//   state = {
-//     isFetching: false,
-//     items: []
-//   },
-//   action
-// ) {
-//   const { type, payload } = action
-//   switch(type) {
-//     case GET_QUOTEBYCATEGORY: 
-//       return Object.assign({}, state, {
-//         isFetching: true
-//       })
-//     case RECEIVE_QUOTEBYCATEGORY: 
-//       return Object.assign({}, state, {
-//         isFetching: false,
-//         items: payload
-//       })
-//     default: return state
-//   }
-// }
+// 获取所有报价列表（需自行整理成所需格式）
+function postQuote (
+  state = {
+    isFetching: false,
+    items: []
+  },
+  action
+) {
+  const { type, payload } = action
+  const { data } = action.payload
+  switch(type) {
+    case GET_QUOTE:
+      return Object.assign({}, state, {
+        isFetching: true
+      })
+    case RECEIVE_QUOTE: 
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: data
+      })
+    default: return state
+  }
+}
 
-// function postByQuoteCategory (state = {}, action) {
-//   const { type, payload } = action
-//   const { qType }  = payload
-//   switch(type) {
-//     case GET_QUOTEBYTYPE:
-//     case RECEIVE_QUOTEBYTYPE: 
-//       return Object.assign({}, state, {
-//         [qType]: 
-//       })
-//   }
-// }
+function postByQuoteType (state = {}, action) {
+  const { type, payload } = action
+  const { qType }  = payload
+  switch(type) {
+    case GET_QUOTE:
+    case RECEIVE_QUOTE: 
+      return Object.assign({}, state, {
+        [qType]: postQuote
+      })
+  }
+}
 
 const MainReducer = combineReducers({
-  // selecteQuoteCategory
+  // selecteQuoteType
 })
 
 export default MainReducer

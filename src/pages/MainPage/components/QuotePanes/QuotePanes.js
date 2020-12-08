@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import mock from '../../../../services/mock'
+import { axiosPosts, selectQuoteTYPE } from '../../MainAction.js';
 
 const quoteSPanes = [
   { 
@@ -33,10 +34,10 @@ const quotePanes = [
 
 function QuotePanes (props) {
   console.log("QuotePanes props: ",props)
-
+  const { onLoad } = props
   useEffect(() => {
     console.log(mock)
-    
+    onLoad()
   })
   return (
     <div className="left-x card-container">
@@ -86,9 +87,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-
+    onLoad: () => {
+      dispatch(selectQuoteTYPE())
+      dispatch(axiosPosts()).then(() => {
+        console.log(ownProps)
+      })
+    }
   }
 
 }
 
-export default connect(mapStateToProps)(QuotePanes)
+export default connect(mapStateToProps,
+  mapDispatchToProps)(QuotePanes)

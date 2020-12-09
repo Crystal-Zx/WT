@@ -7,8 +7,8 @@ import QuoteSPanes from '../QuoteSPanes/QuoteSPanes.js'
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import mock from '../../../../services/mock'
 import { axiosPosts, selectQuoteTYPE } from '../../MainAction.js';
+import { _login } from '../../../../services/index.js';
 
 const quoteSPanes = [
   { 
@@ -36,8 +36,13 @@ function QuotePanes (props) {
   console.log("QuotePanes props: ",props)
   const { onLoad } = props
   useEffect(() => {
-    console.log(mock)
     onLoad()
+    // _login({
+    //   login: 11922,
+    //   password: 'w0ywjpx'
+    // }).then(res => {
+    //   console.log(res)
+    // })
   })
   return (
     <div className="left-x card-container">
@@ -46,42 +51,16 @@ function QuotePanes (props) {
   )
 }
 
+const getQuoteList = (quoteList,type) => {
+  console.log(quoteList,type)
+  return quoteList[type]
+}
+
 const mapStateToProps = (state) => {
+  state = state.MainReducer
+  console.log(state)
   return {
-    selectedQuoteCategory: 'Indexes',
-    postByQuoteCategory: {
-      Indexes: {
-        isFetching: false,
-        items: [
-          {
-            contract_size: 1,
-            currency: "HKD",
-            digits: 1,
-            margin_currency: "HKD",
-            margin_mode: 1,
-            point: 0.1,
-            swap_long: -52.61,
-            swap_short: -46.68,
-            symbol: "HK50"
-          },
-          {
-            contract_size: 10,
-            currency: "JPY",
-            digits: 0,
-            margin_currency: "JPY",
-            margin_mode: 1,
-            point: 1,
-            swap_long: -53.4,
-            swap_short: -54.7,
-            symbol: "JP225"
-          }
-        ]
-      },
-      CFD: {
-        isFetching: false,
-        items: []
-      }
-    }
+    quoteList: getQuoteList(state.quoteList, state.quoteType)
   }
 }
 
@@ -97,5 +76,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 }
 
-export default connect(mapStateToProps,
-  mapDispatchToProps)(QuotePanes)
+export default connect(mapStateToProps, mapDispatchToProps)(QuotePanes)

@@ -1,28 +1,17 @@
-import { Tabs } from 'antd'
+import { Tabs,Spin } from 'antd'
 import { useState } from 'react';
 import './CardTabs.scss'
 
 const { TabPane } = Tabs
 
-export default function CardTabs (props) {
-  const { className,type = "card", initialPanes,tabPosition = "top", tabBarGutter = 0 } = props
+export default function CardTabs ({ initialPanes, isFetching, className, type = "card", tabPosition = "top", tabBarGutter = 0}) {
+  // console.log("=======CardTabs", props.initialPanes)
+  // const { className,type = "card", initialPanes,tabPosition = "top", tabBarGutter = 0 } = props
   const [activeKey, setActiveKey] = useState(initialPanes[0].key)
-  const [panes, setPanes] = useState(initialPanes)
+  // const [panes, setPanes] = useState(initialPanes)
 
   const onChange = activeKey => {
     setActiveKey(activeKey)
-  }
-  const remove = targetKey => {
-    let newActiveKey,nextIndex
-    panes.forEach((pane,i) => {
-      nextIndex = pane.key === targetKey ? i : 0
-    })
-    const newPanes = panes.filter((pane) => pane.key !== targetKey)
-    if(newPanes.length && targetKey === activeKey) {
-      newActiveKey = panes[nextIndex].key
-    }
-    setActiveKey(newActiveKey)
-    setPanes(newPanes)
   }
 
   
@@ -36,15 +25,18 @@ export default function CardTabs (props) {
       tabBarGutter={tabBarGutter}
       tabPosition={tabPosition}
     >
-      {panes.map(pane => (
+      {
+        initialPanes.map(pane => (
         <TabPane 
           tab={pane.title} 
           key={pane.key} 
           closable={pane.closable}
         >
-          {pane.content}
+          { isFetching && <Spin /> }
+          { !isFetching && pane.content}
         </TabPane>
-      ))}
+      ))
+      }
     </Tabs>
   )
 }

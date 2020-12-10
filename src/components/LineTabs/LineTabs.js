@@ -1,18 +1,17 @@
 import { Tabs } from 'antd'
-import { useState } from 'react';
 import './LineTabs.scss'
+import propTypes from 'prop-types'
 
 const { TabPane } = Tabs
 
-
-export default function LineTabs (props) {
-  const { initialPanes,defaultActiveKey } = props
-  const [activeKey, setActiveKey] = useState(defaultActiveKey || initialPanes[0].key)
-  const [panes, setPanes] = useState(initialPanes)
-  // func
-  const onChange = (key) => {
-    setActiveKey(key)
-  }
+const LineTabs = ({ onChange,initialPanes,activeKey }) => {
+  // const [activeKey, setActiveKey] = useState(defaultActiveKey || initialPanes[0].key)
+  // const [panes, setPanes] = useState(initialPanes)
+  // // func
+  // const onChange = (key) => {
+  //   setActiveKey(key)
+  // }
+  // console.log(initialPanes)
   return (
     <Tabs 
       type="line"
@@ -21,7 +20,7 @@ export default function LineTabs (props) {
       onChange={onChange}
     >
       { 
-        panes.map(pane => (
+        initialPanes.map(pane => (
           <TabPane 
             tab={pane.title} 
             key={pane.key}
@@ -34,3 +33,11 @@ export default function LineTabs (props) {
     </Tabs>
   )
 }
+
+LineTabs.propTypes = {
+  onChange: propTypes.func.isRequired,
+  initialPanes: propTypes.array.isRequired,
+  activeKey: propTypes.string.isRequired
+}
+
+export default LineTabs

@@ -10,7 +10,7 @@ const topRPanes = [
 ]
 
 export default function TopRPanes () {
-
+  // console.log("TopRPanes create")
   return (
     <div className="right-x card-container">
       <CardTabs initialPanes={topRPanes}></CardTabs>

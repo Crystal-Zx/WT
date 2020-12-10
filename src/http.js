@@ -8,7 +8,7 @@ axios.defaults.withCredentials = false
 axios.defaults.timeout = 5000 // 5s
 // 标识这是一个ajax请求
 axios.defaults.headers = {
-  'Accept': 'MTE5MjI6MTYwNzUwMzkzNzo1M2UwNzJiZDFiOTRlNDhkZWM4MjRkYzhjZGRkZGRjNQ==',
+  'Accept': 'MTE5MjI6MTYwNzU5ODI0MDpmZjcyMTMxYjlhZTU2MjYxZmQ3Yjc3ZGM3ZmY4YzI2OA==',
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 // 请求拦截
@@ -31,7 +31,7 @@ axios.interceptors.request.use(
 // 相应拦截
 // axios拦截器
 axios.interceptors.response.use(response => {
-  if (response.status == 200 && response.code == 1) {
+  if (response.status == 200 ) {
     return response.data.data || response.data
   } else {
     // 非200请求抱错

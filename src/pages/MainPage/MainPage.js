@@ -7,6 +7,10 @@ import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import IconFont from '../../utils/iconfont/iconfont';
 
 import { _getSymbols, _login } from '../../services/index'
+// import { useEffect } from 'react'
+// import { connect } from 'react-redux';
+// import { setFilterType, axiosPosts } from './components/QuotePanes/QuoteAction'
+import QuoteSPane from './components/QuoteSPanes/QuoteSPanes';
 
 const middlePanes = [
   { title: '持仓单', content: '持仓单', key: '1' },
@@ -36,7 +40,9 @@ const menu = (
   </Menu>
 );
 
-function MainPage () {
+function MainPage (props) {
+
+
   let quote = [{
     "symbol": "EURUSD",
     "ask": 1.18221,
@@ -105,5 +111,17 @@ function MainPage () {
     </div>
   )
 }
+
+// const mapStateToProps = state => state
+// const mapDispatchToProps = (dispatch,ownProps) => {
+//   return {
+//     getList: () => {
+//       dispatch(setFilterType())
+//       dispatch(axiosPosts()).then(() => {
+//         console.log("ownProps",ownProps)
+//       })
+//     }
+//   }
+// }
 
 export default MainPage

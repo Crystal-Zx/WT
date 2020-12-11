@@ -8,3 +8,14 @@ button[ant-click-animating-without-extra-node]:after {
   border: 0;
   background-color: unset;
 }
+
+// antd loading
+.ant-spin.ant-spin-spinning {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  .ant-spin-dot-item {
+    background-color: $themeBlue;
+  }
+}

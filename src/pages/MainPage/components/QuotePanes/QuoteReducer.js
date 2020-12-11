@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import {
-  SET_FILTER_TYPE,
-  PUSH_QUOTEBYTYPE,
-  REQUEST_POSTS,
-  RECEIVE_POSTS
+  SET_SYMBOL_TYPE,
+  GET_STYMBOLS_PENDING,
+  GET_STYMBOLS_FULFILLED,
+  GET_STYMBOLS_REJECTED
 } from './QuoteAction'
 
 // isFetching -> 是否在抓取数据
@@ -18,44 +18,54 @@ import {
 function filterType (state = "", action) {
   const { type, payload } = action
   switch(type) {
-    case SET_FILTER_TYPE: {
-      const { filterType }  = payload
-      return filterType
+    case SET_SYMBOL_TYPE: {
+      return payload
     }
     default: return state
   }
 }
 
-function list (state = {
+// function list (state = {
+//   isFetching: false
+// }, action) {
+//   const { type, payload } = action
+//   switch(type) {
+//     case REQUEST_POSTS: 
+//       return Object.assign({}, state, {
+//         isFetching: true
+//       })
+//     case RECEIVE_POSTS:
+//       return Object.assign({}, state, {
+//         ...payload,
+//         isFetching: false
+//       })
+//     default: return state
+//   }
+// }
+
+const symbolList = (state = {
   isFetching: false
-}, action) {
+}, action) => {
   const { type, payload } = action
   switch(type) {
-    case REQUEST_POSTS: 
+    case GET_STYMBOLS_PENDING:
       return Object.assign({}, state, {
         isFetching: true
       })
-    // case PUSH_QUOTEBYTYPE:
-    //   const { filterType, item } = payload
-    //   console.log(filterType)
-    //   return filterType && Object.assign({}, state, {
-    //     isFetching: true,
-    //     [filterType]: state[filterType] ? 
-    //       [...state[filterType], item] : [item]
-    //   })
-    case RECEIVE_POSTS:
-      const { list } = payload
+    case GET_STYMBOLS_FULFILLED:
       return Object.assign({}, state, {
-        ...list,
+        ...payload,
         isFetching: false
       })
-    default: return state
+    case GET_STYMBOLS_REJECTED:
+    default:
+      return state
   }
 }
 
 const QuoteReducer = combineReducers({
   filterType,
-  list
+  symbolList
 })
 
 export default QuoteReducer

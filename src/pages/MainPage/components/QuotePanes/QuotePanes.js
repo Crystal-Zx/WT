@@ -4,113 +4,108 @@ import CardTabs from '../../../../components/CardTabs/CardTabs.js'
 import LineTabs from '../../../../components/LineTabs/LineTabs.js'
 import QuoteSPanes from '../QuoteSPanes/QuoteSPanes.js'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { setFilterType, axiosPostsIfNeeded } from './QuoteAction'
+import { getSymbols, setSymbolType } from './QuoteAction'
 
 import { _login } from '../../../../services/index.js';
-import { initial } from 'lodash';
-
-// const quoteSPanes = [
-//   { 
-//     title: <StarFilled />, 
-//     content: <QuoteSPanes />,
-//     key: '1' 
-//   },
-//   { title: 'FX', content: <QuoteSPanes />, key: '2' },
-//   { title: 'IND', content: <QuoteSPanes />, key: '3' },
-//   { title: 'STO', content: <QuoteSPanes />, key: '4' },
-//   { title: '全部', content: <QuoteSPanes />, key: '5' }
-// ]
-
-// const quotePanes = [
-//   { title: '品种报价', 
-//     content: (
-//       <div className="line-container">
-//         <LineTabs initialPanes={quoteSPanes} defaultActiveKey="2"></LineTabs>
-//       </div>
-//     ), 
-//     key: '1'
-//   }
-// ]
-
+import QuoteSPane from '../QuoteSPanes/QuoteSPanes.js';
 
 const QuotePanes = (props) => {
-  console.log("QuotePanes 被调用了，props: ",props.list.isFetching)
+  // console.log("QuotePanes 被调用了，props: ",props)
 
-  const { dispatch, list } = props
-  console.log(list)
-  const getList = () => {
-    // dispatch(setFilterType())
-    dispatch(axiosPostsIfNeeded())
-    // .then(() => {
-    //   console.log("ownProps",ownProps)
-    // })
-  }
+  const { getSymbols, changeSymbolType, symbolList } = props
 
-  const onChange = () => {
-    console.log("onChange")
-  }
-
-  let quoteSPanes = []
-
-  const typeArr = Object.keys(list).filter(name => name !== 'isFetching')
-  quoteSPanes = typeArr.map((typeName, index) => {
-    return {
-      title: typeName,
-      content: <QuoteSPanes />,
-      key: index
+  const init = () => {
+    const keyLen = Object.keys(symbolList).length
+    if (keyLen <= 1 && !symbolList.isFetching) {
+      getSymbols()
+      // dispatch(getSymbols()).then((res) => {
+      //   const list = res.value
+      //   const defaultType = Object.keys(list).filter(sType => sType !== 'isFetching')[0]
+      //   dispatch(setSymbolType(defaultType))
+      // })
     }
-  })
-
+  }
+  const getQuoteSPanes = () => {
+    const typeArr = Object.keys(symbolList).filter(sType => sType !== 'isFetching')
+    
+    return typeArr.map((sType) => {
+      return {
+        title: sType,
+        content: <QuoteSPane data={symbolList[sType]} />,
+        key: sType
+      }
+    })
+  }
+  
   useEffect(() => {
-    getList()
+    init()
   })
 
-  const initialPanes = [
-    { title: '品种报价', 
-      content: (
-        <div className="line-container">
-          <LineTabs 
-            initialPanes={quoteSPanes} 
-            defaultActiveKey="2" 
-            onChange={onChange}
-          ></LineTabs>
-        </div>
-      ), 
-      key: '1'
-    }
-  ]
+
+  // symbolList.isFetching && <Spin />
+  // !symbolList.isFetching &&
+  // <div className="line-container">
+  //   <LineTabs 
+  //     initialPanes={getQuoteSPanes()} 
+  //     defaultActiveKey="2" 
+  //     onChange={changeSymbolType}
+  //   ></LineTabs>
+  // </div>
 
   return (
     <div className="left-x card-container">
       <CardTabs 
-        initialPanes={initialPanes}
-        isFetching={list.isFetching}
+        initialPanes={[
+          { 
+            title: '品种报价', 
+            content: (
+              <div className="line-container">
+                <LineTabs 
+                  initialPanes={getQuoteSPanes()} 
+                  defaultActiveKey="2" 
+                  onChange={changeSymbolType}
+                ></LineTabs>
+              </div>
+            ), 
+            key: '1'
+          }
+        ]}
+        isFetching={symbolList.isFetching}
       ></CardTabs>
     </div>
-  )
-  
+  )  
 }
 
 const mapStateToProps = (state) => {
   const { 
     filterType = '', 
-    list = {}
+    symbolList = {}
   } = state.QuoteReducer
   return {
-    filterType, 
-    list
+    filterType,
+    symbolList
   }
 }
 
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return {
-//     onChange: () => {
-//       console.log("activeKey change!")
-//     }
-//   }
+// 此方法只是用于建立和store.dispatch的联系
+// 若没有使用dispatch的方法 直接写在组件内部即可！！！
+const mapDispatchToProps = (dispatch, ownProps) => {
+  console.log("=====ownProps", ownProps)
+  return {
+    getSymbols: () => {
+      dispatch(getSymbols()).then((res) => {
+        const list = res.value
+        const defaultType = Object.keys(list).filter(sType => sType !== 'isFetching')[0]
+        dispatch(setSymbolType(defaultType))
+      })
+    },
+    changeSymbolType: (sType) => {
+      console.log("======changeSymbolType",sType)
+      dispatch(setSymbolType(sType))
+    }
+  }
+}
 
-// }
-
-export default connect(mapStateToProps)(QuotePanes)
+export default connect(mapStateToProps, mapDispatchToProps)(QuotePanes)

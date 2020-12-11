@@ -8,6 +8,7 @@
       height: calc(100% + 16px);
       margin-top: -16px;
       & > .ant-tabs-tabpane {
+        position: relative;
         background-color: $bgColor;
       }
     }

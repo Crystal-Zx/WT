@@ -5,18 +5,11 @@ import propTypes from 'prop-types'
 const { TabPane } = Tabs
 
 const LineTabs = ({ onChange,initialPanes,activeKey }) => {
-  // const [activeKey, setActiveKey] = useState(defaultActiveKey || initialPanes[0].key)
-  // const [panes, setPanes] = useState(initialPanes)
-  // // func
-  // const onChange = (key) => {
-  //   setActiveKey(key)
-  // }
-  // console.log(initialPanes)
   return (
     <Tabs 
       type="line"
       className="line-tabs"
-      defaultActiveKey={activeKey} 
+      defaultActiveKey={activeKey}
       onChange={onChange}
     >
       { 

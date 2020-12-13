@@ -6,11 +6,8 @@ import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import IconFont from '../../utils/iconfont/iconfont';
 
-import { _getSymbols, _login } from '../../services/index'
 // import { useEffect } from 'react'
 // import { connect } from 'react-redux';
-// import { setFilterType, axiosPosts } from './components/QuotePanes/QuoteAction'
-import QuoteSPane from './components/QuoteSPanes/QuoteSPanes';
 
 const middlePanes = [
   { title: '持仓单', content: '持仓单', key: '1' },

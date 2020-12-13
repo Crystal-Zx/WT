@@ -17,7 +17,7 @@ const columns = [
     )
   },
   {
-    title: '点差',
+    title: '调查',
     dataIndex: 'spread',
     key: 'spread'
   },

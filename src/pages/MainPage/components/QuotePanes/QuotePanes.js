@@ -43,17 +43,6 @@ const QuotePanes = (props) => {
     init()
   })
 
-
-  // symbolList.isFetching && <Spin />
-  // !symbolList.isFetching &&
-  // <div className="line-container">
-  //   <LineTabs 
-  //     initialPanes={getQuoteSPanes()} 
-  //     defaultActiveKey="2" 
-  //     onChange={changeSymbolType}
-  //   ></LineTabs>
-  // </div>
-
   return (
     <div className="left-x card-container">
       <CardTabs 
@@ -102,7 +91,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       })
     },
     changeSymbolType: (sType) => {
-      console.log("======changeSymbolType",sType)
+      // console.log("======changeSymbolType",sType)
       dispatch(setSymbolType(sType))
     }
   }

@@ -42,7 +42,7 @@ export default class TVChartContainer extends React.PureComponent {
     this.onClose = this.onClose.bind(this)
 
     const that = this
-    this.socket.doOpen()
+    this.socket.doOpen() 
     // this.socket.on('open', that.getklinelist.bind(this)
     //   // function () {
     //   //   //页面初始化的时候，为了快速加载，先请求150条记录

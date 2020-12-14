@@ -46,7 +46,7 @@ const data = [
 
 function TableBox ({ data,expandedRowRender}) {
   
-  console.log("=======TableBox收到的数据：", data)
+  // console.log("=======TableBox收到的数据：", data)
   return (
     <Table
       columns={columns} 

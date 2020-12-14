@@ -18,6 +18,8 @@ const filterType = (state = "", action) => {
 }
 
 const symbolList = (state = {
+  list: [],
+  types: [],
   isFetching: false
 }, action) => {
   const { type, payload } = action
@@ -28,7 +30,8 @@ const symbolList = (state = {
       })
     case GET_STYMBOLS_FULFILLED:
       return Object.assign({}, state, {
-        ...payload,
+        list: payload.list,
+        types: payload.symbolTypes,
         isFetching: false
       })
     case GET_STYMBOLS_REJECTED:
@@ -41,5 +44,19 @@ const QuoteReducer = combineReducers({
   filterType,
   symbolList
 })
+// 以上等价于：
+// const QuoteReducer = function (state, action) {
+//   return {
+//     filterType: filterType(state.filterType, action),
+//     symbolList: symbolList(state.symbolList, action)
+//   }
+// }
+// 或者可以取别名
+// const QuoteReducer = function (state, action) {
+//   return {
+//     a: filterType(state.a, action),
+//     b: symbolList(state.b, action)
+//   }
+// }
 
 export default QuoteReducer

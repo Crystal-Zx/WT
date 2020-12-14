@@ -6,8 +6,9 @@ import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import IconFont from '../../utils/iconfont/iconfont';
 
-// import { useEffect } from 'react'
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { initSocket } from './MainAction'
+import { useEffect } from 'react';
 
 const middlePanes = [
   { title: '持仓单', content: '持仓单', key: '1' },
@@ -16,6 +17,14 @@ const middlePanes = [
     title: '历史订单', content: '历史订单', key: '3',
   },
 ];
+let quote = [{
+  "symbol": "EURUSD",
+  "ask": 1.18221,
+  "bid":1.182,
+  "digits":5,
+  "point": 1e-05,
+  "trans_price":5
+}]
 
 const menu = (
   <Menu>
@@ -38,16 +47,13 @@ const menu = (
 );
 
 function MainPage (props) {
+  // console.log("=====MainPage props:", props)
 
+  const { initSocket } = props
 
-  let quote = [{
-    "symbol": "EURUSD",
-    "ask": 1.18221,
-    "bid":1.182,
-    "digits":5,
-    "point": 1e-05,
-    "trans_price":5
-  }]
+  useEffect(() => {
+    initSocket()
+  },[])
 
   return (
     <div className="main-x">
@@ -110,15 +116,12 @@ function MainPage (props) {
 }
 
 // const mapStateToProps = state => state
-// const mapDispatchToProps = (dispatch,ownProps) => {
-//   return {
-//     getList: () => {
-//       dispatch(setFilterType())
-//       dispatch(axiosPosts()).then(() => {
-//         console.log("ownProps",ownProps)
-//       })
-//     }
-//   }
-// }
+const mapDispatchToProps = (dispatch,ownProps) => {
+  return {
+    initSocket: () => {
+      dispatch(initSocket())
+    }
+  }
+}
 
-export default MainPage
+export default connect(null, mapDispatchToProps)(MainPage)

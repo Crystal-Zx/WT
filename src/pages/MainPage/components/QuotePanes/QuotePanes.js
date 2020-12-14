@@ -2,7 +2,6 @@ import { StarFilled } from '@ant-design/icons';
 
 import CardTabs from '../../../../components/CardTabs/CardTabs.js'
 import LineTabs from '../../../../components/LineTabs/LineTabs.js'
-import QuoteSPanes from '../QuoteSPanes/QuoteSPanes.js'
 
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -12,32 +11,30 @@ import { _login } from '../../../../services/index.js';
 import QuoteSPane from '../QuoteSPanes/QuoteSPanes.js';
 
 const QuotePanes = (props) => {
-  // console.log("QuotePanes 被调用了，props: ",props)
 
   const { getSymbols, changeSymbolType, symbolList } = props
+  const { list, types, isFetching} = symbolList
 
   const init = () => {
-    const keyLen = Object.keys(symbolList).length
-    if (keyLen <= 1 && !symbolList.isFetching) {
+    const keyLen = Object.keys(list).length
+    if (keyLen <= 1 && !isFetching) {
       getSymbols()
-      // dispatch(getSymbols()).then((res) => {
-      //   const list = res.value
-      //   const defaultType = Object.keys(list).filter(sType => sType !== 'isFetching')[0]
-      //   dispatch(setSymbolType(defaultType))
-      // })
     }
   }
   const getQuoteSPanes = () => {
-    const typeArr = Object.keys(symbolList).filter(sType => sType !== 'isFetching')
+    const typeArr = Object.keys(list).filter(sType => sType !== 'isFetching')
     
     return typeArr.map((sType) => {
       return {
         title: sType,
-        content: <QuoteSPane data={symbolList[sType]} />,
+        content: <QuoteSPane list={list[sType]} types={types} />,
         key: sType
       }
     })
   }
+  // const onChangeSymbolType = () => {
+
+  // }
   
   useEffect(() => {
     init()
@@ -68,7 +65,8 @@ const QuotePanes = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  const { 
+  // console.log("=======QuotePanes state:", state)
+  const {
     filterType = '', 
     symbolList = {}
   } = state.QuoteReducer
@@ -81,17 +79,17 @@ const mapStateToProps = (state) => {
 // 此方法只是用于建立和store.dispatch的联系
 // 若没有使用dispatch的方法 直接写在组件内部即可！！！
 const mapDispatchToProps = (dispatch, ownProps) => {
-  console.log("=====ownProps", ownProps)
   return {
     getSymbols: () => {
       dispatch(getSymbols()).then((res) => {
+        console.log(res)
         const list = res.value
         const defaultType = Object.keys(list).filter(sType => sType !== 'isFetching')[0]
         dispatch(setSymbolType(defaultType))
       })
     },
     changeSymbolType: (sType) => {
-      // console.log("======changeSymbolType",sType)
+      console.log("======changeSymbolType",sType)
       dispatch(setSymbolType(sType))
     }
   }

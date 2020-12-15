@@ -8,13 +8,13 @@ import { connect } from 'react-redux'
 import { getSymbols, setSymbolType } from './QuoteAction'
 
 import { _login } from '../../../../services/index.js';
-import QuoteSPane from '../QuoteSPanes/QuoteSPanes.js';
+import QuoteSPane from './QuoteSPanes.js';
+import './QuotePanes.scss';
 
 const QuotePanes = (props) => {
 
-  const { getSymbols, changeSymbolType, symbolList } = props
+  const { getSymbols, changeSymbolType, symbolList, filterType } = props
   const { list, types, isFetching} = symbolList
-
   const init = () => {
     const keyLen = Object.keys(list).length
     if (keyLen <= 1 && !isFetching) {
@@ -22,7 +22,7 @@ const QuotePanes = (props) => {
     }
   }
   const getQuoteSPanes = () => {
-    const typeArr = Object.keys(list).filter(sType => sType !== 'isFetching')
+    const typeArr = Object.keys(list)
     
     return typeArr.map((sType) => {
       return {
@@ -32,9 +32,6 @@ const QuotePanes = (props) => {
       }
     })
   }
-  // const onChangeSymbolType = () => {
-
-  // }
   
   useEffect(() => {
     init()
@@ -50,7 +47,7 @@ const QuotePanes = (props) => {
               <div className="line-container">
                 <LineTabs 
                   initialPanes={getQuoteSPanes()} 
-                  defaultActiveKey="2" 
+                  activeKey={filterType} 
                   onChange={changeSymbolType}
                 ></LineTabs>
               </div>
@@ -58,14 +55,13 @@ const QuotePanes = (props) => {
             key: '1'
           }
         ]}
-        isFetching={symbolList.isFetching}
+        isFetching={isFetching}
       ></CardTabs>
     </div>
   )  
 }
 
 const mapStateToProps = (state) => {
-  // console.log("=======QuotePanes state:", state)
   const {
     filterType = '', 
     symbolList = {}
@@ -82,9 +78,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getSymbols: () => {
       dispatch(getSymbols()).then((res) => {
-        console.log(res)
-        const list = res.value
-        const defaultType = Object.keys(list).filter(sType => sType !== 'isFetching')[0]
+        const { list } = res.value
+        const defaultType = Object.keys(list)[0]
         dispatch(setSymbolType(defaultType))
       })
     },

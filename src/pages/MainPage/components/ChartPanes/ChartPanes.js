@@ -5,21 +5,6 @@ import TVChartContainer from '../TVChartContainer/TVChartContainer.js'
 
 import './ChartPanes.scss'
 
-// const chartSPanes = [
-//   { 
-//     title: 'EURUSD（D1）', 
-//     content: <TVChartContainer symbol='EURUSD' />,
-//     key: '1' ,
-//     closable: true
-//   },
-//   { title: 'GBPAUD（1h）', content: "<TVChartContainer symbol='GBPAUD' />", key: '2',
-//   closable: true },
-//   { title: 'XAUUSD（30m）', content: "<TVChartContainer symbol='XAUUSD' />", key: '3',
-//   closable: true },
-//   { title: 'CADUSD（15m）', content: "<TVChartContainer symbol='CADUSD' />", key: '4',
-//   closable: true }
-// ]
-
 
 export default function ChartPanes () {
   const _symbolList = [
@@ -37,27 +22,6 @@ export default function ChartPanes () {
       key: '2',
       pricePrecision: 5
     }
-    // {
-    //   symbol: 'XAUUSD',
-    //   resolution: '30',
-    //   closable: true,
-    //   key: '3',
-    //   pricePrecision: 5
-    // },
-    // {
-    //   symbol: 'USDJPY',
-    //   resolution: '5',
-    //   closable: true,
-    //   key: '4',
-    //   pricePrecision: 5
-    // },
-    // {
-    //   symbol: 'JPYGBP',
-    //   resolution: '45',
-    //   closable: true,
-    //   key: '5',
-    //   pricePrecision: 5
-    // }
   ]
 
   const [symbolList, setSymbolList] = useState(_symbolList)
@@ -168,12 +132,12 @@ export default function ChartPanes () {
         tabPosition="bottom"
         tabBarGutter={2}
       /> */}
-      <TVChartContainer 
+      {/* <TVChartContainer 
         symbol={symbol} 
         resolution={getResolutionBySymbol(symbol)}
         symbolList={symbolList} 
         onChangeResolution={onChangeResolution}
-      />
+      /> */}
       <div className="symbol-x">
         <div className="symbol-ul">
           {

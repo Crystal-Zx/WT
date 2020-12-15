@@ -6,6 +6,16 @@ $spreadColor: #e7e9ea;
   padding: 0 !important;
 }
 
+.iconKLine,.iconFavorite {
+  font-size: 14px;
+  color: $fontColor;
+  cursor: pointer;
+}
+.iconKLine {
+  font-size: 20px;
+  margin-right: 20px;
+}
+
 // 展开列表样式
 .quote-expand-tr {
   .qe-row-1 {
@@ -79,5 +89,19 @@ $spreadColor: #e7e9ea;
         color: $buyColor;
       }
     }
+  }
+}
+
+.quote-up {
+  .iconDown,.ant-table-cell:nth-child(n+2) {
+    color: $buyColor;
+  }
+  .iconDown {
+    transform: rotate(180deg);
+  }
+}
+.quote-down {
+  .iconDown,.ant-table-cell:nth-child(n+2) {
+    color: $sellColor;
   }
 }

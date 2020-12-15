@@ -13,16 +13,16 @@ export const GET_STYMBOLS = 'GET_STYMBOLS',
 export const getSymbols = createAction(GET_STYMBOLS, () => 
   _getSymbols().then(response => {
     const symbolTypes = response.map(item => item.symbol)
-    console.log(symbolTypes)
     // 处理数据结构
     let list = {}, isFetching = true
+    // console.log(response)
     for(var item of response) {
+      // item.sell = '---'
+      // item.buy = '---'
       list[item.type_name] = list[item.type_name] ? 
         [...list[item.type_name],item] : [item]
     }
     // 调整货币对排序
-    console.log(list)
-    // list.sort((a,b) => a.symbol.toUpperCase().indexOf('F') !== -1)
     isFetching = false
     return {
       list, symbolTypes, isFetching

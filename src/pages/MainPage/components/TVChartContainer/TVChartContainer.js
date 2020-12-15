@@ -18,7 +18,7 @@ export default class TVChartContainer extends React.PureComponent {
   constructor(props) {
     super(props)
     this.tvWidget = null
-    this.socket = new socket("ws://47.113.231.12:5885/")
+    this.socket = new socket("ws://47.113.231.12/")
     this.datafeeds = new Datafeed(this)
     this.widgets = null
     this.symbol = props.symbol || 'EURUSD'

@@ -50,9 +50,9 @@ function MainPage (props) {
   // console.log("=====MainPage props:", props)
 
   const { initSocket } = props
-
+  
   useEffect(() => {
-    initSocket()
+    const ws = initSocket()
   },[])
 
   return (
@@ -115,7 +115,6 @@ function MainPage (props) {
   )
 }
 
-// const mapStateToProps = state => state
 const mapDispatchToProps = (dispatch,ownProps) => {
   return {
     initSocket: () => {

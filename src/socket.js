@@ -51,12 +51,23 @@ class socket {
   onMessage(message) {
     try {
       const data = JSON.parse(message)
+      const quoteType = ['quote'],
+            KLineTypes = ['req', 'update']
+
+      let Event
+      if(quoteType.includes(data.type)) {
+        Event = 'quote'
+      } else if(KLineTypes.includes(data.type)) {
+        Event = 'kLine'
+      } else {
+        return
+      }
       this.onReceiver({
-        Event: 'message',
+        Event,
         Data: data
       })
     } catch (err) {
-      // console.error(' >> Data parsing error:', err)
+      console.error(' >> Data parsing error:', err)
     }
   }
   checkHeartbeat() {

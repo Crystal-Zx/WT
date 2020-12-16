@@ -6,7 +6,7 @@ import './TableBox.scss'
 import { useState } from 'react'
 
 function TableBox (props) {
-  const { data } = props
+  const { data, addToFavorite, addToKLine } = props
   const [expandedRows, setExpandedRows] = useState()
 
   const renderContent = (val, row, index, type) => {
@@ -20,8 +20,18 @@ function TableBox (props) {
         <div style={
           {display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginRight: 25}
         }>
-          <IconFont type="iconKLine" className="iconKLine" />
-          <IconFont type="iconFavorite" className="iconFavorite" />
+          <IconFont 
+            type="iconKLine" 
+            className="iconKLine"
+            onClick={(e) => 
+              addToKLine(e,row.symbol, row.sell.split(".")[1].length)
+            }
+          />
+          <IconFont 
+            type="iconFavorite"
+            className="iconFavorite"
+            onClick={addToFavorite}
+          />
         </div>
       )
     }
@@ -61,7 +71,7 @@ function TableBox (props) {
   ]
   return (
     <Table
-      columns={columns} 
+      columns={columns}
       dataSource={data} 
       pagination={false}
       sticky={true}
@@ -83,7 +93,10 @@ function TableBox (props) {
       expandedRowClassName={(record, index) => 'quote-expand-tr'}
       expandable={{
         expandedRowRender: record => { // record 是每一行的数据源
-          return <QuoteTr data={record} />
+          const _record = Object.assign({}, record, {
+            spread: record.spread.replace("%",'')
+          })
+          return <QuoteTr data={_record} />
         }
       }}
     />

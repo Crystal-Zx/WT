@@ -12,7 +12,6 @@ import QuoteSPane from './QuoteSPanes.js';
 import './QuotePanes.scss';
 
 const QuotePanes = (props) => {
-
   const { getSymbols, changeSymbolType, symbolList, filterType } = props
   const { list, types, isFetching} = symbolList
   const init = () => {
@@ -35,7 +34,7 @@ const QuotePanes = (props) => {
   
   useEffect(() => {
     init()
-  })
+  },[])
 
   return (
     <div className="left-x card-container">
@@ -46,7 +45,7 @@ const QuotePanes = (props) => {
             content: (
               <div className="line-container">
                 <LineTabs 
-                  initialPanes={getQuoteSPanes()} 
+                  initialPanes={getQuoteSPanes()}
                   activeKey={filterType} 
                   onChange={changeSymbolType}
                 ></LineTabs>
@@ -84,7 +83,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       })
     },
     changeSymbolType: (sType) => {
-      console.log("======changeSymbolType",sType)
       dispatch(setSymbolType(sType))
     }
   }

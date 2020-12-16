@@ -1,34 +1,49 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { Button } from 'antd'
 import TVChartContainer from '../TVChartContainer/TVChartContainer.js'
 
 import './ChartPanes.scss'
 
+import { connect } from 'react-redux'
 
-export default function ChartPanes () {
-  const _symbolList = [
-    {
-      symbol: 'EURUSD',
-      resolution: '1',
-      closable: true,
-      key: '1',
-      pricePrecision: 5
-    },
-    {
-      symbol: 'GBPUSD',
-      resolution: '15',
-      closable: true,
-      key: '2',
-      pricePrecision: 5
-    }
-  ]
 
-  const [symbolList, setSymbolList] = useState(_symbolList)
-  const [activeKey, setActiveKey] = useState(symbolList[0].key)
-  const [symbol, setSymbol] = useState(symbolList[0].symbol)
+// const _symbolList = [
+//   {
+//     symbol: 'EURUSD',
+//     resolution: '1',
+//     closable: true,
+//     key: '1',
+//     pricePrecision: 5
+//   },
+//   {
+//     symbol: 'GBPUSD',
+//     resolution: '15',
+//     closable: true,
+//     key: '2',
+//     pricePrecision: 5
+//   }
+// ]
+const ChartPanes = ({ kLineList,initSocket }) => {
+
+  const initKLineList = (kLineList) => {
+    return kLineList.map(item => {
+      return {
+        symbol: item.symbol,
+        resolution: '1',
+        closable: true,
+        key: item.symbol,
+        pricePrecision: item.digits
+      }
+    })
+  }
+
+  const [symbolList, setSymbolList] = useState([])
+  const [activeKey, setActiveKey] = useState('')
+  const [symbol, setSymbol] = useState('')
+  const [socket, setSocket] = useState({})
    
-  const sbStyle = ((sbl) => {
+  const sbStyle = (sbl) => {
     const len = sbl.length
     let style = null
     if(len <= 4) {
@@ -47,7 +62,7 @@ export default function ChartPanes () {
       }
     }
     return style
-  })(symbolList)
+  }
 
   const changeSymbol = (sb) => {
     const { key,symbol } = sb
@@ -123,6 +138,17 @@ export default function ChartPanes () {
     return resolutionCh || resolution.toLowerCase()
   }
 
+  useEffect(() => {
+    const symbolList = initKLineList(kLineList)
+    setSymbolList(symbolList)
+    setActiveKey(symbolList[kLineList.length - 1].key)
+    setSymbol(symbolList[kLineList.length - 1].symbol)
+  }, [kLineList.length])
+
+  useEffect(() => {
+    setSocket(initSocket)
+  }, [Object.keys(initSocket).length])
+
   return (
     <>
       {/* <CardTabs 
@@ -132,12 +158,16 @@ export default function ChartPanes () {
         tabPosition="bottom"
         tabBarGutter={2}
       /> */}
-      {/* <TVChartContainer 
-        symbol={symbol} 
-        resolution={getResolutionBySymbol(symbol)}
-        symbolList={symbolList} 
-        onChangeResolution={onChangeResolution}
-      /> */}
+      {
+        Object.keys(socket).length > 0 && 
+        <TVChartContainer 
+          socket={socket}
+          symbol={symbol}
+          resolution={getResolutionBySymbol(symbol)}
+          symbolList={symbolList}
+          onChangeResolution={onChangeResolution}
+        />
+      }
       <div className="symbol-x">
         <div className="symbol-ul">
           {
@@ -145,7 +175,7 @@ export default function ChartPanes () {
               <div
                 key={sb.key}
                 className={'symbol-li' + (activeKey === sb.key ? ' active' : '')}
-                style={sbStyle}
+                style={sbStyle(symbolList)}
                 onClick={() => changeSymbol(sb)}
               >
                 <span>{sb.symbol}（{getResolutionForCh(sb.resolution)}）</span>
@@ -167,3 +197,12 @@ export default function ChartPanes () {
     </>
   )
 }
+
+export default connect(
+  state => {
+    return {
+      kLineList: state.MainReducer.addToKLine,
+      initSocket: state.MainReducer.initSocket
+    }
+  }
+)(ChartPanes)

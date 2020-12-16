@@ -4,8 +4,8 @@ import {
   widget
 } from '../../../../charting_library.min'
 import Datafeed from './datafees'
-import socket from '../../../../socket'
 import throttle from 'lodash/throttle'
+import { connect } from 'react-redux';
 
 function getLanguageFromURL() {
   const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -13,12 +13,12 @@ function getLanguageFromURL() {
   return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-export default class TVChartContainer extends React.PureComponent {
+class TVChartContainer extends React.PureComponent {
 
   constructor(props) {
     super(props)
     this.tvWidget = null
-    this.socket = new socket("ws://47.113.231.12/")
+    this.socket = props.socket
     this.datafeeds = new Datafeed(this)
     this.widgets = null
     this.symbol = props.symbol || 'EURUSD'
@@ -41,8 +41,8 @@ export default class TVChartContainer extends React.PureComponent {
     this.subscribe = this.subscribe.bind(this)
     this.onClose = this.onClose.bind(this)
 
-    const that = this
-    this.socket.doOpen()
+    const that = this 
+    !this.socket.checkOpen() && this.socket.doOpen()
     // this.socket.on('open', that.getklinelist.bind(this)
     //   // function () {
     //   //   //页面初始化的时候，为了快速加载，先请求150条记录
@@ -64,8 +64,9 @@ export default class TVChartContainer extends React.PureComponent {
     //   //   }
     //   // }
     // )
-    this.socket.on('message', that.onMessage.bind(this))
+    this.socket.on('kLine', that.onMessage.bind(this))
     this.socket.on('close', that.onClose.bind(this))
+    
   }
 
   init = () => {
@@ -310,10 +311,8 @@ export default class TVChartContainer extends React.PureComponent {
 
   // 渲染数据
   onMessage = (data) => { // 通过参数将数据传递进来    
+    
     let that = this
-    if (data === [] || data.type === "ping") {
-      return
-    }
     // 计算当前resolution
     let _type = data.data.ticks ? data.data.id : data.data.type
     data.resolution = that.getResolutionByCh(_type.split(".")[1])
@@ -349,6 +348,7 @@ export default class TVChartContainer extends React.PureComponent {
       }
       // 新数据即当前时间段需要的数据，直接喂给图表插件
       if (onLoadedCallback) {
+        console.log("====newdata:", newdata)
         onLoadedCallback(newdata);
         delete that.cacheData[tickerCallback];
       }
@@ -579,7 +579,8 @@ export default class TVChartContainer extends React.PureComponent {
 
   // 当props中的symbol或resolution改变时，更新图表
   componentDidUpdate(prevProps) {
-    if (prevProps.symbol !== this.props.symbol) {
+    const that = this
+    if(prevProps.symbol !== that.props.symbol) {
       // 取消上一个货币对的订阅
       this.unSubscribe(this.interval)
       // 更新当前symbol
@@ -596,6 +597,9 @@ export default class TVChartContainer extends React.PureComponent {
         el.dispatchEvent(evt)
       }
     }
+    if(Object.keys(prevProps.socket) === 0 && Object.keys(prevProps.socket) !== Object.keys(that.props.socket)) {
+      console.log("socket changed!, the value of socket this time is: ", that.props.socket)
+    }
   }
 
   render() {
@@ -609,3 +613,9 @@ export default class TVChartContainer extends React.PureComponent {
 	}
 
 }
+
+export default connect(
+  state => ({
+    socket: state.MainReducer.initSocket
+  })
+)(TVChartContainer)

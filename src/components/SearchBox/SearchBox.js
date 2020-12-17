@@ -1,13 +1,12 @@
 import { Input } from 'antd'
-import IconFont from '../../utils/iconfont/iconfont'
 import './SearchBox.scss'
 
 const { Search } = Input
 
-export default function SearchBox () {
-  const onSearch = (value) => {
-    console.log(value)
-  }
+export default function SearchBox ({ onSearch }) {
+  // const onSearch = (value) => {
+  //   console.log(value)
+  // }
   return (
     <>
       <Search 

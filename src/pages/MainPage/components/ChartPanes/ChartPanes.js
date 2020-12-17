@@ -6,32 +6,16 @@ import TVChartContainer from '../TVChartContainer/TVChartContainer.js'
 import './ChartPanes.scss'
 
 import { connect } from 'react-redux'
+import { deleteFromKLine } from '../../MainAction'
 
-
-// const _symbolList = [
-//   {
-//     symbol: 'EURUSD',
-//     resolution: '1',
-//     closable: true,
-//     key: '1',
-//     pricePrecision: 5
-//   },
-//   {
-//     symbol: 'GBPUSD',
-//     resolution: '15',
-//     closable: true,
-//     key: '2',
-//     pricePrecision: 5
-//   }
-// ]
-const ChartPanes = ({ kLineList,initSocket }) => {
-
+const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
+  
   const initKLineList = (kLineList) => {
-    return kLineList.map(item => {
+    return kLineList.map((item, index) => {
       return {
         symbol: item.symbol,
         resolution: '1',
-        closable: true,
+        closable: kLineList.length !== 1 ? true : false,
         key: item.symbol,
         pricePrecision: item.digits
       }
@@ -83,8 +67,10 @@ const ChartPanes = ({ kLineList,initSocket }) => {
       setActiveKey(newSbl[lastIndex].key)
       setSymbol(newSbl[lastIndex].symbol)
     }
+    console.log(newSbl)
     if(newSbl.length === 1) newSbl[0].closable = false
     setSymbolList(newSbl)
+    deleteFromKLine(targetKey)
   }
 
   /**
@@ -201,8 +187,15 @@ const ChartPanes = ({ kLineList,initSocket }) => {
 export default connect(
   state => {
     return {
-      kLineList: state.MainReducer.addToKLine,
+      kLineList: state.MainReducer.KLineList,
       initSocket: state.MainReducer.initSocket
+    }
+  },
+  (dispatch, ownProps) => {
+    return {
+      deleteFromKLine: (symbol) => {
+        dispatch(deleteFromKLine(symbol))
+      }
     }
   }
 )(ChartPanes)

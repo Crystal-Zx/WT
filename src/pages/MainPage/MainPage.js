@@ -4,27 +4,21 @@ import { UserOutlined, StarFilled } from '@ant-design/icons';
 import CardTabs from '../../components/CardTabs/CardTabs.js';
 import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
+import OrderPanes from './components/OrderPanes/OrderPanes.js'
 import IconFont from '../../utils/iconfont/iconfont';
 
 import { connect } from 'react-redux';
 import { initSocket } from './MainAction'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { getCurrDate } from '../../utils/utilFunc'
 
 const middlePanes = [
-  { title: '持仓单', content: '持仓单', key: '1' },
+  { title: '持仓单', content: <OrderPanes />, key: '1' },
   { title: '挂单交易', content: '挂单交易', key: '2' },
   {
     title: '历史订单', content: '历史订单', key: '3',
   },
 ];
-let quote = [{
-  "symbol": "EURUSD",
-  "ask": 1.18221,
-  "bid":1.182,
-  "digits":5,
-  "point": 1e-05,
-  "trans_price":5
-}]
 
 const menu = (
   <Menu>
@@ -46,13 +40,21 @@ const menu = (
   </Menu>
 );
 
+
 function MainPage (props) {
   // console.log("=====MainPage props:", props)
 
   const { initSocket } = props
+  const [currDate, setCurrDate] = useState(getCurrDate())
   
   useEffect(() => {
-    const ws = initSocket()
+    initSocket()
+    const t = setInterval(() => {
+      setCurrDate(getCurrDate())
+    }, 1000);
+    return () => {
+      clearInterval(t)
+    }
   },[])
 
   return (
@@ -100,7 +102,7 @@ function MainPage (props) {
         <Button type="primary" className="btn-more"><IconFont type="iconQues" className="iconQues" /></Button>
       </div>
       <div className="top-right-x">
-        <span className="tr-currtime-x">2020年09月04日 10:45:56</span>
+        <span className="tr-currtime-x">{currDate}</span>
         <IconFont type="iconLayout" className="iconLayout" />
         <IconFont type="iconDark" className="iconDark" />
         <IconFont type="iconWifi" className="iconWifi" />

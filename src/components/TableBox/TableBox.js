@@ -3,12 +3,15 @@ import { Table } from 'antd'
 import IconFont from '../../utils/iconfont/iconfont'
 import QuoteTr from '../../pages/MainPage/components/QuotePanes/QuoteTr'
 import './TableBox.scss'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 
 function TableBox (props) {
-  const { data, addToFavorite, addToKLine } = props
-  const [expandedRows, setExpandedRows] = useState()
-
+  const { data, addToFavorite, addToKLine, isExpandAll } = props
+  
+  const changeExpandedRowKeys = () => {
+    const _expandedRows = isExpandAll ? data.map(item => item.key) : []
+    return _expandedRows
+  }
   const renderContent = (val, row, index, type) => {
     const obj = {
       children: val,
@@ -37,8 +40,7 @@ function TableBox (props) {
     }
     return obj
   }
-  
-  const columns = [
+  const getColumns = () => [
     {
       title: '品种',
       dataIndex: 'symbol',
@@ -69,23 +71,27 @@ function TableBox (props) {
       render: (...args) => renderContent(...args, 'buy')
     }
   ]
+
+  useEffect(() => {
+    setExpandedRows(changeExpandedRowKeys())
+  }, [isExpandAll])
+  
+  const [expandedRows, setExpandedRows] = useState()
+
   return (
     <Table
-      columns={columns}
+      columns={getColumns()}
       dataSource={data} 
       pagination={false}
       sticky={true}
       rowClassName={(record, index) => {
         let className = ''
-        // console.log(record)
-        if(record.isUp) {
-          className += 'quote-up '
-        } else {
-          className += 'quote-down '
-        }
+        className += record.isUp ? 'quote-up ' : 'quote-down '
+        className += record.isShow ? '' : 'hide '
         className += index % 2 ? '' : 'dark-row'
         return className
       }}
+      expandedRowKeys={expandedRows}  // 展开的行
       expandRowByClick={true}
       onExpandedRowsChange={(expandedRows) => setExpandedRows(expandedRows)}
       expandIconAsCell={false}

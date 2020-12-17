@@ -19,27 +19,19 @@ const QuoteSPane = (props) => {
         spread: '---',
         sell: '---',
         buy: '---',
-        desc: '展开内容'
+        isShow: 1
       }
     })
   }
   
   const [trData, setTrData] = useState(initTrData())
+  const [isExpandAll, setIsExpandAll] = useState(false)  
   
   useEffect(() => {
-    initTrData()
-    // sendMessage()
-    // socket.onMessage = data => {
-    //   const types = ['quote']
-    //   data = JSON.parse(data)
-    //   // console.log("QSP onMsg:", types.includes(data.type),data.type)
-    //   if(types.includes(data.type))
-    //     return onMessage(data)
-    // }
     socket.on("quote", onMessage)
   },[])
+  
   useEffect(() => {
-    console.log("types changed:", types, types.length)
     sendMessage()
   }, [types.length])
 
@@ -55,7 +47,6 @@ const QuoteSPane = (props) => {
     if(data.type !== "quote") {
       return
     }
-    // console.log("QSP func onMsg:", data)
     data = data.data
     for(var item of trData) {
       if(item.symbol === data.symbol) {
@@ -72,23 +63,36 @@ const QuoteSPane = (props) => {
     e.stopPropagation()
     console.log("addToFavorite",e)
   }
-  // const addToKLine = (e,symbol) => {
-  //   e.stopPropagation()
-  //   console.log("addToKLine",symbol)
-  // }
+  const onSearch = (value) => {
+    const _trData = trData.map(
+      item => item.isShow = item.key.toUpperCase().indexOf(value.toUpperCase()) === -1 ? 0 : 1
+      // item => item.key.toUpperCase().indexOf(value.toUpperCase()) !== -1
+    )
+    setTrData(_trData)
+  }
+  const onChangeExpand = () => {
+    setIsExpandAll(!isExpandAll)
+  }
 
   return (
     <div className="quote-x">
       <div className="search-container">
-        <SearchBox />
-        <Button type="primary" className="btn-more">
+        <SearchBox 
+          onSearch={onSearch}
+        />
+        <Button 
+          type="primary" 
+          className="btn-more"
+          onClick={onChangeExpand}
+        >
           <IconFont type="iconSquare" className="iconSquare" />
         </Button>
       </div>
       <TableBox
-        data={trData}
+        data={trData.filter(item => item.isShow)}
         addToFavorite={addToFavorite}
         addToKLine={addToKLine}
+        isExpandAll={isExpandAll}
       ></TableBox>
     </div>
   )

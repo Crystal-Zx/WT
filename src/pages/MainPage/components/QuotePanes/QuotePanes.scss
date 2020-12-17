@@ -108,6 +108,9 @@ $spreadColor: #e7e9ea;
     color: $sellColor;
   }
 }
+.hide {
+  display: none !important;
+}
 
 @media screen and (max-width: 1500px) {
   .qe-spread {

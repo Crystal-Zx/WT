@@ -1,0 +1,9 @@
+.orderX {
+  :global {
+    // 此容器下的antd覆盖样式
+    .ant-table-thead > tr > .ant-table-cell {
+      height: 40px;
+    }
+    
+  }
+}

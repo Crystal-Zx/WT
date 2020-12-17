@@ -16,3 +16,16 @@ export const toDecimal = (num, digits = 2) => {
   }
   return num
 }
+
+
+export const getCurrDate = () => {
+  const _date = new Date(),
+        year = _date.getFullYear(),
+        month = ('0' + (_date.getMonth() + 1)).slice(-2),
+        date = ('0' + _date.getDate()).slice(-2),
+        hour = ('00' + _date.getHours()).slice(-2),
+        minute = ('00' + _date.getMinutes()).slice(-2),
+        second = ('00' + _date.getSeconds()).slice(-2)
+
+  return `${year}年${month}月${date}日 ${hour}:${minute}:${second}`
+}

@@ -21,7 +21,7 @@ class datafeeds extends React.Component {
    * `onReady` should return result asynchronously.
    */
   onReady(callback) {
-    console.log('=============onReady running')
+    // console.log('=============onReady running')
     return new Promise((resolve) => {
       let configuration = this.defaultConfiguration()
       if (this.self.getConfig) {

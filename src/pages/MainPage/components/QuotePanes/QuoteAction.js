@@ -17,8 +17,6 @@ export const getSymbols = createAction(GET_STYMBOLS, () =>
     let list = {}, isFetching = true
     // console.log(response)
     for(var item of response) {
-      // item.sell = '---'
-      // item.buy = '---'
       list[item.type_name] = list[item.type_name] ? 
         [...list[item.type_name],item] : [item]
     }

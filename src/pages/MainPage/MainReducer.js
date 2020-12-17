@@ -1,21 +1,21 @@
 import { combineReducers } from 'redux'
 import {
   INIT_SOCKET,
-  ADD_TO_KLINE
+  ADD_TO_KLINE,
+  DELETE_FROM_KLINE
 } from './MainAction'
 
 const initSocket = (state = {}, action) => {
   const { type, payload } = action
   switch(type) {
     case INIT_SOCKET: {
-      console.log(state, payload)
       return payload
     }
     default: return state
   }
 }
 
-const addToKLine = (state = [
+const KLineList = (state = [
   { symbol: 'EURUSD', digits: 5},
   { symbol: 'GBPUSD', digits: 5}
 ], action) => {
@@ -27,11 +27,14 @@ const addToKLine = (state = [
         payload
       ]
     }
+    case DELETE_FROM_KLINE: {
+      return state.filter(item => item.symbol !== payload)
+    }
     default: return state
   }
 }
 
 export default combineReducers({
   initSocket,
-  addToKLine
+  KLineList
 })

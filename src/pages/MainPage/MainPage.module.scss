@@ -1,0 +1,232 @@
+$gap: 6px;
+$middleH: 24.54vh;
+$bottomH: 4.3vh;
+
+.main-x {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  padding: 6px 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-between;
+  flex-wrap: nowrap;
+  background-color: $mainBgColor;
+  overflow: hidden;
+  :global {
+    // iconfont
+    .main-icon-layout {
+      font-size: 15px;
+    }
+    .main-icon-dark,.main-icon-menu, .main-icon-wifi {
+      font-size: 18px;
+    }
+    .main-icon-wifi {
+      color: $buyColor;
+    }
+    .main-icon-dd {
+      margin-top: 2px;
+      font-size: 12px;
+      color: #a7aaac;
+    }
+    .main-icon-ques {
+      font-size: 18px;
+      color: $themeBlack;
+    }
+    // common & antd此页面公用组件
+    // tabs组件
+    .ant-tabs {
+      .ant-tabs-nav {
+        margin-bottom: 0;
+      }
+      // line 类型
+      &.ant-tabs-line {  // 自定义类名 并不是antd自带的
+        // height: 100%;
+        .ant-tabs-nav {
+          width: 100%;
+          .ant-tabs-nav-list {
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            .ant-tabs-tab {
+              flex: 1;
+              height: 30px;
+              margin: 0;
+              padding: 0 10px;
+              justify-content: center;
+              .ant-tabs-tab-btn {
+                font-weight: bold;
+                color: $lightGray;
+              }
+              &-active .ant-tabs-tab-btn {
+                color: $themeBlack;
+              }
+            }
+            .ant-tabs-ink-bar {
+              height: 1px;
+              background: $themeBlack;
+            }
+          }
+        }
+        .ant-tabs-nav::before {
+          border-color: $lightGray;
+        }
+        .ant-tabs-content-holder {
+          width: 100%;
+        }
+      }
+      // card类型
+      &.ant-tabs-card {
+        height: 100%;
+        & > .ant-tabs-nav {
+          .ant-tabs-tab {
+            width: 100px;
+            height: 30px;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            border-color: $themeBlue;
+            background: $themeBlue;
+            border-radius: 0 !important;
+            &-active {
+              color: $themeBlue;
+              border-color: $bgColor;
+              background: $bgColor;
+              border-radius: 0 !important;
+              .ant-tabs-tab-btn {
+                color: inherit !important;
+                font-weight: bold;
+              }
+            }
+            .ant-tabs-tab-btn:focus,.ant-tabs-tab-btn:active {
+              color: $themeBlue;
+            }
+          }
+        }
+        & > .ant-tabs-content-holder > .ant-tabs-content {
+          height: 100%;
+          & > .ant-tabs-tabpane {
+            position: relative;
+            background-color: $bgColor;
+          }
+        }
+      }
+      
+      
+
+    }
+    // 模块
+    .main-top-x {
+      height: calc(100% - #{$middleH} - #{$bottomH} - 6px * 2);//68.73vh;
+      display: flex;
+      justify-content: space-between;
+      
+      .right-x {
+        flex: 1;
+        overflow: hidden;
+        .ant-tabs-tabpane:first-child {
+          display: flex;
+          flex-direction: column;
+          background-color: unset !important;
+        }
+      }
+    }
+    .main-middle-x {
+      width: 100%;
+      height: $middleH;
+      margin-top: $gap;
+    }
+    .main-bottom-x {
+      height: $bottomH;
+      margin-top: $gap;
+      display: flex;
+      justify-content: space-between;
+      background-color: $bgColor;
+      .user-x {
+        width: 142px;
+        height: 100%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        color: #e2e6e9;
+        background-color: $themeBlue;
+        .account-type,.account {
+          font-weight: bold;
+        }
+        *+* {
+          margin-left: 7px;
+        }
+      }
+      .account-info-x {
+        flex: 1;
+        margin: 0 16px 0 30px;
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        .ai-li {
+          display: inline-flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          font-size: 12px;
+          line-height: 1.4em;
+          & + .ai-li {
+            margin-left: 70px;
+          }
+          & > :nth-child(2) {
+            font-size: 13px;
+            font-weight: bold;
+            color: $buyColor;
+          }
+          &.profit {
+            flex: 1;
+            justify-content: flex-end;
+            flex-direction: row;
+          }
+        }
+      }
+      .btn-more {
+        width: 38px;
+        height: 100%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: $bgColor;
+        border: 0;
+        border-left: 1px solid $mainBgColor;
+      }
+    }
+    .main-topright-x {
+      position: absolute;
+      top: 6px;
+      right: 15px;
+      height: 24px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      color: $themeBlack;
+      .tr-currtime-x {
+        margin-right: 30px;
+        font-size: 12px;
+        font-weight: bold;
+        color: $fontColor;
+      }
+      *:nth-child(n+3) { 
+        margin-left: 16px;
+      }
+      .tr-btn-changeAcc {
+        width: 123px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+}

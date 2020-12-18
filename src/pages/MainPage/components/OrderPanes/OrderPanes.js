@@ -1,7 +1,39 @@
-import { Table } from 'antd'
+import { Table, Menu, Dropdown, Button } from 'antd'
 import styles from './OrderPanes.module.scss'
+import IconFont from '../../../../utils/iconfont/iconfont'
+
+const data = [
+  {
+    key: 'USOIL',
+    symbol: 'USOIL',
+    ticket: '1232292',
+    volume: '0.01',
+    cmd: 'sell',
+    openPrice: '41.57/48.23',  // 即时价需实时更新
+    openTime: '2020-11-18 20:50:56',
+    sl: '0.00',
+    tp: '0.00',
+    storage: '$ 0.00',
+    profit: '$ 0.15',
+    closeOrder: '×'
+  }
+]
+
 
 const OrderPanes = () => {
+  const positionMenu = (
+    <Menu>
+      <Menu.Item>
+        <>对所有头寸进行平仓</>
+      </Menu.Item>
+      <Menu.Item>
+        <>对盈利头寸进行平仓（净利）</>
+      </Menu.Item>
+      <Menu.Item>
+        <>对亏损头寸进行平仓（净利）</>
+      </Menu.Item>
+    </Menu>
+  )
   const getColumns = () => [
     {
       title: '品种',
@@ -54,16 +86,28 @@ const OrderPanes = () => {
       key: 'profit'
     },
     {
-      title: '平仓',
+      title: (
+        <Dropdown overlay={positionMenu} placement="bottomRight">
+          <Button>
+            <span>平仓</span>
+            <IconFont type="iconDD" className="iconDD" />
+          </Button>
+        </Dropdown>
+      ),
       dataIndex: 'closeOrder',
-      key: 'closeOrder'
+      key: 'closeOrder',
+      render: () => {
+
+      }
     },
   ]
 
   return (
     <Table
       className={styles.orderX}
+      dataSource={data}
       columns={getColumns()}
+      pagination={false}
     />
   )
 }

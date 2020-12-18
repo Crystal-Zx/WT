@@ -1,0 +1,113 @@
+$spreadColor: #e7e9ea;
+$gap: 6px;
+
+.quote-panes-x {
+  width: 25%;
+  margin-right: $gap;
+  :global {
+    // iconfont
+    .icon-kline,.icon-favorite {
+      font-size: 14px;
+      color: $fontColor;
+      cursor: pointer;
+    }
+    .icon-kline {
+      font-size: 20px;
+      margin-right: 20px;
+    }
+    // antd tabs
+    .ant-tabs-tabpane {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      // antd table
+      .ant-table-wrapper {
+        flex: 1;
+        .ant-table-body::-webkit-scrollbar {
+          width: 0 !important;
+        }
+        .ant-table-tbody > tr > td {
+          border: 0;
+          font-weight: bold;
+        }
+        .ant-table-thead > tr > th:first-child, 
+        .ant-table-tbody > tr > td:first-child {
+          width: 40.68%;
+          padding-left: 33px;
+          text-align: left;
+        }
+        .ant-table-tbody > tr > td:first-child {
+          padding-left: 13px;
+        }
+        .ant-table-thead > tr > th:nth-child(2), 
+        .ant-table-tbody > tr > td:nth-child(2) {
+          width: 19.50%;
+        }
+      }
+    }
+    
+    .qsp-search-x {
+      position: relative;
+      height: 24px;
+      margin: 13px 37px 13px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .ant-input-search {
+        .ant-input-affix-wrapper,.ant-btn-icon-only {
+          height: 24px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .ant-input-affix-wrapper {
+          &:focus, &-focused {
+            border-color: $themeBlue;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+          }
+          &:hover {
+            border-color: $themeBlue;
+          }
+          .ant-input {
+            font-size: 12px;
+            color: $lightGray;
+            &::placeholder {
+              font-size: 12px;
+              color: $lightGray;
+            }
+          }
+        }
+        .ant-btn {
+          &:hover, &:focus {
+            color: $themeBlue;
+            border-color: currentColor;
+          }
+        }
+        .ant-btn-icon-only {
+          svg {
+            vertical-align: -1px;
+          }
+        }
+      }
+      .qsp-btn-fold {
+        position: absolute;
+        right: -18px;
+        top: 50%;
+        transform: translate(50%, -50%);
+        padding: 0;
+        display: inline-block;
+        background: none;
+        border: 0;
+        box-shadow: none;
+        .icon-fold {
+          font-size: 15px;
+          color: $themeBlue;
+        }
+      }
+
+    }
+
+    
+  }
+}

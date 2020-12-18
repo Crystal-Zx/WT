@@ -2,7 +2,7 @@
 import { Table } from 'antd'
 import IconFont from '../../utils/iconfont/iconfont'
 import QuoteTr from '../../pages/MainPage/components/QuotePanes/QuoteTr'
-import './TableBox.scss'
+import styles from './TableBox.module.scss'
 import { useState,useEffect } from 'react'
 
 function TableBox (props) {
@@ -24,15 +24,15 @@ function TableBox (props) {
           {display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginRight: 25}
         }>
           <IconFont 
-            type="iconKLine" 
-            className="iconKLine"
+            type="iconKLine"
+            className="icon-kline"
             onClick={(e) => 
               addToKLine(e,row.symbol, row.sell.split(".")[1].length)
             }
           />
           <IconFont 
             type="iconFavorite"
-            className="iconFavorite"
+            className="icon-favorite"
             onClick={addToFavorite}
           />
         </div>
@@ -80,8 +80,10 @@ function TableBox (props) {
 
   return (
     <Table
+      className={styles.tableBox}
       columns={getColumns()}
       dataSource={data} 
+      scroll={{ y: 'calc(536 - 26)' }}
       pagination={false}
       sticky={true}
       rowClassName={(record, index) => {

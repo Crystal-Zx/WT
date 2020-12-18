@@ -9,7 +9,7 @@ import { getSymbols, setSymbolType } from './QuoteAction'
 
 import { _login } from '../../../../services/index.js';
 import QuoteSPane from './QuoteSPanes.js';
-import './QuotePanes.scss';
+import styles from './QuotePanes.module.scss';
 
 const QuotePanes = (props) => {
   const { getSymbols, changeSymbolType, symbolList, filterType } = props
@@ -35,21 +35,19 @@ const QuotePanes = (props) => {
   useEffect(() => {
     init()
   },[])
-
+  
   return (
-    <div className="left-x card-container">
+    <div className={styles['quote-panes-x']}> 
       <CardTabs 
         initialPanes={[
-          { 
+          {
             title: '品种报价', 
             content: (
-              <div className="line-container">
-                <LineTabs 
-                  initialPanes={getQuoteSPanes()}
-                  activeKey={filterType} 
-                  onChange={changeSymbolType}
-                ></LineTabs>
-              </div>
+              <LineTabs
+                initialPanes={getQuoteSPanes()}
+                activeKey={filterType} 
+                onChange={changeSymbolType}
+              ></LineTabs>
             ), 
             key: '1'
           }

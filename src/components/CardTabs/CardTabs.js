@@ -1,14 +1,10 @@
 import { Tabs,Spin } from 'antd'
-import { useState } from 'react';
-import './CardTabs.scss'
+import { useState } from 'react'
 
 const { TabPane } = Tabs
 
 export default function CardTabs ({ initialPanes, isFetching, className, type = "card", tabPosition = "top", tabBarGutter = 0}) {
-  // console.log("=======CardTabs", props.initialPanes)
-  // const { className,type = "card", initialPanes,tabPosition = "top", tabBarGutter = 0 } = props
   const [activeKey, setActiveKey] = useState(initialPanes[0].key)
-  // const [panes, setPanes] = useState(initialPanes)
 
   const onChange = activeKey => {
     setActiveKey(activeKey)

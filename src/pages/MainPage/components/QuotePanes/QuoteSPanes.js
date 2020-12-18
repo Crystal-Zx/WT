@@ -75,17 +75,17 @@ const QuoteSPane = (props) => {
   }
 
   return (
-    <div className="quote-x">
-      <div className="search-container">
+    <>
+      <div className="qsp-search-x">
         <SearchBox 
           onSearch={onSearch}
         />
         <Button 
           type="primary" 
-          className="btn-more"
+          className="qsp-btn-fold"
           onClick={onChangeExpand}
         >
-          <IconFont type="iconSquare" className="iconSquare" />
+          <IconFont type="iconFold" className="icon-fold" />
         </Button>
       </div>
       <TableBox
@@ -94,7 +94,7 @@ const QuoteSPane = (props) => {
         addToKLine={addToKLine}
         isExpandAll={isExpandAll}
       ></TableBox>
-    </div>
+    </>
   )
 }
 

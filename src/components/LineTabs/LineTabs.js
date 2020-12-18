@@ -1,5 +1,4 @@
 import { Tabs } from 'antd'
-import './LineTabs.scss'
 import propTypes from 'prop-types'
 
 const { TabPane } = Tabs
@@ -8,16 +7,15 @@ const LineTabs = ({ onChange, initialPanes, activeKey }) => {
   return (
     <Tabs 
       type="line"
-      className="line-tabs"
+      className="ant-tabs-line"
       defaultActiveKey={activeKey}
       onChange={onChange}
     >
       { 
         initialPanes.map(pane => (
           <TabPane 
-            tab={pane.title} 
+            tab={pane.title}
             key={pane.key}
-            className="line-tabpane"
           >
             {activeKey === pane.key && pane.content}
           </TabPane>

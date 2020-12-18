@@ -1,4 +1,3 @@
-import './MainPage.scss';
 import { Avatar, Image, Menu, Dropdown, Button } from 'antd';
 import { UserOutlined, StarFilled } from '@ant-design/icons';
 import CardTabs from '../../components/CardTabs/CardTabs.js';
@@ -6,6 +5,7 @@ import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import OrderPanes from './components/OrderPanes/OrderPanes.js'
 import IconFont from '../../utils/iconfont/iconfont';
+import styles from './MainPage.module.scss';
 
 import { connect } from 'react-redux';
 import { initSocket } from './MainAction'
@@ -58,15 +58,15 @@ function MainPage (props) {
   },[])
 
   return (
-    <div className="main-x">
-      <div className="top-x">
+    <div className={styles['main-x']}>
+      <div className="main-top-x">
         <QuotePanes />
         <TopRPanes />
       </div>
-      <div className="middle-x card-container">
+      <div className="main-middle-x card-container">
         <CardTabs initialPanes={middlePanes}></CardTabs>
       </div>
-      <div className="bottom-x">
+      <div className="main-bottom-x">
         <div className="user-x">
           <span className="account-type">DEMO</span>
           <Avatar icon={<UserOutlined />} size={24} />
@@ -99,19 +99,21 @@ function MainPage (props) {
             <span>&nbsp;USD</span>
           </div>
         </div>
-        <Button type="primary" className="btn-more"><IconFont type="iconQues" className="iconQues" /></Button>
+        <Button type="primary" className="btn-more">
+          <IconFont type="iconQues" className="main-icon-ques" />
+        </Button>
       </div>
-      <div className="top-right-x">
+      <div className="main-topright-x">
         <span className="tr-currtime-x">{currDate}</span>
-        <IconFont type="iconLayout" className="iconLayout" />
-        <IconFont type="iconDark" className="iconDark" />
-        <IconFont type="iconWifi" className="iconWifi" />
+        <IconFont type="iconLayout" className="main-icon-layout" />
+        <IconFont type="iconDark" className="main-icon-dark" />
+        <IconFont type="iconWifi" className="main-icon-wifi" />
         <Dropdown overlay={menu} placement="bottomRight">
           <Button className="tr-btn-changeAcc">DEMO 11593
-            <IconFont type="iconDD" className="iconDD" />
+            <IconFont type="iconDD" className="main-icon-dd" />
           </Button>
         </Dropdown>
-        <IconFont type="iconMenu" className="iconMenu" />
+        <IconFont type="iconMenu" className="main-icon-menu" />
       </div>
     </div>
   )

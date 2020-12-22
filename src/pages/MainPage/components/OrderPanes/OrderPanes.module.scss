@@ -1,19 +1,41 @@
-.orderX {
+.order-x {
   :global {
     // 此容器下的antd table覆盖样式
+    .ant-table-wrapper,
+    .ant-spin-nested-loading,
+    .ant-spin-container,
+    .ant-table,
+    .ant-table-container {
+      height: 100%;
+      .ant-table-body {
+        overflow-y: auto !important;
+        &::-webkit-scrollbar {
+          width: 0 !important;
+        }
+      }
+    }
     .ant-table {
       font-size: 12px;
       color: $fontColor;
       // header&body common
-  
+      .ant-table-cell {
+        padding: 0;
+        text-align: center;
+        &:not(:last-child) {
+          padding-left: 30px;
+          text-align: left;
+        }
+      }
       // header
       .ant-table-thead {
         & > tr > .ant-table-cell {
           height: 40px;
+          box-sizing: border-box;
           font-weight: bold;
         }
         .ant-dropdown-trigger {
           width: 70px;
+          max-width: 86.59%;
           height: 24px;
           display: inline-flex;
           justify-content: center;
@@ -22,18 +44,41 @@
           font-weight: bold;
           color: #fff;
           background-color: $themeBlue;
-          span {
-            height: unset;  /* css modules遗留问题 待后期更正 */
-          }
           .iconDD {
             color: inherit;
           }
         }
       }
       .ant-table-tbody {
-        .ant-table-row .ant-table-cell{
-          height: 30px;
-          padding: 0;
+        .ant-table-row {
+          font-weight: bold;
+          .ant-table-cell {
+            height: 30px;
+            .op-icon-edit {
+              margin-left: 1em;
+              cursor: pointer;
+              font-size: 13px;
+              color: $themeBlue;
+            }
+            .op-icon-close {
+              font-size: 13px;
+              cursor: pointer;
+            }
+            .op-rkey-badge {
+              margin-right: 12px;
+            }
+            .op-rkey-ticket {
+              width: 10em;
+              display: inline-block;
+            }
+            .op-badge-ticket .ant-badge-count {
+              background: #000;
+              color: #fff;
+            }
+          }
+          &.ant-table-row-level-1 {  /* 树形结构---子行 */
+            font-weight: normal;
+          }
         }
       }
 

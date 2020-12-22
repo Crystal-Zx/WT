@@ -3,12 +3,14 @@ import { useState } from 'react'
 
 const { TabPane } = Tabs
 
-export default function CardTabs ({ initialPanes, isFetching, className, type = "card", tabPosition = "top", tabBarGutter = 0}) {
-  const [activeKey, setActiveKey] = useState(initialPanes[0].key)
+export default function CardTabs ({ initialPanes,onChange, isFetching, activeKey = initialPanes[0].key, className, type = "card", tabPosition = "top", tabBarGutter = 0}) {
+  // const [activeKey, setActiveKey] = useState(initialPanes[0].key)
 
-  const onChange = activeKey => {
-    setActiveKey(activeKey)
-  }
+  // const onChange = activeKey => {
+  //   setActiveKey(activeKey)
+  // }
+
+  // console.log("=====CardTabs",initialPanes, initialPanes[0].key)
 
   
   return (
@@ -23,15 +25,19 @@ export default function CardTabs ({ initialPanes, isFetching, className, type = 
     >
       {
         initialPanes.map(pane => (
-        <TabPane 
-          tab={pane.title} 
-          key={pane.key} 
-          closable={pane.closable}
-        >
-          { isFetching && <Spin /> }
-          { !isFetching && pane.content}
-        </TabPane>
-      ))
+          <TabPane 
+            tab={pane.title} 
+            key={pane.key} 
+            closable={pane.closable}
+          >
+            { isFetching && <Spin /> }
+            {
+              ( !isFetching && activeKey === pane.key )
+              &&
+              pane.content
+            }
+          </TabPane>
+        ))
       }
     </Tabs>
   )

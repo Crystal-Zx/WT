@@ -7,24 +7,45 @@ $gap: 6px;
   :global {
     // iconfont
     .icon-kline,.icon-favorite {
+      margin-right: 25px;
       font-size: 14px;
       color: $fontColor;
       cursor: pointer;
     }
     .icon-kline {
-      font-size: 20px;
       margin-right: 20px;
+      font-size: 20px;
     }
     // antd tabs
+    .ant-tabs-content {
+      height: 100%;
+    }
     .ant-tabs-tabpane {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       // antd table
       .ant-table-wrapper {
+        max-height: calc(100% - 50px);
         flex: 1;
-        .ant-table-body::-webkit-scrollbar {
+        overflow-y: auto;
+        &::-webkit-scrollbar {
           width: 0 !important;
+        }
+        .ant-table-header {
+          background-color: #fff;
+        }
+        .ant-table-cell:nth-child(1) {
+          width: 41.1%;
+        }
+        .ant-table-cell:nth-child(2) {
+          width: 19.7%;
+        }
+        .ant-table-cell:nth-child(3) {
+          width: 19.6%;
+        }
+        .ant-table-cell:nth-child(4) {
+          width: 19.6%;
         }
         .ant-table-tbody > tr > td {
           border: 0;
@@ -32,20 +53,28 @@ $gap: 6px;
         }
         .ant-table-thead > tr > th:first-child, 
         .ant-table-tbody > tr > td:first-child {
-          width: 40.68%;
+          // width: 40.68%;
           padding-left: 33px;
           text-align: left;
         }
         .ant-table-tbody > tr > td:first-child {
           padding-left: 13px;
         }
-        .ant-table-thead > tr > th:nth-child(2), 
-        .ant-table-tbody > tr > td:nth-child(2) {
-          width: 19.50%;
-        }
+        // .ant-table-thead > tr > th:nth-child(2), 
+        // .ant-table-tbody > tr > td:nth-child(2) {
+        //   width: 19.50%;
+        // }
       }
     }
-    
+    .ant-spin.ant-spin-spinning {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      .ant-spin-dot-item {
+        background-color: $themeBlue;
+      }
+    }
     .qsp-search-x {
       position: relative;
       height: 24px;

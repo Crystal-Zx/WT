@@ -21,7 +21,7 @@ function TableBox (props) {
       obj.props.colSpan = type === 'buy' ? 3 : 0
       obj.children = (
         <div style={
-          {display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginRight: 25}
+          {display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}
         }>
           <IconFont 
             type="iconKLine"
@@ -83,7 +83,7 @@ function TableBox (props) {
       className={styles.tableBox}
       columns={getColumns()}
       dataSource={data} 
-      scroll={{ y: 'calc(536 - 26)' }}
+      // scroll={true}
       pagination={false}
       sticky={true}
       rowClassName={(record, index) => {

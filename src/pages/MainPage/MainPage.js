@@ -1,6 +1,6 @@
 import { Avatar, Image, Menu, Dropdown, Button } from 'antd';
 import { UserOutlined, StarFilled } from '@ant-design/icons';
-import CardTabs from '../../components/CardTabs/CardTabs.js';
+// import CardTabs from '../../components/CardTabs/CardTabs.js';
 import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import OrderPanes from './components/OrderPanes/OrderPanes.js'
@@ -12,13 +12,13 @@ import { initSocket } from './MainAction'
 import { useEffect, useState } from 'react';
 import { getCurrDate } from '../../utils/utilFunc'
 
-const middlePanes = [
-  { title: '持仓单', content: <OrderPanes />, key: '1' },
-  { title: '挂单交易', content: '挂单交易', key: '2' },
-  {
-    title: '历史订单', content: '历史订单', key: '3',
-  },
-];
+// const middlePanes = [
+//   { title: '持仓单', content: <OrderPanes type="1" />, key: '1' },
+//   { title: '挂单交易', content: <OrderPanes type="2" />, key: '2' },
+//   {
+//     title: '历史订单', content: <OrderPanes type="3" />, key: '3',
+//   },
+// ];
 
 const menu = (
   <Menu>
@@ -64,7 +64,8 @@ function MainPage (props) {
         <TopRPanes />
       </div>
       <div className="main-middle-x card-container">
-        <CardTabs initialPanes={middlePanes}></CardTabs>
+        {/* <CardTabs initialPanes={middlePanes}></CardTabs> */}
+        <OrderPanes />
       </div>
       <div className="main-bottom-x">
         <div className="user-x">

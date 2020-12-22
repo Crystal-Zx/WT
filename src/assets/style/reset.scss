@@ -10,12 +10,6 @@ button[ant-click-animating-without-extra-node]:after {
 }
 
 // antd loading
-.ant-spin.ant-spin-spinning {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  .ant-spin-dot-item {
-    background-color: $themeBlue;
-  }
+.ant-spin.ant-spin-spinning .ant-spin-dot-item {
+  background-color: $themeBlue;
 }

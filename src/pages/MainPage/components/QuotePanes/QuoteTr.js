@@ -17,9 +17,9 @@ export default function QuoteTr ({ data }) {
         </Button>
       </div>
       <div className="qe-row-2">
-        <span className="qe-val qe-high">0.64875</span>
-        <span>+0.33%</span>
-        <span className="qe-val qe-low">0.624586</span>
+        <span className="qe-val qe-high">{data.high}</span>
+        <span>{data.per}</span>
+        <span className="qe-val qe-low">{data.low}</span>
       </div>
     </>
   )

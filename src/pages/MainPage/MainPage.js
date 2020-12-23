@@ -7,8 +7,6 @@ import OrderPanes from './components/OrderPanes/OrderPanes.js'
 import IconFont from '../../utils/iconfont/iconfont';
 import styles from './MainPage.module.scss';
 
-import { connect } from 'react-redux';
-import { initSocket } from './MainAction'
 import { useEffect, useState } from 'react';
 import { getCurrDate } from '../../utils/utilFunc'
 
@@ -33,13 +31,10 @@ const menu = (
 );
 
 
-function MainPage (props) {
-
-  const { initSocket } = props
+function MainPage () {
   const [currDate, setCurrDate] = useState(getCurrDate())
   
   useEffect(() => {
-    initSocket()
     const t = setInterval(() => {
       setCurrDate(getCurrDate())
     }, 1000);
@@ -55,7 +50,6 @@ function MainPage (props) {
         <TopRPanes />
       </div>
       <div className="main-middle-x card-container">
-        {/* <CardTabs initialPanes={middlePanes}></CardTabs> */}
         <OrderPanes />
       </div>
       <div className="main-bottom-x">
@@ -111,12 +105,5 @@ function MainPage (props) {
   )
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    initSocket: () => {
-      dispatch(initSocket())
-    }
-  }
-}
 
-export default connect(null, mapDispatchToProps)(MainPage)
+export default MainPage

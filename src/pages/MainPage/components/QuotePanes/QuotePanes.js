@@ -3,6 +3,7 @@ import LineTabs from '../../../../components/LineTabs/LineTabs.js'
 
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { initSocket } from '../../MainAction'
 import { getSymbols, setSymbolType } from './QuoteAction'
 
 import { _login } from '../../../../services/index.js';
@@ -11,10 +12,11 @@ import styles from './QuotePanes.module.scss';
 
 const QuotePanes = (props) => {
   // console.log("===QP props:", props)
-  const { getSymbols, changeSymbolType, symbolList, filterType } = props
+  const { getSymbols, changeSymbolType, initSocket, symbolList, filterType, socket } = props
   const { list, types, isFetching} = symbolList
-
+  
   const init = () => {
+    initSocket()
     const keyLen = Object.keys(list).length
     if (keyLen <= 1 && !isFetching) {
       getSymbols()
@@ -35,6 +37,17 @@ const QuotePanes = (props) => {
   useEffect(() => {
     init()
   },[])
+
+  useEffect(() => {
+    if(Object.keys(socket).length && socket.checkOpen()) {
+      const args = types.join(".")
+      // 获取报价信息
+      socket.send({
+        "cmd": "quote",
+        "args": [`${args}`]
+      })
+    }
+  }, [Object.keys(socket).length ,types.length])
   
   return (
     <div className={styles['quote-panes-x']}> 
@@ -59,15 +72,15 @@ const QuotePanes = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log("===QP mapState:", state)
   const {
     filterType = '', 
     symbolList = {}
   } = state.QuoteReducer
+  
   return {
     filterType,
     symbolList,
-    // socket: state.MainReducer.initSocket
+    socket: state.MainReducer.initSocket
   }
 }
 
@@ -80,10 +93,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         const { list } = res.value
         const defaultType = Object.keys(list)[0]
         dispatch(setSymbolType(defaultType))
+      }).then(() => {
+        console.log("===ownProps",ownProps)
       })
     },
     changeSymbolType: (sType) => {
       dispatch(setSymbolType(sType))
+    },
+    initSocket: () => {
+      dispatch(initSocket())
     }
   }
 }

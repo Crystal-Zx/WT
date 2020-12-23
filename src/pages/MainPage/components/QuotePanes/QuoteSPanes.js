@@ -40,12 +40,12 @@ const QuoteSPane = (props) => {
   }, [types.length])
 
   const sendMessage = () => {
-    const args = types.join(".")
-    // 获取报价信息
-    socket.send({
-      "cmd": "quote",
-      "args": [`${args}`]
-    })
+    const args = currType.join(".")
+    // // 获取报价信息
+    // socket.send({
+    //   "cmd": "quote",
+    //   "args": [`${args}`]
+    // })
     socket.send({
       "cmd": "mini",
       "args": [`${args}`]
@@ -65,7 +65,7 @@ const QuoteSPane = (props) => {
       }
       setTrData(trData.concat([]))
     }
-    if(data.type === 'mini') {
+    else if(data.type === 'mini') {
       data = data.data
       // 计算每个货币对的高点、低点及（高点 - 低点）/低点
       for(let item of data) {
@@ -76,7 +76,6 @@ const QuoteSPane = (props) => {
         }
       }
       // 将数据填到trData中以便更新视图
-      let _trData
       for(var item of data) {
         if(currType.includes(item.symbol)) {
           for(var trd of trData) {
@@ -89,6 +88,7 @@ const QuoteSPane = (props) => {
           }
         }
       }
+      setTrData(trData.concat([]))
       // console.log(data,_trData)
     }
   }  

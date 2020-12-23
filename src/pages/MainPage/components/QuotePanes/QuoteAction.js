@@ -17,10 +17,14 @@ export const getSymbols = createAction(GET_STYMBOLS, () =>
     let list = {}, isFetching = true
     // console.log(response)
     for(var item of response) {
+      item.key = item.symbol
+      item.spread = '---'
+      item.sell = '---'
+      item.buy = '---'
+      item.isShow = 1
       list[item.type_name] = list[item.type_name] ? 
         [...list[item.type_name],item] : [item]
     }
-    // 调整货币对排序
     isFetching = false
     return {
       list, symbolTypes, isFetching

@@ -1,5 +1,4 @@
 import { Button } from 'antd'
-// import styles from './QuotePanes.module.scss'
 
 
 export default function QuoteTr ({ data }) {
@@ -17,11 +16,11 @@ export default function QuoteTr ({ data }) {
           <span className="qe-type">Buy</span>
         </Button>
       </div>
-      {/* <div className="qe-row-2">
+      <div className="qe-row-2">
         <span className="qe-val qe-high">0.64875</span>
         <span>+0.33%</span>
         <span className="qe-val qe-low">0.624586</span>
-      </div> */}
+      </div>
     </>
   )
 }

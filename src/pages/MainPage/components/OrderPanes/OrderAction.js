@@ -1,18 +1,25 @@
-import { _getPositions } from '../../../../services/index'
+import { _getPositions, _getHistories } from '../../../../services/index'
 import { createAction } from 'redux-actions'
 import { toDecimal } from '../../../../utils/utilFunc'
 
 export const GET_POSITIONS = 'GET_POSITIONS',
              GET_POSITIONS_PENDING = 'GET_POSITIONS_PENDING',
              GET_POSITIONS_FULFILLED = 'GET_POSITIONS_FULFILLED',
-             GET_POSITIONS_REJECTED = 'GET_POSITIONS_REJECTED'
+             GET_POSITIONS_REJECTED = 'GET_POSITIONS_REJECTED',
+             GET_HISTORIES = 'GET_HISTORIES',
+             GET_HISTORIES_PENDING = 'GET_HISTORIES_PENDING',
+             GET_HISTORIES_FULFILLED = 'GET_HISTORIES_FULFILLED',
+             GET_HISTORIES_REJECTED = 'GET_HISTORIES_REJECTED'
+
+
+const cmdArr = ['Buy', 'Sell', 'Buy Limit', 'Sell Limit', 'Buy Stop', 'Sell Stop', 'Balance']
 
 const handleList = (response) => {
   let data = [], dataObj = {}
-  const cmdArr = ['Buy', 'Sell', 'Buy Limit', 'Sell Limit', 'Buy Stop', 'Sell Stop']
   for(var p of response) {
     p.key = p.ticket
     p.cmd = cmdArr[p.cmd]
+    p.profit = Number(toDecimal(p.profit, 2))
     if(!dataObj[p.symbol]) {
       dataObj[p.symbol] = new Array(p)
     } else {
@@ -40,23 +47,29 @@ const handleList = (response) => {
   return data
 }
 
-export const getPositions = createAction(GET_POSITIONS, (activeKey) => {
-  switch(activeKey) {
-    case "0": {
-      return _getPositions().then(response => {
-        let position = [], order = []
-        for(var p of response) {
-          if(Number(p.cmd) < 2) {  // 持仓单
-            position.push(p)
-          } else {  // 挂单
-            order.push(p)
-          }
-        }
-        return {
-          position: handleList(position),
-          order: handleList(order)
-        }
-      })
+export const getPositions = createAction(GET_POSITIONS, () => {
+  return _getPositions().then(response => {
+    let position = [], order = []
+    for(var p of response) {
+      if(Number(p.cmd) < 2) {  // 持仓单
+        position.push(p)
+      } else {  // 挂单
+        order.push(p)
+      }
     }
-  }
+    return {
+      position: handleList(position),
+      order: handleList(order)
+    }
+  })
+})
+
+export const getHistories = createAction(GET_HISTORIES, (from, to) => {
+  return _getHistories(from, to).then(response => {
+    console.log(response)
+    for(var p of response) {
+      p.cmd = cmdArr[p.cmd]
+    }
+    return response
+  })
 })

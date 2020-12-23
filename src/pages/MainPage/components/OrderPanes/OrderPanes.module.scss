@@ -20,14 +20,16 @@
       // header&body common
       .ant-table-cell {
         padding: 0;
-        text-align: center;
-        &:not(:last-child) {
-          padding-left: 30px;
-          text-align: left;
-        }
+        padding-left: 30px;
+      }
+      .op-cell-closeOrder {
+        padding-left: unset;
       }
       // header
       .ant-table-thead {
+        // .ant-table-cell:nth-last-of-type(2) {
+        //   padding-left: unset;
+        // }
         & > tr > .ant-table-cell {
           height: 40px;
           box-sizing: border-box;
@@ -74,6 +76,10 @@
             .op-badge-ticket .ant-badge-count {
               background: #000;
               color: #fff;
+            }
+            .op-openprice {
+              min-width: 48%;
+              display: inline-block;
             }
           }
           &.ant-table-row-level-1 {  /* 树形结构---子行 */

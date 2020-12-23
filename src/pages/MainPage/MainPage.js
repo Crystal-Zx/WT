@@ -12,14 +12,6 @@ import { initSocket } from './MainAction'
 import { useEffect, useState } from 'react';
 import { getCurrDate } from '../../utils/utilFunc'
 
-// const middlePanes = [
-//   { title: '持仓单', content: <OrderPanes type="1" />, key: '1' },
-//   { title: '挂单交易', content: <OrderPanes type="2" />, key: '2' },
-//   {
-//     title: '历史订单', content: <OrderPanes type="3" />, key: '3',
-//   },
-// ];
-
 const menu = (
   <Menu>
     <Menu.Item>
@@ -42,7 +34,6 @@ const menu = (
 
 
 function MainPage (props) {
-  // console.log("=====MainPage props:", props)
 
   const { initSocket } = props
   const [currDate, setCurrDate] = useState(getCurrDate())
@@ -120,7 +111,7 @@ function MainPage (props) {
   )
 }
 
-const mapDispatchToProps = (dispatch,ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     initSocket: () => {
       dispatch(initSocket())

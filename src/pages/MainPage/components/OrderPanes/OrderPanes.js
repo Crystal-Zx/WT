@@ -7,10 +7,9 @@ import styles from './OrderPanes.module.scss'
 
 import { useState, useEffect } from 'react'
 import { connect } from 'react-redux';
-import { getPositions } from './OrderAction' // , getOrders, getHistories
+import { getPositions, getHistories } from './OrderAction' // , getOrders, getHistories
 
 const OrderPanes = ({ listArr, dispatch}) => {
-  console.log("===OP PROPS:", listArr)
   const lastColMenu = (
     <Menu>
       <Menu.Item>
@@ -30,15 +29,21 @@ const OrderPanes = ({ listArr, dispatch}) => {
   const onChange = activeKey => {
     setActiveKey(activeKey)
     setList(listArr[activeKey])
-    console.log(!listArr[activeKey].list.length, !listArr[activeKey].isFetching)
+    // console.log(activeKey, typeof activeKey)
     if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
-      dispatch(getPositions(activeKey))
+      activeKey < 2 && dispatch(getPositions())
+      activeKey >= 2 && dispatch(getHistories({
+        from: 0, to: new Date().getTime()
+      }))
     }
   }
 
   const init = () => {
     if(!list.list.length && !list.isFetching) {
-      dispatch(getPositions(activeKey))
+      activeKey < 2 && dispatch(getPositions())
+      activeKey >= 2 && dispatch(getHistories({
+        from: 0, to: new Date().getTime()
+      }))
     }
   }
 
@@ -68,7 +73,6 @@ export default connect(
       position,
       history = {}
     } = state.OrderReducer
-    console.log(position)
     return {
       listArr: [
         position.position, position.order, history

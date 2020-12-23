@@ -1,5 +1,3 @@
-import { StarFilled } from '@ant-design/icons';
-
 import CardTabs from '../../../../components/CardTabs/CardTabs.js'
 import LineTabs from '../../../../components/LineTabs/LineTabs.js'
 
@@ -12,8 +10,10 @@ import QuoteSPane from './QuoteSPanes.js';
 import styles from './QuotePanes.module.scss';
 
 const QuotePanes = (props) => {
+  // console.log("===QP props:", props)
   const { getSymbols, changeSymbolType, symbolList, filterType } = props
   const { list, types, isFetching} = symbolList
+
   const init = () => {
     const keyLen = Object.keys(list).length
     if (keyLen <= 1 && !isFetching) {
@@ -38,7 +38,7 @@ const QuotePanes = (props) => {
   
   return (
     <div className={styles['quote-panes-x']}> 
-      <CardTabs 
+      <CardTabs
         initialPanes={[
           {
             title: '品种报价', 
@@ -59,13 +59,15 @@ const QuotePanes = (props) => {
 }
 
 const mapStateToProps = (state) => {
+  console.log("===QP mapState:", state)
   const {
     filterType = '', 
     symbolList = {}
   } = state.QuoteReducer
   return {
     filterType,
-    symbolList
+    symbolList,
+    // socket: state.MainReducer.initSocket
   }
 }
 

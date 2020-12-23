@@ -51,7 +51,7 @@ class socket {
   onMessage(message) {
     try {
       const data = JSON.parse(message)
-      const quoteType = ['quote'],
+      const quoteType = ['quote', 'mini'],
             KLineTypes = ['req', 'update']
 
       let Event

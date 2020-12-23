@@ -9,7 +9,6 @@ export const initSocket = createAction(
   INIT_SOCKET, () => {
     var ws = new socket("ws://47.113.231.12:5885/")
     ws.doOpen()
-    // console.log(ws)
     return ws
   }
 )

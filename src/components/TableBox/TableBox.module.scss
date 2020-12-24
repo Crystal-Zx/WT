@@ -1,12 +1,10 @@
 $cutOffLine: #e7e9ea;
 $tableRow: #f7f7f7;
 
-.tableBox {
+.table-x {
   :global {
-    
     // 控制表格滚动区域高度
     .ant-table-wrapper {
-      // height: calc(100% - 37px);
       * {
         height: 100%;
         .ant-table-header,.ant-table-header * {
@@ -124,17 +122,23 @@ $tableRow: #f7f7f7;
         font-size: 12px;
         background-color: #fff;
         .qe-val {
+          min-width: 30%;
+          max-width: 40%;
           height: 100%;
-          padding: 0 6px;
+          // padding: 0 6px;
           display: inline-flex;
           justify-content: center;
           align-items: center;
           border: 1px solid currentColor;
           border-top: 0;
           &.qe-high {
+            padding-left: 2%;
+            justify-content: flex-start;
             color: $sellColor;
           }
           &.qe-low {
+            padding-right: 2%;
+            justify-content: flex-end;
             color: $buyColor;
           }
         }
@@ -147,10 +151,16 @@ $tableRow: #f7f7f7;
       .iconDown {
         transform: rotate(180deg);
       }
+      .qe-btn-sell,.qe-btn-buy {
+        background-color: $buyColor !important;
+      }
     }
     .quote-down {
       .iconDown,.ant-table-cell:nth-child(n+2) {
         color: $sellColor;
+      }
+      .qe-btn-sell,.qe-btn-buy {
+        background-color: $sellColor !important;
       }
     }
     .hide {

@@ -1,6 +1,8 @@
 import CardTabs from '../../../../components/CardTabs/CardTabs.js'
 import ChartPanes from '../ChartPanes/ChartPanes.js'
 
+import { useState } from 'react'
+
 
 const topRPanes = [
   { title: '图表', content: <ChartPanes />, key: '1' },
@@ -10,10 +12,18 @@ const topRPanes = [
 ]
 
 export default function TopRPanes () {
-  // console.log("TopRPanes create")
+  const [activeKey, setActiveKey] = useState(topRPanes[0].key)
+
+  const onChange = activeKey => {
+    setActiveKey(activeKey)
+  }
   return (
     <div className="right-x card-container">
-      <CardTabs initialPanes={topRPanes}></CardTabs>
+      <CardTabs 
+        activeKey={activeKey}
+        initialPanes={topRPanes}
+        onChange={onChange}
+      ></CardTabs>
     </div>
   )
 }

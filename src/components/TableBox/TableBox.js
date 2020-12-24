@@ -45,6 +45,7 @@ function TableBox (props) {
       title: '品种',
       dataIndex: 'symbol',
       key: 'symbol',
+      width: '40.68%',
       render: symbol => (
         <>
           <IconFont type="iconDown" className="iconDown" />
@@ -56,18 +57,24 @@ function TableBox (props) {
       title: '调查',
       dataIndex: 'spread',
       key: 'spread',
+      width: '19.5%',
+      align: 'center',
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (...args) => renderContent(...args, 'spread')
     },
     {
       title: '卖',
       dataIndex: 'sell',
       key: 'sell',
+      align: 'center',
       render: (...args) => renderContent(...args, 'sell')
     },
     {
       title: '买',
       dataIndex: 'buy',
       key: 'buy',
+      align: 'center',
       render: (...args) => renderContent(...args, 'buy')
     }
   ]
@@ -80,10 +87,9 @@ function TableBox (props) {
 
   return (
     <Table
-      className={styles.tableBox}
+      className={styles['table-x']}
       columns={getColumns()}
-      dataSource={data} 
-      // scroll={true}
+      dataSource={data}
       pagination={false}
       sticky={true}
       rowClassName={(record, index) => {
@@ -98,13 +104,13 @@ function TableBox (props) {
       onExpandedRowsChange={(expandedRows) => setExpandedRows(expandedRows)}
       expandIconAsCell={false}
       expandIconColumnIndex={-1}
-      expandedRowClassName={(record, index) => 'quote-expand-tr'}
+      expandedRowClassName={(record, index) => 'quote-expand-tr ' + (record.isUp ? 'quote-up' : 'quote-down')}
       expandable={{
         expandedRowRender: record => { // record 是每一行的数据源
-          const _record = Object.assign({}, record, {
-            spread: record.spread.replace("%",'')
-          })
-          return <QuoteTr data={_record} />
+          // const _record = Object.assign({}, record, {
+          //   spread: record.spread.replace("%",'')
+          // })
+          return <QuoteTr data={record} />
         }
       }}
     />

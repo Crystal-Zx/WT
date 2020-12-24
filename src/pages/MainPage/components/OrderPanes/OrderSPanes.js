@@ -1,85 +1,13 @@
 import { Table, Menu, Dropdown, Button, Badge } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
+import { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import { toDecimal } from '../../../../utils/utilFunc'
 
-// const data = [
-//   {
-//     key: 'USOIL',
-//     symbol: 'USOIL',
-//     ticket: ['1232292','1232293'],
-//     volume: '0.01',
-//     cmd: 'sell',
-//     openPrice: '41.57',
-//     currPrice: '48.23',  // 即时价需实时更新
-//     openTime: '2020-11-18 20:50:56',
-//     sl: '0.00',
-//     tp: '0.00',
-//     storage: '$ 0.00',
-//     profit: '$ 0.15',
-//     children: [
-//       {
-//         key: '1232292',
-//         ticket: '1232292',
-//         volume: '0.01',
-//         cmd: 'sell',
-//         openPrice: '41.57',
-//         currPrice: '48.23',  // 即时价需实时更新
-//         openTime: '2020-11-18 20:50:56',
-//         sl: '0.00',
-//         tp: '0.00',
-//         storage: '$ 0.00',
-//         profit: '$ 0.15'
-//       },
-//       {
-//         key: '1232293',
-//         ticket: '1232293',
-//         volume: '0.01',
-//         cmd: 'sell',
-//         openPrice: '41.57',
-//         currPrice: '48.23',  // 即时价需实时更新
-//         openTime: '2020-11-18 20:50:56',
-//         sl: '0.00',
-//         tp: '0.00',
-//         storage: '$ 0.00',
-//         profit: '$ 10.34'
-//       }
-//     ]
-//   },
-//   {
-//     key: 'EURUSD',
-//     symbol: 'EURUSD',
-//     ticket: ['1232294'],
-//     volume: '0.05',
-//     cmd: 'buy',
-//     openPrice: '41.57',
-//     currPrice: '48.23',  // 即时价需实时更新
-//     openTime: '2020-11-18 20:50:56',
-//     sl: '0.00',
-//     tp: '0.00',
-//     storage: '$ 0.00',
-//     profit: '$ 20.95'
-//     // children: [
-//     //   {
-//     //     key: '1232292',
-//     //     ticket: '1232292',
-//     //     volume: '0.01',
-//     //     cmd: 'sell',
-//     //     openPrice: '41.57',
-//     //     currPrice: '48.23',  // 即时价需实时更新
-//     //     openTime: '2020-11-18 20:50:56',
-//     //     sl: '0.00',
-//     //     tp: '0.00',
-//     //     storage: '$ 0.00',
-//     //     profit: '$ 0.15'
-//     //   }
-//     // ]
-//   },
-// ]
 
-
-const OrderSPanes = ({ data, lastColMenu, dispatch, type }) => {
-
-  // console.log("====OrderSPanes", data)
+const OrderSPanes = ({ data, lastColMenu, type, socket }) => {
+  const { list, isFetching } = data
+  const [trData, setTrData] = useState(list)
 
   const isFoldRow = (key) => { // 非折叠行->0；折叠行->1
     return !isNaN(Number(key))
@@ -134,15 +62,15 @@ const OrderSPanes = ({ data, lastColMenu, dispatch, type }) => {
     },
     {
       title: `${type == 0 ? "开仓" : "挂单"}价/即时价`,
-      dataIndex: 'openPrice',
+      dataIndex: 'open_price',
       key: 'openPrice',
       width: '13.12%',
       align: 'left',
-      render: (openPrice, item) => {
+      render: (open_price, item) => {
         return (
           <>
-            <span className="op-openprice">{openPrice || item.open_price}</span>
-            <span>{item.currPrice}</span>
+            <span className="op-openprice">{open_price}</span>
+            <span>{item.close_price}</span>
           </>
         ) 
       }
@@ -200,7 +128,13 @@ const OrderSPanes = ({ data, lastColMenu, dispatch, type }) => {
       dataIndex: 'profit',
       key: 'profit',
       width: '7.95%',
-      align: 'left'
+      align: 'left',
+      render: profit => {
+        const className = profit > 0 ? 'color-up' : 'color-down'
+        return <span className={className}>
+          {profit > 0 ? '$ ' + profit : '-$ ' + Math.abs(profit)}
+        </span>
+      }
     },
     {
       title: (
@@ -285,11 +219,69 @@ const OrderSPanes = ({ data, lastColMenu, dispatch, type }) => {
       align: 'center'
     }
   ]
+
+  useEffect(() => {
+    if(list && list.length > 0) {
+      setTrData(list)
+    }
+  }, [list])
+  useEffect(() => {
+    if(Object.keys(socket).length && trData && trData.length) {  // && socket.checkOpen()
+      socket.on("order",onMessage)
+    }
+  }, [Object.keys(socket).length, trData])
+
+  const isBuy = (type,filter = ["buy","buylimit","buystop"]) => {
+    for(var _type of filter) {
+      if(type.toLowerCase() === _type.toLowerCase()) return true
+    }
+    return false
+  }
+
+  const onMessage = (data) => {
+    if(data.type === 'quote' && !Number(type)) {  // 理论上说应该没必要再判断一次，不过保险起见
+      data = data.data
+      // console.log(data)
+      for(let trd of trData) {
+        if(trd.symbol !== data.symbol) continue
+        if(trd.children.length) {
+          // 遍历处理同一货币对下的不同订单的即时价&盈利值
+          for(let cd of trd.children) {
+            if(cd.symbol === data.symbol) {
+              let flag
+              if(isBuy(cd.cmd)) {  // 多单 buy
+                cd.close_price = data.bid
+                flag = 1
+              } else {  // 空单 sell
+                cd.close_price = data.ask
+                flag = -1
+              }
+              // 10000 -> data.contract_size；0.00965372 -> data.trans_price
+              cd.profit = ((cd.close_price - cd.open_price) * cd.volume * 100000 * 0.00965372 * flag).toFixed(2)
+            }
+          }
+          // 更新该货币对下的盈利值
+          trd.profit = (trd.children.reduce((prev, currItem) => prev + Number(currItem.profit),0)).toFixed(2)
+        } else {
+          let flag
+          if(isBuy(trd.cmd)) {  // 多单 buy
+            trd.close_price = data.bid
+            flag = 1
+          } else {  // 空单 sell
+            trd.close_price = data.ask
+            flag = -1
+          }
+          trd.profit = ((trd.close_price - trd.open_price) * trd.volume * 100000 * 0.00965372 * flag).toFixed(2)
+        }
+      }
+      setTrData(trData.concat([]))
+    }
+  }
   
   return (
     <Table
-      dataSource={data.list}
-      loading={data.isFetching}
+      dataSource={trData}
+      loading={isFetching}
       columns={type < 2 ? getColumns() : getHistoryCol()}
       pagination={false}
       expandRowByClick={true}
@@ -300,4 +292,11 @@ const OrderSPanes = ({ data, lastColMenu, dispatch, type }) => {
   )
 }
 
-export default OrderSPanes
+export default connect(
+  state => {
+    const socket = state.MainReducer.initSocket
+    return {
+      socket
+    }
+  }
+)(OrderSPanes)

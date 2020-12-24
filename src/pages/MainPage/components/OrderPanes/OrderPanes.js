@@ -29,7 +29,6 @@ const OrderPanes = ({ listArr, dispatch}) => {
   const onChange = activeKey => {
     setActiveKey(activeKey)
     setList(listArr[activeKey])
-    // console.log(activeKey, typeof activeKey)
     if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
       activeKey < 2 && dispatch(getPositions())
       activeKey >= 2 && dispatch(getHistories({
@@ -59,7 +58,7 @@ const OrderPanes = ({ listArr, dispatch}) => {
         { title: '挂单交易', content: <OrderSPanes data={listArr[1]} type="1" />, key: '1' },
         { title: '历史订单', content: <OrderSPanes data={listArr[2]} type="2" />, key: '2' }
       ]}
-      isFetching={list.isFetching}
+      // isFetching={list.isFetching}
       activeKey={activeKey}
       onChange={onChange}
       lastColMenu={lastColMenu}
@@ -73,6 +72,7 @@ export default connect(
       position,
       history = {}
     } = state.OrderReducer
+    
     return {
       listArr: [
         position.position, position.order, history

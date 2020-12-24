@@ -22,6 +22,9 @@ export const getSymbols = createAction(GET_STYMBOLS, () =>
       item.sell = '---'
       item.buy = '---'
       item.isShow = 1
+      item.high = '---'
+      item.low = '---'
+      item.per = '---'
       list[item.type_name] = list[item.type_name] ? 
         [...list[item.type_name],item] : [item]
     }

@@ -35,35 +35,18 @@ $gap: 6px;
         .ant-table-header {
           background-color: #fff;
         }
-        .ant-table-cell:nth-child(1) {
-          width: 41.1%;
-        }
-        .ant-table-cell:nth-child(2) {
-          width: 19.7%;
-        }
-        .ant-table-cell:nth-child(3) {
-          width: 19.6%;
-        }
-        .ant-table-cell:nth-child(4) {
-          width: 19.6%;
-        }
         .ant-table-tbody > tr > td {
           border: 0;
           font-weight: bold;
         }
         .ant-table-thead > tr > th:first-child, 
         .ant-table-tbody > tr > td:first-child {
-          // width: 40.68%;
           padding-left: 33px;
           text-align: left;
         }
         .ant-table-tbody > tr > td:first-child {
           padding-left: 13px;
         }
-        // .ant-table-thead > tr > th:nth-child(2), 
-        // .ant-table-tbody > tr > td:nth-child(2) {
-        //   width: 19.50%;
-        // }
       }
     }
     .ant-spin.ant-spin-spinning {

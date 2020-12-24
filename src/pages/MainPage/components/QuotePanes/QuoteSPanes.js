@@ -2,7 +2,6 @@ import { Button } from 'antd'
 import SearchBox from '../../../../components/SearchBox/SearchBox.js'
 import TableBox from '../../../../components/TableBox/TableBox.js'
 import IconFont from '../../../../utils/iconfont/iconfont'
-// import QuoteTr from './QuoteTr.js'
 import { toDecimal } from '../../../../utils/utilFunc'
 
 import { useEffect, useState } from 'react'
@@ -13,25 +12,10 @@ const QuoteSPane = (props) => {
   const { list, types, socket, addToKLine } = props
   const currType = list.map(item => item.symbol)
   
-  // console.log(list)
-  // const initTrData = () => {
-  //   return list.map((item) => {
-  //     return {
-  //       key: item.symbol,
-  //       symbol: item.symbol,
-  //       spread: '---',
-  //       sell: '---',
-  //       buy: '---',
-  //       isShow: 1
-  //     }
-  //   })
-  // }
-  
   const [trData, setTrData] = useState(list)
   const [isExpandAll, setIsExpandAll] = useState(false)
   
   useEffect(() => {
-    console.log("types")
     socket.on("quote", onMessage)
   },[])
   
@@ -89,7 +73,6 @@ const QuoteSPane = (props) => {
         }
       }
       setTrData(trData.concat([]))
-      // console.log(data,_trData)
     }
   }  
   const addToFavorite = (e) => {

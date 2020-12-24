@@ -52,20 +52,27 @@ class socket {
     try {
       const data = JSON.parse(message)
       const quoteType = ['quote', 'mini'],
-            KLineTypes = ['req', 'update']
+            KLineTypes = ['req', 'update'],
+            orderType = ['quote']
 
-      let Event
       if(quoteType.includes(data.type)) {
-        Event = 'quote'
-      } else if(KLineTypes.includes(data.type)) {
-        Event = 'kLine'
-      } else {
-        return
+        this.onReceiver({
+          Event: 'quote',
+          Data: data
+        })
       }
-      this.onReceiver({
-        Event,
-        Data: data
-      })
+      if(KLineTypes.includes(data.type)) {
+        this.onReceiver({
+          Event: 'kLine',
+          Data: data
+        })
+      }
+      if(orderType.includes(data.type)) {
+        this.onReceiver({
+          Event: 'order',
+          Data: data
+        })
+      }
     } catch (err) {
       console.error(' >> Data parsing error:', err)
     }

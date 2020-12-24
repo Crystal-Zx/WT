@@ -89,5 +89,12 @@
       }
 
     }
+    // common style
+    .color-up {
+      color: $buyColor;
+    }
+    .color-down {
+      color: $sellColor;
+    }
   }
 }

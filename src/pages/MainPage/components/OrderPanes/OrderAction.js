@@ -34,8 +34,8 @@ const handleList = (response) => {
       ticket: dataObj[symbol].map(item => `${item.ticket}`),
       volume: toDecimal(dataObj[symbol].reduce((prev, currItem) => prev + currItem.volume,0), 2),
       cmd: isMoreThan1 ? '' : dataObj[symbol][0].cmd,
-      openPrice: isMoreThan1 ? '' : dataObj[symbol][0].open_price,
-      currPrice: '---',  // 即时价需实时更新
+      open_price: isMoreThan1 ? '' : dataObj[symbol][0].open_price,
+      close_price: isMoreThan1 ? '' : dataObj[symbol][0].close_price,  // 即时价需实时更新
       openTime: isMoreThan1 ? '' : dataObj[symbol][0].open_time,
       sl: isMoreThan1 ? '' : dataObj[symbol][0].sl,
       tp: isMoreThan1 ? '' : dataObj[symbol][0].tp,

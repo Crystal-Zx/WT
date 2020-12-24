@@ -11,7 +11,6 @@ import QuoteSPane from './QuoteSPanes.js';
 import styles from './QuotePanes.module.scss';
 
 const QuotePanes = (props) => {
-  // console.log("===QP props:", props)
   const { getSymbols, changeSymbolType, initSocket, symbolList, filterType, socket } = props
   const { list, types, isFetching} = symbolList
   
@@ -61,14 +60,14 @@ const QuotePanes = (props) => {
                 activeKey={filterType} 
                 onChange={changeSymbolType}
               ></LineTabs>
-            ), 
+            ),
             key: '1'
           }
         ]}
         isFetching={isFetching}
       ></CardTabs>
     </div>
-  )  
+  )
 }
 
 const mapStateToProps = (state) => {
@@ -93,8 +92,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         const { list } = res.value
         const defaultType = Object.keys(list)[0]
         dispatch(setSymbolType(defaultType))
-      }).then(() => {
-        console.log("===ownProps",ownProps)
       })
     },
     changeSymbolType: (sType) => {

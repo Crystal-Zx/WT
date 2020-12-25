@@ -9,7 +9,8 @@ export const GET_POSITIONS = 'GET_POSITIONS',
              GET_HISTORIES = 'GET_HISTORIES',
              GET_HISTORIES_PENDING = 'GET_HISTORIES_PENDING',
              GET_HISTORIES_FULFILLED = 'GET_HISTORIES_FULFILLED',
-             GET_HISTORIES_REJECTED = 'GET_HISTORIES_REJECTED'
+             GET_HISTORIES_REJECTED = 'GET_HISTORIES_REJECTED',
+             SET_ACCOUNTINFO = 'SET_ACCOUNTINFO'
 
 
 const cmdArr = ['Buy', 'Sell', 'Buy Limit', 'Sell Limit', 'Buy Stop', 'Sell Stop', 'Balance']
@@ -73,3 +74,5 @@ export const getHistories = createAction(GET_HISTORIES, (from, to) => {
     return response
   })
 })
+
+// export const setAccountInfo = createAction()

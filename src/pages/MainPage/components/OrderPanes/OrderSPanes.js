@@ -2,13 +2,24 @@ import { Table, Menu, Dropdown, Button, Badge } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { toDecimal } from '../../../../utils/utilFunc'
 
 
-const OrderSPanes = ({ data, lastColMenu, type, socket }) => {
+const OrderSPanes = ({ data, type, socket, onAccInfoChange }) => {
   const { list, isFetching } = data
   const [trData, setTrData] = useState(list)
-
+  const lastColMenu = (
+    <Menu>
+      <Menu.Item>
+        <>对所有头寸进行平仓</>
+      </Menu.Item>
+      <Menu.Item>
+        <>对盈利头寸进行平仓（净利）</>
+      </Menu.Item>
+      <Menu.Item>
+        <>对亏损头寸进行平仓（净利）</>
+      </Menu.Item>
+    </Menu>
+  )
   const isFoldRow = (key) => { // 非折叠行->0；折叠行->1
     return !isNaN(Number(key))
   }
@@ -223,6 +234,7 @@ const OrderSPanes = ({ data, lastColMenu, type, socket }) => {
   useEffect(() => {
     if(list && list.length > 0) {
       setTrData(list)
+      console.log(trData)
     }
   }, [list])
   useEffect(() => {
@@ -261,7 +273,7 @@ const OrderSPanes = ({ data, lastColMenu, type, socket }) => {
             }
           }
           // 更新该货币对下的盈利值
-          trd.profit = (trd.children.reduce((prev, currItem) => prev + Number(currItem.profit),0)).toFixed(2)
+          trd.profit = (trd.children.reduce((prev, item) => prev + Number(item.profit),0)).toFixed(2)
         } else {
           let flag
           if(isBuy(trd.cmd)) {  // 多单 buy
@@ -274,6 +286,16 @@ const OrderSPanes = ({ data, lastColMenu, type, socket }) => {
           trd.profit = ((trd.close_price - trd.open_price) * trd.volume * 100000 * 0.00965372 * flag).toFixed(2)
         }
       }
+      // 更新store中用户账户信息数据
+      // let accountInfo
+      // // 浮动盈亏，即盈利
+      // accountInfo.profit = (trData.reduce((prev, item) => prev + Number(item.profit),0)).toFixed(2)
+      // // 净值
+      // accountInfo.equity = (accountInfo.balance + accountInfo.profit).toFixed(2)
+      // // 可用保证金
+      // accountInfo.free = (accountInfo.equity - accountInfo.freeMargin).toFixed(2)
+      // // 保证金比例
+      // accountInfo.perFree = (accountInfo.equity / (accountInfo.equity - accountInfo.free) * 100).toFixed(2)
       setTrData(trData.concat([]))
     }
   }

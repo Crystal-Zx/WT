@@ -6,6 +6,10 @@ export function _login (params = {}) {
   return http.post(apis.login, params)
 }
 // MainPage
+// --- 获取账户信息
+export function _getAccountInfo (params = {}) {
+  return http.post(apis.getAccountInfo, params)
+}
 // --- 获取报价货币对
 export function _getSymbols (params = {}) {
   return http.post(apis.getSymbols, params)

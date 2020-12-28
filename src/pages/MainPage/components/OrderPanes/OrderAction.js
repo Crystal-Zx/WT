@@ -9,8 +9,7 @@ export const GET_POSITIONS = 'GET_POSITIONS',
              GET_HISTORIES = 'GET_HISTORIES',
              GET_HISTORIES_PENDING = 'GET_HISTORIES_PENDING',
              GET_HISTORIES_FULFILLED = 'GET_HISTORIES_FULFILLED',
-             GET_HISTORIES_REJECTED = 'GET_HISTORIES_REJECTED',
-             SET_ACCOUNTINFO = 'SET_ACCOUNTINFO'
+             GET_HISTORIES_REJECTED = 'GET_HISTORIES_REJECTED'
 
 
 const cmdArr = ['Buy', 'Sell', 'Buy Limit', 'Sell Limit', 'Buy Stop', 'Sell Stop', 'Balance']
@@ -37,7 +36,7 @@ const handleList = (response) => {
       cmd: isMoreThan1 ? '' : dataObj[symbol][0].cmd,
       open_price: isMoreThan1 ? '' : dataObj[symbol][0].open_price,
       close_price: isMoreThan1 ? '' : dataObj[symbol][0].close_price,  // 即时价需实时更新
-      openTime: isMoreThan1 ? '' : dataObj[symbol][0].open_time,
+      open_time: isMoreThan1 ? '' : dataObj[symbol][0].open_time,
       sl: isMoreThan1 ? '' : dataObj[symbol][0].sl,
       tp: isMoreThan1 ? '' : dataObj[symbol][0].tp,
       storage: toDecimal(dataObj[symbol].reduce((prev, currItem) => prev + currItem.storage,0), 2),
@@ -74,5 +73,3 @@ export const getHistories = createAction(GET_HISTORIES, (from, to) => {
     return response
   })
 })
-
-// export const setAccountInfo = createAction()

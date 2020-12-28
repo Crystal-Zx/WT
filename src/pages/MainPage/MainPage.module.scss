@@ -228,5 +228,12 @@ $bottomH: 4.3vh;
         font-weight: bold;
       }
     }
+    // css style
+    .color-up {
+      color: $buyColor !important;
+    }
+    .color-down {
+      color: $sellColor !important;
+    }
   }
 }

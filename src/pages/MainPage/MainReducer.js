@@ -2,7 +2,11 @@ import { combineReducers } from 'redux'
 import {
   INIT_SOCKET,
   ADD_TO_KLINE,
-  DELETE_FROM_KLINE
+  DELETE_FROM_KLINE,
+  SET_ACCOUNTINFO,
+  GET_ACCOUNTINFO_PENDING,
+  GET_ACCOUNTINFO_FULFILLED,
+  GET_ACCOUNTINFO_REJECTED
 } from './MainAction'
 
 const initSocket = (state = {}, action) => {
@@ -34,7 +38,44 @@ const KLineList = (state = [
   }
 }
 
+const accountInfo = (state = {
+  isFetching: false,
+  info: {
+    // profit: 0,
+    // equity: 0,
+    // balance: 0,
+    // freeMargin: 0,
+    // marginLevel: 0,
+    // margin: 0
+  }
+}, action) => {
+  const { type, payload } = action
+  switch(type) {
+    case GET_ACCOUNTINFO_PENDING: {
+      return Object.assign({}, state, {
+        isFetching: true
+      })
+    }
+    case GET_ACCOUNTINFO_FULFILLED: {
+      return Object.assign({}, state, {
+        isFetching: false,
+        info: payload
+      })
+    }
+    case SET_ACCOUNTINFO: {
+      return Object.assign({}, state, {
+        info: {
+          ...payload
+        }
+      })
+    }
+    case GET_ACCOUNTINFO_REJECTED:
+    default: return state
+  }
+}
+
 export default combineReducers({
   initSocket,
-  KLineList
+  KLineList,
+  accountInfo
 })

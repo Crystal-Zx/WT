@@ -1,14 +1,17 @@
-import { Avatar, Image, Menu, Dropdown, Button } from 'antd';
-import { UserOutlined, StarFilled } from '@ant-design/icons';
+import { Menu, Dropdown, Button } from 'antd';
+
 // import CardTabs from '../../components/CardTabs/CardTabs.js';
 import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import OrderPanes from './components/OrderPanes/OrderPanes.js'
+import AccountInfo from './components/AccountInfo/AccountInfo.js'
 import IconFont from '../../utils/iconfont/iconfont';
 import styles from './MainPage.module.scss';
 
 import { useEffect, useState } from 'react';
+import { connect } from 'react-redux'
 import { getCurrDate } from '../../utils/utilFunc'
+import { getAccountInfo } from './MainAction'
 
 const menu = (
   <Menu>
@@ -31,16 +34,31 @@ const menu = (
 );
 
 
-function MainPage () {
+function MainPage ({ accountInfo, getAccountInfo }) {
+  // console.log("====MainPage", accountInfo)
   const [currDate, setCurrDate] = useState(getCurrDate())
-  
-  useEffect(() => {
+
+  const init = () => {
+    // 获取账户信息
+    getAccountInfo()
+    // 开启右上角时钟计时
     const t = setInterval(() => {
       setCurrDate(getCurrDate())
     }, 1000);
     return () => {
       clearInterval(t)
     }
+  }
+  
+  useEffect(() => {
+    init()
+    // getAccountInfo()
+    // const t = setInterval(() => {
+    //   setCurrDate(getCurrDate())
+    // }, 1000);
+    // return () => {
+    //   clearInterval(t)
+    // }
   },[])
 
   return (
@@ -53,41 +71,9 @@ function MainPage () {
         <OrderPanes />
       </div>
       <div className="main-bottom-x">
-        <div className="user-x">
-          <span className="account-type">DEMO</span>
-          <Avatar icon={<UserOutlined />} size={24} />
-          <span className="account">11593</span>
-        </div>
-        <div className="account-info-x">
-          <div className="ai-li">
-            <span>余额</span>
-            <span>$ 5000.00</span>
-          </div>
-          <div className="ai-li">
-            <span>净值</span>
-            <span>$ 4910.66</span>
-          </div>
-          <div className="ai-li">
-            <span>可用保证金</span>
-            <span>$ 1157602.00</span>
-          </div>
-          <div className="ai-li">
-            <span>保证金比例</span>
-            <span>0.23%</span>
-          </div>
-          <div className="ai-li">
-            <span>浮动盈亏</span>
-            <span>-$ 89.34</span>
-          </div>
-          <div className="ai-li profit">
-            <span>盈利：&nbsp;</span>
-            <span>- 69.58</span>
-            <span>&nbsp;USD</span>
-          </div>
-        </div>
-        <Button type="primary" className="btn-more">
-          <IconFont type="iconQues" className="main-icon-ques" />
-        </Button>
+        <AccountInfo 
+          accountInfo={accountInfo}
+        />
       </div>
       <div className="main-topright-x">
         <span className="tr-currtime-x">{currDate}</span>
@@ -106,4 +92,20 @@ function MainPage () {
 }
 
 
-export default MainPage
+export default connect(
+  state => {
+    const {
+      accountInfo
+    } = state.MainReducer
+    return {
+      accountInfo
+    }
+  },
+  dispatch => {
+    return {
+      getAccountInfo: () => {
+        return dispatch(getAccountInfo())
+      }
+    }
+  }
+)(MainPage)

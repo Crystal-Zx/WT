@@ -4,7 +4,7 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import { toDecimal } from '../../../../utils/utilFunc'
 
 const AccountInfo = ({ accountInfo}) => {
-  // console.log("===AI", accountInfo)
+  console.log("===AccountInfo render")
   const { info, isFetching } = accountInfo
   return (
     <>

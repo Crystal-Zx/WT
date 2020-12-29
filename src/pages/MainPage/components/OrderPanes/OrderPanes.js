@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { getPositions, getHistories } from './OrderAction' // , getOrders, getHistories
 
 const OrderPanes = ({ listArr, dispatch}) => {
+  console.log("====OrderPanes render")
   
   const [activeKey, setActiveKey] = useState("0")
   const [list, setList] = useState(listArr[0])
@@ -33,9 +34,6 @@ const OrderPanes = ({ listArr, dispatch}) => {
       }))
     }
   }
-  const onAccInfoChange = (data) => {
-    console.log(data)
-  }
 
   useEffect(() => {
     init()
@@ -45,8 +43,7 @@ const OrderPanes = ({ listArr, dispatch}) => {
     <CardTabs
       className={styles['order-x']}
       initialPanes={[
-        { title: '持仓单', content: <OrderSPanes data={listArr[0]} type="0" 
-          onAccInfoChange={onAccInfoChange}/>, key: '0'
+        { title: '持仓单', content: <OrderSPanes data={listArr[0]} type="0" />, key: '0'
         },
         { title: '挂单交易', content: <OrderSPanes data={listArr[1]} type="1" />, key: '1' },
         { title: '历史订单', content: <OrderSPanes data={listArr[2]} type="2" />, key: '2' }

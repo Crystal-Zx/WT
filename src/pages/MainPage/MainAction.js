@@ -1,7 +1,6 @@
 import { createAction } from 'redux-actions'
 import socket from '../../socket'
 import { _getAccountInfo } from '../../services/index'
-import { toDecimal } from '../../utils/utilFunc'
 
 export const INIT_SOCKET = 'INIT_SOCKET'
 export const ADD_TO_KLINE = 'ADD_TO_KLINE'

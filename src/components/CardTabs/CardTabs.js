@@ -1,17 +1,19 @@
 import { Tabs,Spin } from 'antd'
-import { useState } from 'react'
 
 const { TabPane } = Tabs
 
-export default function CardTabs ({ initialPanes, onChange, activeKey = initialPanes[0].key,isFetching = false, className, type = "card", tabPosition = "top", tabBarGutter = 0}) {
-  // const [activeKey, setActiveKey] = useState(initialPanes[0].key)
-
-  // const onChange1 = activeKey => {
-  //   setActiveKey(activeKey)
-  // }
-
-  // console.log("=====CardTabs",initialPanes, initialPanes[0].key)
-
+export default function CardTabs ({ 
+  initialPanes, 
+  onChange, 
+  activeKey = initialPanes[0].key,
+  isFetching = false, 
+  className, 
+  type = "card", 
+  tabPosition = "top", 
+  tabBarGutter = 0}
+) {
+  
+  console.log("====CardTabs render")
   
   return (
     <Tabs
@@ -31,11 +33,11 @@ export default function CardTabs ({ initialPanes, onChange, activeKey = initialP
             closable={pane.closable}
           >
             { isFetching && <Spin /> }
-            {/* { */}
-              {/* ( !isFetching && activeKey === pane.key )
-              && */}
-              {!isFetching &&pane.content}
-            {/* } */}
+            {
+              ( !isFetching && activeKey === pane.key )
+              &&
+              pane.content
+            }
           </TabPane>
         ))
       }

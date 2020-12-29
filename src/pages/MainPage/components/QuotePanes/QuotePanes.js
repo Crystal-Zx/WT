@@ -11,8 +11,9 @@ import QuoteSPane from './QuoteSPanes.js';
 import styles from './QuotePanes.module.scss';
 
 const QuotePanes = (props) => {
+  console.log("====QuotePanes render")
   const { getSymbols, changeSymbolType, initSocket, symbolList, filterType, socket } = props
-  const { list, types, isFetching} = symbolList
+  const { list, types, isFetching } = symbolList
   
   const init = () => {
     initSocket()

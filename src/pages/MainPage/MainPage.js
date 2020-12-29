@@ -35,37 +35,30 @@ const menu = (
 
 
 function MainPage ({ accountInfo, getAccountInfo }) {
-  // console.log("====MainPage", accountInfo)
+  console.log("====MainPage render")
   const [currDate, setCurrDate] = useState(getCurrDate())
 
   const init = () => {
     // 获取账户信息
-    getAccountInfo()
-    // 开启右上角时钟计时
-    const t = setInterval(() => {
-      setCurrDate(getCurrDate())
-    }, 1000);
-    return () => {
-      clearInterval(t)
-    }
-  }
-  
-  useEffect(() => {
-    init()
     // getAccountInfo()
+    // 开启右上角时钟计时
     // const t = setInterval(() => {
     //   setCurrDate(getCurrDate())
     // }, 1000);
     // return () => {
     //   clearInterval(t)
     // }
+  }
+  
+  useEffect(() => {
+    init()
   },[])
 
   return (
     <div className={styles['main-x']}>
       <div className="main-top-x">
         <QuotePanes />
-        <TopRPanes />
+        {/* <TopRPanes /> */}
       </div>
       <div className="main-middle-x card-container">
         <OrderPanes />

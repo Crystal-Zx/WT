@@ -7,9 +7,11 @@ import { connect } from 'react-redux'
 import { setAccountInfo } from '../../MainAction'
 
 
-const OrderSPanes = ({ data, type, socket, onAccInfoChange, info, setAccountInfo }) => {
-  const { list, isFetching } = data
-  const [trData, setTrData] = useState(list)
+const OrderSPanes = ({ data, type, socket, info, setAccountInfo }) => {
+  console.log("====OrderSPanes render", data)
+  
+  let { list, isFetching } = data
+  // const [trData, setTrData] = useState(list)
   const lastColMenu = (
     <Menu>
       <Menu.Item>
@@ -234,18 +236,16 @@ const OrderSPanes = ({ data, type, socket, onAccInfoChange, info, setAccountInfo
     }
   ]
 
+  // useEffect(() => {
+  //   if(list && list.length > 0) {
+  //     setTrData(list)
+  //   }
+  // }, [list])
   useEffect(() => {
-    if(list && list.length > 0) {
-      setTrData(list)
-    }
-  }, [list])
-  useEffect(() => {
-    if(Object.keys(socket).length && trData && trData.length) {
-      // socket.on("order",null)
+    if(Object.keys(socket).length && list && list.length) {
       socket.on("order", onMessage)
-      // Number(type) === 1 && socket.on("order", onMessage1)
     }
-  }, [Object.keys(socket).length, trData, type])
+  }, [Object.keys(socket).length, list])
 
   const isBuy = (type,filter = ["buy","buylimit","buystop"]) => {
     for(var _type of filter) {
@@ -256,9 +256,9 @@ const OrderSPanes = ({ data, type, socket, onAccInfoChange, info, setAccountInfo
 
   const onMessage = (data) => {
     if(data.type === 'quote' && Number(type) !== 2) {  // 理论上说应该没必要再判断一次，不过保险起见
-      // console.log("===onMsg",trData)
+      // console.log("===onMsg",list)
       data = data.data
-      for(let trd of trData) {
+      for(let trd of list) {
         if(trd.symbol !== data.symbol) continue
         if(trd.children.length) {
           // 遍历处理同一货币对下的不同订单的即时价&盈利值
@@ -298,11 +298,12 @@ const OrderSPanes = ({ data, type, socket, onAccInfoChange, info, setAccountInfo
           trd.close_price = toDecimal(trd.close_price, data.digits)
         }
       }
-      setTrData(trData.concat([]))
+      list = list.concat([])
+      // setTrData(list.concat([]))
       // 更新store中用户账户信息数据
       if(Object.keys(info).length) {
         // 浮动盈亏，即盈利
-        info.profit = trData.reduce((prev, item) => prev + Number(item.profit),0)
+        info.profit = list.reduce((prev, item) => prev + Number(item.profit),0)
         // 净值
         info.equity = info.balance + info.profit
         // 可用保证金
@@ -313,30 +314,10 @@ const OrderSPanes = ({ data, type, socket, onAccInfoChange, info, setAccountInfo
       }
     }
   }
-  // const onMessage1 = (data) => {
-  //   if(data.type === 'quote') {  // 理论上说应该没必要再判断一次，不过保险起见
-  //     // console.log("===onMsg",trData)
-  //     data = data.data
-  //     for(let trd of trData) {
-  //       if(trd.symbol !== data.symbol) continue
-  //       if(trd.children.length) {
-  //         // 遍历处理同一货币对下的不同订单的即时价&盈利值
-  //         for(let cd of trd.children) {
-  //           if(cd.symbol === data.symbol) {
-  //             cd.close_price = toDecimal(isBuy(cd.cmd) ? data.bid : data.ask, data.digits)
-  //           }
-  //         }
-  //       } else {
-  //         trd.close_price = toDecimal(isBuy(trd.cmd) ? data.bid : data.ask, data.digits)
-  //       }
-  //     }
-  //     setTrData(trData.concat([]))
-  //   }
-  // }
   
   return (
     <Table
-      dataSource={trData}
+      dataSource={list}
       loading={isFetching}
       columns={type < 2 ? getColumns() : getHistoryCol()}
       pagination={false}

@@ -4,6 +4,7 @@ import propTypes from 'prop-types'
 const { TabPane } = Tabs
 
 const LineTabs = ({ onChange, initialPanes, activeKey }) => {
+  console.log("====LineTabs render")
   return (
     <Tabs 
       type="line"
@@ -17,7 +18,7 @@ const LineTabs = ({ onChange, initialPanes, activeKey }) => {
             tab={pane.title}
             key={pane.key}
           >
-            {activeKey === pane.key && pane.content}
+            {pane.content}
           </TabPane>
         ))
       }

@@ -62,11 +62,11 @@ $tableRow: #f7f7f7;
       padding: 0 !important;
     }
     .quote-expand-tr {
-      .qe-row-1 {
+      .qtr-row-1 {
         height: 44px;
         display: flex;
         justify-content: space-between;
-        .qe-btn {
+        .qtr-btn {
           position: relative;
           height: 100%;
           flex: 1;
@@ -74,33 +74,33 @@ $tableRow: #f7f7f7;
           line-height: 1em;
           color: #fff;
           border: 0;
-          .qe-price {
+          .qtr-price {
             position: absolute;
             bottom: 10px;
             left: 10px;
           }
-          .qe-type {
+          .qtr-type {
             position: absolute;
             top: 10px;
             right: 10px;
             font-size: 13px;
           }
-          &.qe-btn-sell {
+          &.qtr-btn-sell {
             background-color: $sellColor;
           }
-          &.qe-btn-buy {
+          &.qtr-btn-buy {
             background-color: $buyColor;
-            .qe-price {
+            .qtr-price {
               left: unset;
               right: 10px;
             }
-            .qe-type {
+            .qtr-type {
               right: unset;
               left: 10px;
             }
           }
         }
-        .qe-spread {
+        .qtr-volume-x {
           width: 44px;
           height: 44px;
           margin: 0 3px;
@@ -112,16 +112,33 @@ $tableRow: #f7f7f7;
           word-break: break-all;
           text-align: center;
           color: inherit;
+          .ant-input-number-input {
+            padding: 0;
+            text-align: center;
+          }
+          &:hover {
+            width: 65px;
+            border-color: $themeBlue;
+            .ant-input-number-input {
+              padding-right: 22px;
+            }
+            .ant-input-number-handler:hover {
+              .ant-input-number-handler-up-inner,
+              .ant-input-number-handler-down-inner {
+                color: $themeBlue;
+              }
+            }
+          }
         }
       }
-      .qe-row-2 {
+      .qtr-row-2 {
         height: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-size: 12px;
         background-color: #fff;
-        .qe-val {
+        .qtr-val {
           min-width: 30%;
           max-width: 40%;
           height: 100%;
@@ -131,12 +148,12 @@ $tableRow: #f7f7f7;
           align-items: center;
           border: 1px solid currentColor;
           border-top: 0;
-          &.qe-high {
+          &.qtr-high {
             padding-left: 2%;
             justify-content: flex-start;
             color: $sellColor;
           }
-          &.qe-low {
+          &.qtr-low {
             padding-right: 2%;
             justify-content: flex-end;
             color: $buyColor;
@@ -151,7 +168,7 @@ $tableRow: #f7f7f7;
       .iconDown {
         transform: rotate(180deg);
       }
-      .qe-btn-sell,.qe-btn-buy {
+      .qtr-btn-sell,.qtr-btn-buy {
         background-color: $buyColor !important;
       }
     }
@@ -159,7 +176,7 @@ $tableRow: #f7f7f7;
       .iconDown,.ant-table-cell:nth-child(n+2) {
         color: $sellColor;
       }
-      .qe-btn-sell,.qe-btn-buy {
+      .qtr-btn-sell,.qtr-btn-buy {
         background-color: $sellColor !important;
       }
     }
@@ -167,7 +184,7 @@ $tableRow: #f7f7f7;
       display: none !important;
     }
     @media screen and (max-width: 1500px) {
-      .qe-spread {
+      .qtr-spread {
         font-size: 1vw;
       }
     }

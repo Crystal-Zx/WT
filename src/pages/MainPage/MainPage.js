@@ -58,7 +58,7 @@ function MainPage ({ accountInfo, getAccountInfo }) {
     <div className={styles['main-x']}>
       <div className="main-top-x">
         <QuotePanes />
-        {/* <TopRPanes /> */}
+        <TopRPanes />
       </div>
       <div className="main-middle-x card-container">
         <OrderPanes />

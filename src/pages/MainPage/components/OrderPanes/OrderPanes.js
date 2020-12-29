@@ -5,12 +5,12 @@ import CardTabs from '../../../../components/CardTabs/CardTabs'
 import OrderSPanes from './OrderSPanes'
 import styles from './OrderPanes.module.scss'
 
-import { useState, useEffect } from 'react'
+import React,{ useState, useEffect } from 'react'
 import { connect } from 'react-redux';
 import { getPositions, getHistories } from './OrderAction' // , getOrders, getHistories
 
 const OrderPanes = ({ listArr, dispatch}) => {
-  console.log("====OrderPanes render")
+  console.log("====OrderPanes render", listArr)
   
   const [activeKey, setActiveKey] = useState("0")
   const [list, setList] = useState(listArr[0])
@@ -48,11 +48,22 @@ const OrderPanes = ({ listArr, dispatch}) => {
         { title: '挂单交易', content: <OrderSPanes data={listArr[1]} type="1" />, key: '1' },
         { title: '历史订单', content: <OrderSPanes data={listArr[2]} type="2" />, key: '2' }
       ]}
-      // isFetching={list.isFetching}
+      isFetching={list.isFetching}
       activeKey={activeKey}
       onChange={onChange}
     ></CardTabs>
   )
+}
+
+const areEqual = (prevProps, nextProps) => {
+  /* 如果把 nextProps 传入 render 方法的返回结果与将 prevProps 传入 render 方法的返回结果一致则返回 true，否则返回 false。
+  即： 不更新返回true；需更新返回false */
+  // console.log("====areEqual", prevProps.listArr, nextProps.listArr, JSON.stringify(prevProps.listArr) == JSON.stringify(nextProps.listArr))
+  if(JSON.stringify(prevProps.listArr) == JSON.stringify(nextProps.listArr)) {
+    return true
+  } else {
+    return false
+  }
 }
 
 export default connect(
@@ -68,4 +79,4 @@ export default connect(
       ]
     }
   }
-)(OrderPanes)
+)(React.memo(OrderPanes, areEqual))

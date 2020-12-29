@@ -12,6 +12,8 @@ const topRPanes = [
 ]
 
 export default function TopRPanes () {
+  console.log("====TopRPanes render")
+
   const [activeKey, setActiveKey] = useState(topRPanes[0].key)
 
   const onChange = activeKey => {

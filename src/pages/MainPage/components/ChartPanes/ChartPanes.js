@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { deleteFromKLine } from '../../MainAction'
 
 const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
+  // console.log("====ChartPanes render")
   
   const initKLineList = (kLineList) => {
     return kLineList.map((item, index) => {

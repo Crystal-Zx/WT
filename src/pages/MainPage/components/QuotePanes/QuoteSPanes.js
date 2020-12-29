@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { addToKLine } from '../../MainAction'
 
 const QuoteSPane = (props) => {
+  console.log("====QSP render")
   const { list, types, socket, addToKLine } = props
   const currType = list.map(item => item.symbol)
   
@@ -112,6 +113,15 @@ const QuoteSPane = (props) => {
       ></TableBox>
     </>
   )
+}
+
+
+const areEqual = (prevProps, nextProps) => {
+  /* 如果把 nextProps 传入 render 方法的返回结果与将 prevProps 传入 render 方法的返回结果一致则返回 true，否则返回 false */
+  console.log("====areEqual", prevProps, nextProps, prevProps.listArr.position === nextProps.listArr.position)
+  // const { socket: prevS,  } = prevProps
+  // if(prevProps.socket === nextProps.socket )
+  return false
 }
 
 export default connect(

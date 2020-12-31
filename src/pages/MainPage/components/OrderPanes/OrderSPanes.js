@@ -7,8 +7,8 @@ import { connect } from 'react-redux'
 import { setAccountInfo } from '../../MainAction'
 
 
-const OrderSPanes = ({ data, type, socket, info, setAccountInfo }) => {
-  console.log("====OrderSPanes render", data)
+const OrderSPanes = ({ data, type }) => {
+  // console.log("====OrderSPanes render", data)
   
   let { list, isFetching } = data
   // const [trData, setTrData] = useState(list)
@@ -241,79 +241,79 @@ const OrderSPanes = ({ data, type, socket, info, setAccountInfo }) => {
   //     setTrData(list)
   //   }
   // }, [list])
-  useEffect(() => {
-    if(Object.keys(socket).length && list && list.length) {
-      socket.on("order", onMessage)
-    }
-  }, [Object.keys(socket).length, list])
+  // useEffect(() => {
+  //   if(Object.keys(socket).length && list && list.length) {
+  //     socket.on("order", onMessage)
+  //   }
+  // }, [Object.keys(socket).length, list])
 
-  const isBuy = (type,filter = ["buy","buylimit","buystop"]) => {
-    for(var _type of filter) {
-      if(type.toLowerCase() === _type.toLowerCase()) return true
-    }
-    return false
-  }
+  // const isBuy = (type,filter = ["buy","buylimit","buystop"]) => {
+  //   for(var _type of filter) {
+  //     if(type.toLowerCase() === _type.toLowerCase()) return true
+  //   }
+  //   return false
+  // }
 
-  const onMessage = (data) => {
-    if(data.type === 'quote' && Number(type) !== 2) {  // 理论上说应该没必要再判断一次，不过保险起见
-      // console.log("===onMsg",list)
-      data = data.data
-      for(let trd of list) {
-        if(trd.symbol !== data.symbol) continue
-        if(trd.children.length) {
-          // 遍历处理同一货币对下的不同订单的即时价&盈利值
-          for(let cd of trd.children) {
-            if(cd.symbol === data.symbol) {
-              let flag
-              if(isBuy(cd.cmd)) {  // 多单 buy
-                cd.close_price = data.bid
-                flag = 1
-              } else {  // 空单 sell
-                cd.close_price = data.ask
-                flag = -1
-              }
-              // 10000 -> data.contract_size；0.00965372 -> data.trans_price
-              if(!Number(type)) {
-                cd.profit = ((cd.close_price - cd.open_price) * cd.volume * 100000 * 0.00965372 * flag).toFixed(2)
-              }
-              cd.close_price = toDecimal(cd.close_price, data.digits)
-            }
-          }
-          // 更新该货币对下的盈利值
-          if(!Number(type)) {
-            trd.profit = (trd.children.reduce((prev, item) => prev + Number(item.profit),0)).toFixed(2)
-          }
-        } else {
-          let flag
-          if(isBuy(trd.cmd)) {  // 多单 buy
-            trd.close_price = data.bid
-            flag = 1
-          } else {  // 空单 sell
-            trd.close_price = data.ask
-            flag = -1
-          }
-          if(!Number(type)) {
-            trd.profit = ((trd.close_price - trd.open_price) * trd.volume * 100000 * 0.00965372 * flag).toFixed(2)
-          }
-          trd.close_price = toDecimal(trd.close_price, data.digits)
-        }
-      }
-      list = list.concat([])
-      // setTrData(list.concat([]))
-      // 更新store中用户账户信息数据
-      if(Object.keys(info).length) {
-        // 浮动盈亏，即盈利
-        info.profit = list.reduce((prev, item) => prev + Number(item.profit),0)
-        // 净值
-        info.equity = info.balance + info.profit
-        // 可用保证金
-        info.freeMargin = info.equity - info.margin
-        // 保证金比例
-        info.marginLevel = info.equity - info.freeMargin ? Math.floor(info.equity / (info.equity - info.freeMargin) * 10000) / 100 : 0
-        setAccountInfo(info)
-      }
-    }
-  }
+  // const onMessage = (data) => {
+  //   if(data.type === 'quote' && Number(type) !== 2) {  // 理论上说应该没必要再判断一次，不过保险起见
+  //     // console.log("===onMsg",list)
+  //     data = data.data
+  //     for(let trd of list) {
+  //       if(trd.symbol !== data.symbol) continue
+  //       if(trd.children.length) {
+  //         // 遍历处理同一货币对下的不同订单的即时价&盈利值
+  //         for(let cd of trd.children) {
+  //           if(cd.symbol === data.symbol) {
+  //             let flag
+  //             if(isBuy(cd.cmd)) {  // 多单 buy
+  //               cd.close_price = data.bid
+  //               flag = 1
+  //             } else {  // 空单 sell
+  //               cd.close_price = data.ask
+  //               flag = -1
+  //             }
+  //             // 10000 -> data.contract_size；0.00965372 -> data.trans_price
+  //             if(!Number(type)) {
+  //               cd.profit = ((cd.close_price - cd.open_price) * cd.volume * 100000 * 0.00965372 * flag).toFixed(2)
+  //             }
+  //             cd.close_price = toDecimal(cd.close_price, data.digits)
+  //           }
+  //         }
+  //         // 更新该货币对下的盈利值
+  //         if(!Number(type)) {
+  //           trd.profit = (trd.children.reduce((prev, item) => prev + Number(item.profit),0)).toFixed(2)
+  //         }
+  //       } else {
+  //         let flag
+  //         if(isBuy(trd.cmd)) {  // 多单 buy
+  //           trd.close_price = data.bid
+  //           flag = 1
+  //         } else {  // 空单 sell
+  //           trd.close_price = data.ask
+  //           flag = -1
+  //         }
+  //         if(!Number(type)) {
+  //           trd.profit = ((trd.close_price - trd.open_price) * trd.volume * 100000 * 0.00965372 * flag).toFixed(2)
+  //         }
+  //         trd.close_price = toDecimal(trd.close_price, data.digits)
+  //       }
+  //     }
+  //     list = list.concat([])
+  //     // setTrData(list.concat([]))
+  //     // 更新store中用户账户信息数据
+  //     if(Object.keys(info).length) {
+  //       // 浮动盈亏，即盈利
+  //       info.profit = list.reduce((prev, item) => prev + Number(item.profit),0)
+  //       // 净值
+  //       info.equity = info.balance + info.profit
+  //       // 可用保证金
+  //       info.freeMargin = info.equity - info.margin
+  //       // 保证金比例
+  //       info.marginLevel = info.equity - info.freeMargin ? Math.floor(info.equity / (info.equity - info.freeMargin) * 10000) / 100 : 0
+  //       setAccountInfo(info)
+  //     }
+  //   }
+  // }
   
   return (
     <Table
@@ -329,19 +329,20 @@ const OrderSPanes = ({ data, type, socket, info, setAccountInfo }) => {
   )
 }
 
-export default connect(
-  state => {
-    const socket = state.MainReducer.initSocket,
-          info = state.MainReducer.accountInfo.info
-    return {
-      socket, info
-    }
-  },
-  dispatch => {
-    return {
-      setAccountInfo: (accountInfo) => {
-        return dispatch(setAccountInfo(accountInfo))
-      }
-    }
-  }
-)(OrderSPanes)
+// export default connect(
+//   state => {
+//     const socket = state.MainReducer.initSocket,
+//           info = state.MainReducer.accountInfo.info
+//     return {
+//       socket, info
+//     }
+//   },
+//   dispatch => {
+//     return {
+//       setAccountInfo: (accountInfo) => {
+//         return dispatch(setAccountInfo(accountInfo))
+//       }
+//     }
+//   }
+// )(
+export default OrderSPanes

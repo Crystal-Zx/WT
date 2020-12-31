@@ -13,7 +13,7 @@ export default function CardTabs ({
   tabBarGutter = 0}
 ) {
   
-  console.log("====CardTabs render")
+  // console.log("====CardTabs render")
   
   return (
     <Tabs

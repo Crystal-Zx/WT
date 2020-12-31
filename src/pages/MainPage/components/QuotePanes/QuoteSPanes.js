@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { addToKLine } from '../../MainAction'
 
 const QuoteSPane = (props) => {
-  console.log("====QSP render")
+  // console.log("====QSP render")
   const { list, types, socket, addToKLine } = props
   const currType = list.map(item => item.symbol)
   

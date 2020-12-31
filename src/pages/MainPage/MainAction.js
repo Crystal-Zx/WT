@@ -35,7 +35,7 @@ export const getAccountInfo = createAction(GET_ACCOUNTINFO, () => {
   })
 })
 // --- 设置账户信息
-export const setAccountInfo = createAction(SET_ACCOUNTINFO, accoutInfo => accoutInfo)
+export const setAccountInfo = createAction(SET_ACCOUNTINFO, info => info)
 
 // K线
 // --- 添加指定货币对的K线

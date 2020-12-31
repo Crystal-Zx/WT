@@ -40,7 +40,7 @@ function MainPage ({ accountInfo, getAccountInfo }) {
 
   const init = () => {
     // 获取账户信息
-    // getAccountInfo()
+    getAccountInfo()
     // 开启右上角时钟计时
     // const t = setInterval(() => {
     //   setCurrDate(getCurrDate())
@@ -58,7 +58,7 @@ function MainPage ({ accountInfo, getAccountInfo }) {
     <div className={styles['main-x']}>
       <div className="main-top-x">
         <QuotePanes />
-        <TopRPanes />
+        {/* <TopRPanes /> */}
       </div>
       <div className="main-middle-x card-container">
         <OrderPanes />

@@ -65,6 +65,7 @@ const accountInfo = (state = {
     case SET_ACCOUNTINFO: {
       return Object.assign({}, state, {
         info: {
+          ...state.info,
           ...payload
         }
       })

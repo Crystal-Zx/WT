@@ -20,7 +20,13 @@ const OrderPanes = ({ socket, info, opData, dispatch}) => {
       activeKey < 2 && dispatch(getPositions())
       activeKey >= 2 && dispatch(getHistories({
         from: 0, to: new Date().getTime()
-      }))
+      })).then(res => {
+        const totalProfit = res.value.reduce((prev, item) => prev + Number(item.profit), 0)
+        dispatch(setAccountInfo({ profit: totalProfit }))
+      })
+    } else if(activeKey === "2") {
+      const totalProfit = listArr[2].list.reduce((prev, item) => prev + Number(item.profit), 0)
+      dispatch(setAccountInfo({ profit: totalProfit }))
     }
   }
 

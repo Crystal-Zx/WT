@@ -4,12 +4,12 @@ import TableBox from '../../../../components/TableBox/TableBox.js'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { toDecimal } from '../../../../utils/utilFunc'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { addToKLine } from '../../MainAction'
 
 const QuoteSPane = (props) => {
-  // console.log("====QSP render")
+  // console.log("====QSP render", props)
   const { list, types, socket, addToKLine } = props
   const currType = list.map(item => item.symbol)
   
@@ -75,7 +75,7 @@ const QuoteSPane = (props) => {
       }
       setTrData(trData.concat([]))
     }
-  }  
+  }
   const addToFavorite = (e) => {
     e.stopPropagation()
     console.log("addToFavorite",e)
@@ -114,21 +114,23 @@ const QuoteSPane = (props) => {
     </>
   )
 }
-
-
-const areEqual = (prevProps, nextProps) => {
-  /* 如果把 nextProps 传入 render 方法的返回结果与将 prevProps 传入 render 方法的返回结果一致则返回 true，否则返回 false */
-  console.log("====areEqual", prevProps, nextProps, prevProps.listArr.position === nextProps.listArr.position)
-  // const { socket: prevS,  } = prevProps
-  // if(prevProps.socket === nextProps.socket )
-  return false
-}
+// const areEqual = (prevProps, nextProps) => {
+//   console.log(JSON.stringify(prevProps.list), JSON.stringify(nextProps.list), JSON.stringify(prevProps.list) === JSON.stringify(nextProps.list))
+//   if(JSON.stringify(prevProps.list) === JSON.stringify(nextProps.list)) {
+//     return true
+//   } else {
+//     return false
+//   }
+// }
 
 export default connect(
-  state => ({
-    socket: state.MainReducer.initSocket
-  }),
-  (dispatch, ownProps) => {
+  state => {
+    const socket = state.MainReducer.initSocket
+    return {
+      socket
+    }
+  },
+  dispatch => {
     return {
       addToKLine: (e, symbol, digits) => {
         e.stopPropagation()

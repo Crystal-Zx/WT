@@ -12,7 +12,9 @@ import styles from './QuotePanes.module.scss';
 
 const QuotePanes = (props) => {
   console.log("====QuotePanes render")
-  const { getSymbols, changeSymbolType, initSocket, symbolList, filterType, socket } = props
+  const { 
+    getSymbols, changeSymbolType, initSocket, symbolList, filterType, socket
+  } = props
   const { list, types, isFetching } = symbolList
   
   const init = () => {
@@ -47,7 +49,7 @@ const QuotePanes = (props) => {
         "args": [`${args}`]
       })
     }
-  }, [Object.keys(socket).length ,types.length])
+  }, [JSON.stringify(socket) ,types.length])
   
   return (
     <div className={styles['quote-panes-x']}> 
@@ -58,7 +60,7 @@ const QuotePanes = (props) => {
             content: (
               <LineTabs
                 initialPanes={getQuoteSPanes()}
-                activeKey={filterType} 
+                activeKey={filterType}
                 onChange={changeSymbolType}
               ></LineTabs>
             ),
@@ -71,37 +73,37 @@ const QuotePanes = (props) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  const {
-    filterType = '', 
-    symbolList = {}
-  } = state.QuoteReducer
-  
-  return {
-    filterType,
-    symbolList,
-    socket: state.MainReducer.initSocket
-  }
-}
-
-// 此方法只是用于建立和store.dispatch的联系
-// 若没有使用dispatch的方法 直接写在组件内部即可！！！
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    getSymbols: () => {
-      dispatch(getSymbols()).then((res) => {
-        const { list } = res.value
-        const defaultType = Object.keys(list)[0]
-        dispatch(setSymbolType(defaultType))
-      })
-    },
-    changeSymbolType: (sType) => {
-      dispatch(setSymbolType(sType))
-    },
-    initSocket: () => {
-      dispatch(initSocket())
+export default connect(
+  state => {
+    const {
+      filterType = '', 
+      symbolList = {}
+    } = state.QuoteReducer
+    
+    return {
+      filterType,
+      symbolList,
+      socket: state.MainReducer.initSocket
+    }
+  },
+  dispatch => { 
+    // 此方法只是用于建立和store.dispatch的联系
+    // 若没有使用dispatch的方法 直接写在组件内部即可！！！
+    return {
+      getSymbols: () => {
+        dispatch(getSymbols()).then((res) => {
+          const { list } = res.value
+          const defaultType = Object.keys(list)[0]
+          dispatch(setSymbolType(defaultType))
+        })
+      },
+      changeSymbolType: (sType) => {
+        console.log("change type:", sType)
+        dispatch(setSymbolType(sType))
+      },
+      initSocket: () => {
+        dispatch(initSocket())
+      }
     }
   }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuotePanes)
+)(QuotePanes)

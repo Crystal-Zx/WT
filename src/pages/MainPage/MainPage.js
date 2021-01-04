@@ -9,9 +9,8 @@ import IconFont from '../../utils/iconfont/iconfont';
 import styles from './MainPage.module.scss';
 
 import { useEffect, useState } from 'react';
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 import { getCurrDate } from '../../utils/utilFunc'
-import { getAccountInfo } from './MainAction'
 
 const menu = (
   <Menu>
@@ -34,13 +33,11 @@ const menu = (
 );
 
 
-function MainPage ({ accountInfo, getAccountInfo }) {
+function MainPage () {
   console.log("====MainPage render")
   const [currDate, setCurrDate] = useState(getCurrDate())
 
   const init = () => {
-    // 获取账户信息
-    getAccountInfo()
     // 开启右上角时钟计时
     // const t = setInterval(() => {
     //   setCurrDate(getCurrDate())
@@ -57,16 +54,14 @@ function MainPage ({ accountInfo, getAccountInfo }) {
   return (
     <div className={styles['main-x']}>
       <div className="main-top-x">
-        <QuotePanes />
+        {/* <QuotePanes /> */}
         {/* <TopRPanes /> */}
       </div>
       <div className="main-middle-x card-container">
         <OrderPanes />
       </div>
       <div className="main-bottom-x">
-        <AccountInfo 
-          accountInfo={accountInfo}
-        />
+        {/* <AccountInfo /> */}
       </div>
       <div className="main-topright-x">
         <span className="tr-currtime-x">{currDate}</span>
@@ -85,20 +80,4 @@ function MainPage ({ accountInfo, getAccountInfo }) {
 }
 
 
-export default connect(
-  state => {
-    const {
-      accountInfo
-    } = state.MainReducer
-    return {
-      accountInfo
-    }
-  },
-  dispatch => {
-    return {
-      getAccountInfo: () => {
-        return dispatch(getAccountInfo())
-      }
-    }
-  }
-)(MainPage)
+export default MainPage

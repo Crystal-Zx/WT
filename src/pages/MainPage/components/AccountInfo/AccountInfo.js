@@ -1,11 +1,20 @@
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Avatar, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { toDecimal } from '../../../../utils/utilFunc'
 
-const AccountInfo = ({ accountInfo}) => {
-  console.log("====AccountInfo render")
+import { getAccountInfo } from '../../MainAction'
+
+const AccountInfo = ({ accountInfo, getAccountInfo }) => {
+  // console.log("====AccountInfo render")
   const { info, isFetching } = accountInfo
+
+  useEffect(() => {
+    // 获取账户信息
+    getAccountInfo()
+  }, [])
   return (
     <>
       <div className="user-x">
@@ -55,4 +64,20 @@ const AccountInfo = ({ accountInfo}) => {
   )
 }
 
-export default AccountInfo
+export default connect(
+  state => {
+    const {
+      accountInfo
+    } = state.MainReducer
+    return {
+      accountInfo
+    }
+  },
+  dispatch => {
+    return {
+      getAccountInfo: () => {
+        return dispatch(getAccountInfo())
+      }
+    }
+  }
+)(AccountInfo)

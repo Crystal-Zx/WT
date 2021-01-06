@@ -5,10 +5,10 @@ axios.defaults.baseURL = 'http://47.113.231.12:6886'
 // 允许跨域携带cookie
 axios.defaults.withCredentials = false
 // 超时时间
-axios.defaults.timeout = 5000 // 5s
+axios.defaults.timeout = 10000 // 5s
 // 标识这是一个ajax请求
 axios.defaults.headers = {
-  'Accept': 'MTE5MjI6MTYwOTc1MjE2MToyODQ1OWU5ODQ3MDJmMGE0NTM3MWFiZTY1ZDRlMDQ3OQ==',
+  'Accept': 'MTE5MjI6MTYwOTkyODczNjo0Y2VkZmRmN2M0ZTU3NDc0N2Y4MGVkYzM4YWM4NmUwMA==',
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 // 请求拦截
@@ -34,8 +34,12 @@ axios.interceptors.response.use(response => {
   const code = response.data.code
   if (code == 204 ) {
     throw Error('token过期')
-  } else if(response.status == 200 && code == 1) {
-    return response.data.data || response.data
+  } else if(response.status == 200) {
+    if(code == 1) {
+      return response.data.data || response.data
+    } else {
+      throw response.data.msg
+    }
   } else {
     // 非200请求抱错
     throw Error(response.data.msg || '服务异常')

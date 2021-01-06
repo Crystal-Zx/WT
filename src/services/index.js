@@ -22,3 +22,7 @@ export function _getPositions (params = {}) {
 export function _getHistories (params = {}) {
   return http.post(apis.getHistories, params)
 }
+// --- 修改订单止盈、止损
+export function _modifyOrder (params = {}) {
+  return http.post(apis.modifyOrder, params)
+}

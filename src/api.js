@@ -10,5 +10,6 @@ export default(config => {
   'login': '/v1/login',
   'getPositions': '/v1/position',
   'getHistories': '/v1/closed',
-  'getAccountInfo': '/v1/account_info'
+  'getAccountInfo': '/v1/account_info',
+  'modifyOrder': '/v1/order/modify',
 })

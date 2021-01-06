@@ -5,11 +5,15 @@ import {
   GET_POSITIONS_REJECTED,
   GET_HISTORIES_PENDING,
   GET_HISTORIES_FULFILLED,
-  GET_HISTORIES_REJECTED
+  GET_HISTORIES_REJECTED,
+  MODIFY_ORDER_PENDING,
+  MODIFY_ORDER_FULFILLED,
+  MODIFY_ORDER_REJECTED,
+  MODIFY_ORDER
 } from './OrderAction'
 
 // 持仓单操作
-const position = (state = {
+const positionOrder = (state = {
   position: {
     list: [],
     isFetching: false
@@ -24,9 +28,11 @@ const position = (state = {
     case GET_POSITIONS_PENDING:
       return Object.assign({}, state, {
         position: {
+          list: state.position.list,
           isFetching: true
         },
         order: {
+          list: state.position.list,
           isFetching: true
         }
       })
@@ -38,6 +44,41 @@ const position = (state = {
         },
         order: {
           list: payload.order,
+          isFetching: false
+        }
+      })
+    case MODIFY_ORDER_PENDING:
+      return Object.assign({}, state, {
+        ...state,
+        position: {
+          ...state.position,
+          isFetching: true
+        }
+      })
+    case MODIFY_ORDER_FULFILLED:
+      console.log(payload, state.position.list)
+      const { ticket, tp, sl } = payload
+      const pList = state.position.list
+      for(var p of pList) {
+        if(p.ticket == ticket) {
+          p.tp = tp
+          p.sl = sl
+        }
+      }
+      console.log("===after change:", pList)
+      return Object.assign({}, state, {
+        ...state,
+        position: {
+          isFetching: false,
+          list: pList
+        }
+      })
+    case MODIFY_ORDER_REJECTED:
+      console.log(action)
+      return Object.assign({}, state, {
+        ...state,
+        position: {
+          ...state.position,
           isFetching: false
         }
       })
@@ -68,7 +109,7 @@ const history = (state = {
 }
 
 const OrderReducer = combineReducers({
-  position,
+  positionOrder,
   history
 })
 

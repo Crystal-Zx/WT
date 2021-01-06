@@ -15,7 +15,8 @@ export const GET_ACCOUNTINFO = 'GET_ACCOUNTINFO',
 // --- socket初始化
 export const initSocket = createAction(
   INIT_SOCKET, () => {
-    var ws = new socket("ws://47.113.231.12:5885/")
+    // var ws = new socket("ws://47.113.231.12:5885/")
+    var ws = new socket("ws://118.193.38.199")
     ws.doOpen()
     return ws
   }

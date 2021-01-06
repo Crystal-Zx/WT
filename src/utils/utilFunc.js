@@ -17,7 +17,6 @@ export const toDecimal = (num, digits = 2) => {
   return num
 }
 
-
 export const getCurrDate = () => {
   const _date = new Date(),
         year = _date.getFullYear(),
@@ -29,3 +28,15 @@ export const getCurrDate = () => {
 
   return `${year}年${month}月${date}日 ${hour}:${minute}:${second}`
 }
+
+// 交易相关
+// --- 判断下单方向
+export const isBuy = (type,filter = ["buy","buylimit","buystop"]) => {
+  for(var _type of filter) {
+    if(type.toLowerCase() === _type.toLowerCase()) return true
+  }
+  return false
+}
+export const getCmdArr = () => (
+  ['Buy', 'Sell', 'Buy Limit', 'Sell Limit', 'Buy Stop', 'Sell Stop', 'Balance']
+)

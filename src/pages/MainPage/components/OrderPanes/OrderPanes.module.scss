@@ -125,6 +125,7 @@
         }
       }
       .eop-body-x {
+        color: $fontColor;
         .eop-input-x {
           height: 47px;
           padding: 0 30px;
@@ -132,6 +133,12 @@
           justify-content: space-between;
           align-items: center;
           border-bottom: 1px solid $tableBorder;
+          .eop-error {
+            &.ant-input-number {
+              border-color: $sellColor;
+              color: $sellColor;
+            }
+          }
         }
         .eop-info-x {
           margin: 1em 0;
@@ -149,6 +156,17 @@
         border-top: 0;
         display: flex;
         justify-content: center;
+        .eop-btn-cancel {
+          color: $fontColor;
+          &:hover {
+            color: $themeBlue;
+            border-color: $themeBlue;
+          }
+        }
+        .eop-btn-ok {
+          background: $themeBlue;
+          border-color: $themeBlue;
+        }
       }
     }
     // common style

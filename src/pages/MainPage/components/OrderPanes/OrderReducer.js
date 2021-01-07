@@ -9,8 +9,15 @@ import {
   MODIFY_ORDER_PENDING,
   MODIFY_ORDER_FULFILLED,
   MODIFY_ORDER_REJECTED,
-  MODIFY_ORDER
+  CLOSE_ORDER_PENDING,
+  CLOSE_ORDER_FULFILLED,
+  CLOSE_ORDER_REJECTED
 } from './OrderAction'
+
+// mock数据
+import {
+  plist, olist
+} from '../../../../services/mock'
 
 // 持仓单操作
 const positionOrder = (state = {
@@ -55,17 +62,14 @@ const positionOrder = (state = {
           isFetching: true
         }
       })
-    case MODIFY_ORDER_FULFILLED:
-      console.log(payload, state.position.list)
-      const { ticket, tp, sl } = payload
+    case MODIFY_ORDER_FULFILLED: 
       const pList = state.position.list
       for(var p of pList) {
-        if(p.ticket == ticket) {
-          p.tp = tp
-          p.sl = sl
+        if(p.ticket == payload.ticket) {
+          p.tp = payload.tp
+          p.sl = payload.sl
         }
       }
-      console.log("===after change:", pList)
       return Object.assign({}, state, {
         ...state,
         position: {
@@ -74,7 +78,6 @@ const positionOrder = (state = {
         }
       })
     case MODIFY_ORDER_REJECTED:
-      console.log(action)
       return Object.assign({}, state, {
         ...state,
         position: {
@@ -82,7 +85,63 @@ const positionOrder = (state = {
           isFetching: false
         }
       })
-    case GET_POSITIONS_REJECTED:
+    case CLOSE_ORDER_PENDING:
+      return Object.assign({}, state, {
+        ...state,
+        position: {
+          ...state.position,
+          isFetching: true
+        },
+        order: {
+          ...state.order,
+          isFetching: true
+        }
+      })
+    case CLOSE_ORDER_FULFILLED:
+      // if(Number(payload.activeKey) === 0) {
+        return Object.assign({}, state, {
+          ...state,
+          position: {
+            list: [],  //state.position.list.filter(item => !payload.ticket.includes(item.ticket + "")),
+            isFetching: false
+          },
+          order: {
+            list: [],  //state.order.list.filter(item => !payload.ticket.includes(item.ticket + "")),
+            isFetching: false
+          }
+        })
+      // } else if (Number(payload.activeKey) === 1) {
+      //   return Object.assign({}, state, {
+      //     ...state,
+      //     order: {
+      //       list: [],  //state.order.list.filter(item => !payload.ticket.includes(item.ticket + "")),
+      //       isFetching: false
+      //     }
+      //   })
+      // }
+    case GET_POSITIONS_REJECTED: // mock
+      return Object.assign({}, state, {
+        position: {
+          isFetching: false,
+          list: plist
+        },
+        order: {
+          isFetching: false,
+          list: olist
+        }
+      })
+    case CLOSE_ORDER_REJECTED:
+      return Object.assign({}, state, {
+        ...state,
+        position: {
+          ...state.position,
+          isFetching: false
+        },
+        order: {
+          ...state.order,
+          isFetching: false
+        }
+      })
     default:
       return state
   }

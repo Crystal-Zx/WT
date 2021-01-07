@@ -12,4 +12,5 @@ export default(config => {
   'getHistories': '/v1/closed',
   'getAccountInfo': '/v1/account_info',
   'modifyOrder': '/v1/order/modify',
+  'closeOrder': '/v1/order/close',
 })

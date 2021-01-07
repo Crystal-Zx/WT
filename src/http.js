@@ -8,7 +8,7 @@ axios.defaults.withCredentials = false
 axios.defaults.timeout = 10000 // 5s
 // 标识这是一个ajax请求
 axios.defaults.headers = {
-  'Accept': 'MTE5MjI6MTYwOTkyODczNjo0Y2VkZmRmN2M0ZTU3NDc0N2Y4MGVkYzM4YWM4NmUwMA==',
+  'Accept': 'MTE5MjI6MTYxMDAxMjM1Nzo1NTZkMDVmYTU4MGVhYzhmNjM0ZDNjY2RiYzE2NjVjNg==',
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 // 请求拦截

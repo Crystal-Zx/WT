@@ -26,3 +26,7 @@ export function _getHistories (params = {}) {
 export function _modifyOrder (params = {}) {
   return http.post(apis.modifyOrder, params)
 }
+// --- 平仓/删除挂单
+export function _closeOrder (params = {}) {
+  return http.post(apis.closeOrder, params)
+}

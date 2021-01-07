@@ -4,8 +4,8 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import EditOrderPop from './EditOrderPop'
 import { getCmdArr, toDecimal } from '../../../../utils/utilFunc'
 
-const OrderSPanes = ({ data, type }) => {
-  // console.log("====OrderSPanes render", data)
+const OrderSPanes = ({ data, type, onCloseOrder }) => {
+  console.log("====OrderSPanes render", data)
   
   let { list, isFetching } = data
   const lastColMenu = (
@@ -153,7 +153,7 @@ const OrderSPanes = ({ data, type }) => {
       {
         title: (
           <Dropdown overlay={lastColMenu} placement="bottomRight">
-            <Button>
+            <Button type="default">
               <span>{type == 0 ? "平仓" : "取消"}</span>
               <IconFont type="iconDD" className="iconDD" />
             </Button>
@@ -163,12 +163,14 @@ const OrderSPanes = ({ data, type }) => {
         key: 'closeOrder',
         className: 'op-cell-closeOrder',
         align: 'center',
-        render: () => {
+        render: (closeOrder,item) => {
           return (
+            ((!isFoldRow(item.key) && item.ticket.length <= 1) || isFoldRow(item.key))
+            &&
             <Button 
               type="default"
               className="op-btn-close"
-              onClick={(e) => { e.stopPropagation();console.log("123") }}
+              onClick={() => onCloseOrder(item)}
             >
               <IconFont 
                 type="iconClose" 

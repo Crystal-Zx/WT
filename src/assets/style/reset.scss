@@ -1,3 +1,4 @@
+// reset
 // 取消按钮点击光晕效果
 button[ant-click-animating-without-extra-node]:after {  
   border: 0 none;
@@ -16,7 +17,6 @@ p {
 .ant-spin.ant-spin-spinning .ant-spin-dot-item {
   background-color: $themeBlue;
 }
-
 // antd inputNumber
 .ant-input-number {
   &:hover,&:focus {
@@ -32,4 +32,62 @@ p {
   .ant-input-number-handler:hover .ant-input-number-handler-up-inner, .ant-input-number-handler:hover .ant-input-number-handler-down-inner {
     color: $themeBlue;
   }
+}
+// antd modal common
+.ant-modal-footer button + button,
+.ant-modal-confirm .ant-modal-confirm-btns button + button {
+  margin-left: 10px !important;
+}
+// --- antd confirm
+.ant-modal-confirm {
+  .ant-modal-confirm-title {
+    color: $fontColor !important;
+  }
+  .ant-modal-confirm-content {
+    margin-top: 1.5em !important;
+    color: $fontColorForLight !important;
+  }
+  .ant-modal-confirm-btns {
+    margin-top: 1.5em !important;
+    float: unset !important;
+    text-align: center !important;
+    .ant-btn-primary {
+      background: $themeBlue !important;
+      border-color: $themeBlue !important;
+      &[disabled],&[disabled]:hover {
+        color: #fff !important; 
+        opacity: .65 !important;
+      }
+    }
+    .ant-btn:not(.ant-btn-primary) {
+      color: $fontColor !important;
+      &:hover {
+        color: $themeBlue !important;
+        border-color: $themeBlue !important;
+      }
+    }
+  }
+  
+}
+
+// wt common
+// --- btn group (主要是返回和确定按钮)
+.wt-btn-ok {
+  background: $themeBlue !important;
+  border-color: $themeBlue !important;
+  &[disabled],&[disabled]:hover {
+    color: #fff !important; 
+    opacity: .65 !important;
+  }
+}
+.wt-btn-cancel {
+  color: $fontColor !important;
+  &:hover {
+    color: $themeBlue !important;
+    border-color: $themeBlue !important;
+  }
+}
+.wt-input-error {
+  border-color: $sellColor !important;
+  color: $sellColor !important;
 }

@@ -1,22 +1,42 @@
+import { Modal, InputNumber, notification } from 'antd'
 import CardTabs from '../../../../components/CardTabs/CardTabs'
 import OrderSPanes from './OrderSPanes'
 import styles from './OrderPanes.module.scss'
 
-import React,{ useState, useEffect } from 'react'
+import React,{ useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
-import { toDecimal, isBuy } from '../../../../utils/utilFunc'
-import { getPositions, getHistories } from './OrderAction' 
+import { getPositions, getHistories, closeOrder } from './OrderAction' 
 import { setAccountInfo } from '../../MainAction'
+import { toDecimal, isBuy } from '../../../../utils/utilFunc'
+import IconFont from '../../../../utils/iconfont/iconfont'
 
 const OrderPanes = ({ socket, info, opData, dispatch}) => {
-  // console.log("====OrderPanes", opData)
+  console.log("====OrderPanes", opData)
   const [activeKey, setActiveKey] = useState("0")
   const [listArr, setListArr] = useState(opData)
-  // console.log("position list:", listArr[0])
+  const volumeRef = useRef(null)
 
+  const { confirm } = Modal
+
+
+  const init = () => {
+    if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
+      activeKey < 2 && dispatch(getPositions())
+      activeKey >= 2 && dispatch(getHistories({
+        from: 0, to: new Date().getTime()
+      }))
+    }
+  }
+  // 右上角全局提示
+  const openNotificationWithIcon = params => {
+    const { type, msg, desc } = params
+    notification[type]({
+      message: msg, description: desc
+    })
+  }
   const onChange = activeKey => {
     setActiveKey(activeKey)
-    socket.on("order", (data) => onMessage(data, activeKey))
+    // socket.on("order", (data) => onMessage(data, activeKey))
     if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
       activeKey < 2 && dispatch(getPositions())
       activeKey >= 2 && dispatch(getHistories({
@@ -30,16 +50,6 @@ const OrderPanes = ({ socket, info, opData, dispatch}) => {
       dispatch(setAccountInfo({ profit: totalProfit }))
     }
   }
-
-  const init = () => {
-    if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
-      activeKey < 2 && dispatch(getPositions())
-      activeKey >= 2 && dispatch(getHistories({
-        from: 0, to: new Date().getTime()
-      }))
-    }
-  }
-
   const onMessage = (data, activeKey) => {
     const ospData = listArr[activeKey].list
     // console.log("====ospData:", ospData)
@@ -59,44 +69,6 @@ const OrderPanes = ({ socket, info, opData, dispatch}) => {
           item.profit = ((item.close_price - item.open_price) * item.volume * data.contract_size * data.trans_price_ask * flag).toFixed(2)
         }
         item.close_price = toDecimal(item.close_price, data.digits)
-
-        // if(trd.children.length) {
-        //   // 遍历处理同一货币对下的不同订单的即时价&盈利值
-        //   for(let cd of trd.children) {
-        //     if(cd.symbol === data.symbol) {
-        //       let flag
-        //       if(isBuy(cd.cmdForCh)) {  // 多单 buy
-        //         cd.close_price = data.bid
-        //         flag = 1
-        //       } else {  // 空单 sell
-        //         cd.close_price = data.ask
-        //         flag = -1
-        //       }
-        //       // 10000 -> data.contract_size；0.00965372 -> data.trans_price
-        //       if(!Number(activeKey)) {
-        //         cd.profit = ((cd.close_price - cd.open_price) * cd.volume * 100000 * 0.00965372 * flag).toFixed(2)
-        //       }
-        //       cd.close_price = toDecimal(cd.close_price, data.digits)
-        //     }
-        //   }
-        //   // 更新该货币对下的盈利值
-        //   if(!Number(activeKey)) {
-        //     trd.profit = (trd.children.reduce((prev, item) => prev + Number(item.profit),0)).toFixed(2)
-        //   }
-        // } else {
-        //   let flag
-        //   if(isBuy(trd.cmdForCh)) {  // 多单 buy
-        //     trd.close_price = data.bid
-        //     flag = 1
-        //   } else {  // 空单 sell
-        //     trd.close_price = data.ask
-        //     flag = -1
-        //   }
-        //   if(!Number(activeKey)) {
-        //     trd.profit = ((trd.close_price - trd.open_price) * trd.volume * 100000 * 0.00965372 * flag).toFixed(2)
-        //   }
-        //   trd.close_price = toDecimal(trd.close_price, data.digits)
-        // }
       }
       listArr[activeKey].list = ospData
       setListArr(listArr.concat([]))
@@ -115,10 +87,55 @@ const OrderPanes = ({ socket, info, opData, dispatch}) => {
       }
     }
   }
+  const onCloseOrder = (item) => {
+    const ticket = Array.isArray(item.ticket) ? item.ticket.join(",") : item.ticket
+    confirm({
+      title: `确定${Number(activeKey) === 0 ? '平仓' : '删除该挂单'}？`,
+      icon: <IconFont type="iconWarning" />,
+      content: (
+        <>
+          <span>请选择平仓手数：</span>
+          <InputNumber
+            ref={volumeRef}
+            min={0.01}
+            max={item.volume}
+            step={0.01}
+            defaultValue={item.volume}
+            size="small"
+          />
+        </>
+      ),
+      className: "op-confirm-closeOrder",
+      okText: "确定",
+      cancelText: "取消",
+      getContainer: () => document.querySelector(".main-middle-x .ant-tabs-card"),
+      onOk: () => {
+        console.log("ok")
+        console.log(volumeRef.current.input.value, ticket, activeKey)
+        return dispatch(closeOrder({
+          lots: volumeRef.current.input.value, ticket, activeKey
+        })).then(res => {
+          console.log("====onOk then:",res)
+          const { ticket } = res.value
+          openNotificationWithIcon({
+            type: 'success', msg: `${Number(activeKey) === 0 ? '平仓' : '删除该挂单'}成功`, desc: `被操作的订单编号为：${ticket.join(",")}`
+          })
+        }).catch(err => {
+          console.log("====onOk catch:",err)
+          openNotificationWithIcon({
+            type: 'error', msg: `${Number(activeKey) === 0 ? '平仓' : '删除该挂单'}失败`, desc: err
+          })
+        })
+      },
+      onCancel: () => {
+        console.log("cancel")
+      }
+    })
+  }
 
   useEffect(() => {
     init()
-  }, [])
+  }, [listArr[activeKey].list.length, listArr[activeKey].isFetching])
 
   useEffect(() => {
     setListArr(opData)
@@ -134,7 +151,13 @@ const OrderPanes = ({ socket, info, opData, dispatch}) => {
     <CardTabs
       className={styles['order-x']}
       initialPanes={[
-        { title: '持仓单', content: <OrderSPanes data={listArr[0]} type="0" />, key: '0'
+        { title: '持仓单', content: 
+          <OrderSPanes 
+            data={listArr[0]} 
+            type="0"
+            onCloseOrder={onCloseOrder}
+          />,
+          key: '0'
         },
         { title: '挂单交易', content: <OrderSPanes data={listArr[1]} type="1" />, key: '1' },
         { title: '历史订单', content: <OrderSPanes data={listArr[2]} type="2" />, key: '2' }
@@ -150,8 +173,10 @@ const areEqual = (prevProps, nextProps) => {
   即： 不更新返回true；需更新返回false */
   // console.log("====OP areEqual", prevProps.opData, nextProps.opData, JSON.stringify(prevProps.opData) === JSON.stringify(nextProps.opData))
   if(JSON.stringify(prevProps.opData) === JSON.stringify(nextProps.opData) && JSON.stringify(prevProps.socket) === JSON.stringify(nextProps.socket) && JSON.stringify(prevProps.info) === JSON.stringify(nextProps.info)) {
+    // console.log("===OP areEqual true")
     return true
   } else {
+    // console.log("===OP areEqual false")
     return false
   }
 }

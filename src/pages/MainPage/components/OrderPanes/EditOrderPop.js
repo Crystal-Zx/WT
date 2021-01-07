@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button, InputNumber, notification } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
@@ -12,14 +12,18 @@ const EditOrderPop = ({ data, dispatch }) => {
   const [visible, setVisible] = useState(false)
   const [isTpError, setIsTpError] = useState(false)
   const [isSlError, setIsSlError] = useState(false)
+  const tpRef = useRef(null)
+  const slRef = useRef(null)
+
   const digits = (data.close_price + "").split(".")[1].length
-  let tp = data.tp || 0,sl = data.sl || 0
+  
 
   const showModal = (e) => {
     console.log("====showModal",e)
     e.stopPropagation()
     setVisible(true)
   }
+  // 右上角全局提示
   const openNotificationWithIcon = params => {
     const { type, msg, desc } = params
     notification[type]({
@@ -29,17 +33,14 @@ const EditOrderPop = ({ data, dispatch }) => {
 
   // 订单修改
   // --- 修改止盈
-  const changeTp = (val,type) => {
-    console.log("====onchange", val, type)
+  const changeTpOrSl = (val,type) => {
     // 判断止盈
     if(type === "tp") {
       setIsTpError((!isBuy(data.cmdForCh) && val > data.close_price) || (isBuy(data.cmdForCh) && val < data.close_price))
-      tp = val
     } else if(type === "sl") {
       setIsSlError((!isBuy(data.cmdForCh) && val < data.close_price) || (isBuy(data.cmdForCh) && val > data.close_price))
-      sl = val
     }
-    
+    console.log(tpRef.current.input.value, slRef.current.input.value)
   }
   // --- 提交
   const handleOk = (e) => {
@@ -49,9 +50,12 @@ const EditOrderPop = ({ data, dispatch }) => {
     dispatch(modifyOrder({
       open_price: data.open_price,
       ticket: data.ticket[0] || data.ticket,
-      tp: tp || data.tp,
-      sl: sl || data.sl
+      tp: tpRef.current.input.value,
+      sl: slRef.current.input.value
     })).then(res => {
+      openNotificationWithIcon({
+        type: 'success', msg: '修改订单成功'
+      })
       setLoading(false)
       setVisible(false)
     }).catch(err => {
@@ -65,7 +69,7 @@ const EditOrderPop = ({ data, dispatch }) => {
   const handleCancel = (e) => {
     e.stopPropagation()
     setVisible(false)
-  }
+  }  
 
   return (
     <>
@@ -78,7 +82,7 @@ const EditOrderPop = ({ data, dispatch }) => {
       </Button>
       <Modal
         width={360}
-        className="eop-x"
+        className="eop-modal-x"
         visible={visible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -88,19 +92,20 @@ const EditOrderPop = ({ data, dispatch }) => {
         footer={[
           <Button 
             key="back" 
-            className="eop-btn-cancel"
+            className="wt-btn-cancel"
             onClick={handleCancel}
           >
-            Return
+            取消
           </Button>,
           <Button 
             key="submit" 
             type="primary" 
-            className="eop-btn-ok"
+            className="wt-btn-ok"
             loading={loading} 
             onClick={handleOk}
+            disabled={isTpError || isSlError}
           >
-            Submit
+            确认
           </Button>,
         ]}
       >
@@ -124,20 +129,23 @@ const EditOrderPop = ({ data, dispatch }) => {
           <div className="eop-input-x">
             <span>止盈</span>
             <InputNumber
+              ref={tpRef}
               min={0.00}
               step={Math.pow(10, -1 * digits).toFixed(digits)}
               defaultValue={data.tp || 0.00}
-              onChange={(val) => changeTp(val, 'tp')}
-              className={isTpError ? 'eop-error' : ''}
+              onChange={val => changeTpOrSl(val, 'tp')}
+              className={isTpError ? 'wt-input-error' : ''}
             />
           </div>
           <div className="eop-input-x">
             <span>止损</span>
             <InputNumber
+              ref={slRef}
               min={0.00}
               step={Math.pow(10, -1 * digits).toFixed(digits)}
               defaultValue={data.sl || 0.00}
-              onChange={val => { sl = val }}
+              onChange={val => changeTpOrSl(val, 'sl')}
+              className={isSlError ? 'eop-error' : ''}
             />
           </div>
           <div className="eop-info-x">

@@ -24,6 +24,13 @@
       }
       .op-cell-closeOrder {
         padding-left: unset;
+        .op-btn-close {
+          border: 0;
+          background: unset;
+          &:hover,&:focus {
+            color: $themeBlue;
+          }
+        }
       }
       // header
       .ant-table-thead {
@@ -93,8 +100,9 @@
         }
       }
     }
-    // 订单修改弹窗(模态窗)
-    .eop-x {
+    // Modal弹窗
+    // --- 订单修改弹窗
+    .eop-modal-x {
       .ant-modal-body {
         padding: unset;
       }
@@ -133,12 +141,6 @@
           justify-content: space-between;
           align-items: center;
           border-bottom: 1px solid $tableBorder;
-          .eop-error {
-            &.ant-input-number {
-              border-color: $sellColor;
-              color: $sellColor;
-            }
-          }
         }
         .eop-info-x {
           margin: 1em 0;
@@ -156,17 +158,12 @@
         border-top: 0;
         display: flex;
         justify-content: center;
-        .eop-btn-cancel {
-          color: $fontColor;
-          &:hover {
-            color: $themeBlue;
-            border-color: $themeBlue;
-          }
-        }
-        .eop-btn-ok {
-          background: $themeBlue;
-          border-color: $themeBlue;
-        }
+      }
+    }
+    // --- 确认平仓/删除挂单的弹窗
+    .op-confirm-closeOrder {
+      input {
+        color: $fontColorForLight !important;
       }
     }
     // common style

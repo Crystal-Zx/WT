@@ -1603,3 +1603,76 @@ export const symbols = {
   ],
   "msg": ""
 }
+
+export const plist = [
+  {
+    "close_price": 104.917,
+    "close_time": "2020-11-10 10:03:27",
+    "cmd": 0,
+    "comment": "",
+    "commission": 0.0,
+    "login": 10569,
+    "open_price": 104.714,
+    "open_time": "2020-11-02 07:59:38",
+    "profit": 1.9300000000000002,
+    "sl": 0.0,
+    "storage": -0.32,
+    "symbol": "USDJPY",
+    "ticket": 1194942,
+    "tp": 0.0,
+    "volume": 0.08
+  },
+  {
+      "close_price": 1.18306,
+      "close_time": "2020-11-10 10:03:27",
+      "cmd": 1,
+      "comment": "from #1213414",
+      "commission": 0.0,
+      "login": 10569,
+      "open_price": 1.18892,
+      "open_time": "2020-11-09 04:11:57",
+      "profit": 5.86,
+      "sl": 1.2,
+      "storage": -0.01,
+      "symbol": "EURUSD",
+      "ticket": 1213582,
+      "tp": 0.0,
+      "volume": 0.02
+  },
+  {
+      "close_price": 1.18306,
+      "close_time": "2020-11-10 10:03:27",
+      "cmd": 1,
+      "comment": "",
+      "commission": 0.0,
+      "login": 10569,
+      "open_price": 1.18893,
+      "open_time": "2020-11-09 04:11:36",
+      "profit": 11.74,
+      "sl": 0.0,
+      "storage": -0.02,
+      "symbol": "EURUSD",
+      "ticket": 1213408,
+      "tp": 0.0,
+      "volume": 0.02
+  }
+]
+export const olist = [
+  {
+    "close_price": 104.917,
+    "close_time": "2020-11-10 10:03:27",
+    "cmd": 0,
+    "comment": "",
+    "commission": 0.0,
+    "login": 10569,
+    "open_price": 104.714,
+    "open_time": "2020-11-02 07:59:38",
+    "profit": 1.9300000000000002,
+    "sl": 0.0,
+    "storage": -0.32,
+    "symbol": "USDJPY",
+    "ticket": 1194942,
+    "tp": 0.0,
+    "volume": 0.01
+  }
+]

@@ -61,7 +61,7 @@ function MainPage () {
         <OrderPanes />
       </div>
       <div className="main-bottom-x">
-        {/* <AccountInfo /> */}
+        <AccountInfo />
       </div>
       <div className="main-topright-x">
         <span className="tr-currtime-x">{currDate}</span>

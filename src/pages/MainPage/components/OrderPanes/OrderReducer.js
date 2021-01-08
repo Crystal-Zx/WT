@@ -63,62 +63,34 @@ const positionOrder = (state = {
         }
       })
     case MODIFY_ORDER_FULFILLED: 
-      const pList = state.position.list
-      for(var p of pList) {
-        if(p.ticket == payload.ticket) {
-          p.tp = payload.tp
-          p.sl = payload.sl
+      const modifyList = !Number(payload.activeKey) ? state.position.list : state.order.list
+      for(var item of modifyList) {
+        if(item.ticket == payload.ticket) {
+          item.tp = payload.tp
+          item.sl = payload.sl
         }
       }
       return Object.assign({}, state, {
-        ...state,
         position: {
           isFetching: false,
-          list: pList
+          list: !Number(payload.activeKey) ? modifyList : state.position.list
+        },
+        order: {
+          isFetching: false,
+          list: Number(payload.activeKey) ? modifyList : state.order.list
         }
       })
     case MODIFY_ORDER_REJECTED:
       return Object.assign({}, state, {
-        ...state,
         position: {
           ...state.position,
           isFetching: false
-        }
-      })
-    case CLOSE_ORDER_PENDING:
-      return Object.assign({}, state, {
-        ...state,
-        position: {
-          ...state.position,
-          isFetching: true
         },
         order: {
           ...state.order,
-          isFetching: true
+          isFetching: false
         }
       })
-    case CLOSE_ORDER_FULFILLED:
-      // if(Number(payload.activeKey) === 0) {
-        return Object.assign({}, state, {
-          ...state,
-          position: {
-            list: [],  //state.position.list.filter(item => !payload.ticket.includes(item.ticket + "")),
-            isFetching: false
-          },
-          order: {
-            list: [],  //state.order.list.filter(item => !payload.ticket.includes(item.ticket + "")),
-            isFetching: false
-          }
-        })
-      // } else if (Number(payload.activeKey) === 1) {
-      //   return Object.assign({}, state, {
-      //     ...state,
-      //     order: {
-      //       list: [],  //state.order.list.filter(item => !payload.ticket.includes(item.ticket + "")),
-      //       isFetching: false
-      //     }
-      //   })
-      // }
     case GET_POSITIONS_REJECTED: // mock
       return Object.assign({}, state, {
         position: {

@@ -52,8 +52,8 @@ export const getHistories = createAction(GET_HISTORIES, params => {
 })
 // 修改订单止盈止损
 export const modifyOrder = createAction(MODIFY_ORDER, params => {
-  return _modifyOrder(params).then(response => {
-    console.log(params,response)
+  const { activeKey, ...axiosParams } = params
+  return _modifyOrder(axiosParams).then(response => {
     if(response.code) {
       return params
     }
@@ -61,8 +61,8 @@ export const modifyOrder = createAction(MODIFY_ORDER, params => {
 })
 // 平仓/删除挂单
 export const closeOrder = createAction(CLOSE_ORDER, params => {
-  const { activeKey, ...param } = params
-  return _closeOrder(param).then(response => {
-    return { ticket: (param.ticket + "").split(","), activeKey }
+  const { activeKey, ...axiosParams } = params
+  return _closeOrder(axiosParams).then(response => {
+    return { ticket: (axiosParams.ticket + "").split(","), activeKey }
   })
 })

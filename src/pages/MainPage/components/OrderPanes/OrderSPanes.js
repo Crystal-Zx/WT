@@ -4,19 +4,33 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import EditOrderPop from './EditOrderPop'
 import { getCmdArr, toDecimal } from '../../../../utils/utilFunc'
 
-const OrderSPanes = ({ data, type, onCloseOrder }) => {
+const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }) => {
   console.log("====OrderSPanes render", data)
   
   let { list, isFetching } = data
+  
+  // 表头平仓
+  // --- 获取对应平仓/删除项的订单号
+  const getTickets = (type) => {
+    switch(type) {
+      case 0:
+        return list.map(item => item.ticket)
+      case 1:
+        return list.map(item => {
+          if(item.profit > 0) return item.ticket
+        })
+    }
+  }
+  // --- 表头下拉框内容
   const lastColMenu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item onClick={() => onShowConfirmForAll(getTickets(0))}>
         <>对所有头寸进行平仓</>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item onClick={() => onShowConfirmForAll(getTickets(1))}>
         <>对盈利头寸进行平仓（净利）</>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item onClick={() => onShowConfirmForAll(getTickets(2))}>
         <>对亏损头寸进行平仓（净利）</>
       </Menu.Item>
     </Menu>
@@ -24,6 +38,7 @@ const OrderSPanes = ({ data, type, onCloseOrder }) => {
   const isFoldRow = (key) => { // 非折叠行->0；折叠行->1
     return !isNaN(Number(key))
   }
+  // 持仓单columns配置项
   const getColumns = () => {
     return [
       {
@@ -170,7 +185,7 @@ const OrderSPanes = ({ data, type, onCloseOrder }) => {
             <Button 
               type="default"
               className="op-btn-close"
-              onClick={() => onCloseOrder(item)}
+              onClick={() => onShowConfirmForSingle(item)}
             >
               <IconFont 
                 type="iconClose" 
@@ -182,6 +197,7 @@ const OrderSPanes = ({ data, type, onCloseOrder }) => {
       }
     ]
   }
+  // 历史订单columns配置项
   const getHistoryCol = () => [
     {
       title: '品种',
@@ -287,7 +303,7 @@ const OrderSPanes = ({ data, type, onCloseOrder }) => {
   
   return (
     <Table
-      dataSource={handleList(list)}
+      dataSource={type < 2 ? handleList(list) : list}
       loading={isFetching}
       columns={type < 2 ? getColumns() : getHistoryCol()}
       pagination={false}

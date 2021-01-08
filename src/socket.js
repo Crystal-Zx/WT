@@ -54,7 +54,12 @@ class socket {
       const quoteType = ['quote', 'mini'],
             KLineTypes = ['req', 'update'],
             orderType = ['quote']
-
+      if(data.type === 'symbol') {
+        this.onReceiver({
+          Event: 'symbol',
+          Data: data
+        })
+      }
       if(quoteType.includes(data.type)) {
         this.onReceiver({
           Event: 'quote',

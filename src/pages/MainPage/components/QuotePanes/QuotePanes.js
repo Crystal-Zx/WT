@@ -11,19 +11,24 @@ import QuoteSPane from './QuoteSPanes.js';
 import styles from './QuotePanes.module.scss';
 
 const QuotePanes = (props) => {
-  console.log("====QuotePanes render")
+  console.log("====QuotePanes render") 
   const { 
-    getSymbols, changeSymbolType, initSocket, symbolList, filterType, socket
+    dispatch, symbolList, filterType, socket
   } = props
   const { list, types, isFetching } = symbolList
   
   const init = () => {
-    initSocket()
+    dispatch(initSocket())
     const keyLen = Object.keys(list).length
     if (keyLen <= 1 && !isFetching) {
-      getSymbols()
+      dispatch(getSymbols()).then((res) => {
+        const { list } = res.value
+        const defaultType = Object.keys(list)[0]
+        dispatch(setSymbolType(defaultType))
+      })
     }
   }
+  
   const getQuoteSPanes = () => {
     const typeArr = Object.keys(list)
     
@@ -42,6 +47,10 @@ const QuotePanes = (props) => {
 
   useEffect(() => {
     if(Object.keys(socket).length && socket.checkOpen()) {
+      socket.send({
+        "cmd": "symbols",
+        "args": [""]
+      })
       const args = types.join(".")
       // 获取报价信息
       socket.send({
@@ -61,7 +70,7 @@ const QuotePanes = (props) => {
               <LineTabs
                 initialPanes={getQuoteSPanes()}
                 activeKey={filterType}
-                onChange={changeSymbolType}
+                onChange={sType => dispatch(setSymbolType(sType))}
               ></LineTabs>
             ),
             key: '1'
@@ -84,26 +93,6 @@ export default connect(
       filterType,
       symbolList,
       socket: state.MainReducer.initSocket
-    }
-  },
-  dispatch => { 
-    // 此方法只是用于建立和store.dispatch的联系
-    // 若没有使用dispatch的方法 直接写在组件内部即可！！！
-    return {
-      getSymbols: () => {
-        dispatch(getSymbols()).then((res) => {
-          const { list } = res.value
-          const defaultType = Object.keys(list)[0]
-          dispatch(setSymbolType(defaultType))
-        })
-      },
-      changeSymbolType: (sType) => {
-        console.log("change type:", sType)
-        dispatch(setSymbolType(sType))
-      },
-      initSocket: () => {
-        dispatch(initSocket())
-      }
     }
   }
 )(QuotePanes)

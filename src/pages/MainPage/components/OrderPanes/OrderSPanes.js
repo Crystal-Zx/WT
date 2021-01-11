@@ -5,32 +5,52 @@ import EditOrderPop from './EditOrderPop'
 import { getCmdArr, toDecimal } from '../../../../utils/utilFunc'
 
 const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }) => {
-  console.log("====OrderSPanes render", data)
+  // console.log("====OrderSPanes render", data)
   
   let { list, isFetching } = data
   
   // 表头平仓
   // --- 获取对应平仓/删除项的订单号
   const getTickets = (type) => {
+    let filterList
     switch(type) {
       case 0:
         return list.map(item => item.ticket)
       case 1:
-        return list.map(item => {
-          if(item.profit > 0) return item.ticket
-        })
+        filterList = list.filter(item => item.profit >= 0 )
+        return filterList.map(item => item.ticket)
+      case 2:
+        filterList = list.filter(item => item.profit < 0 )
+        return filterList.map(item => item.ticket)
+      case 3:
+        return list.map(item => item.ticket)
+      default: return []
     }
   }
+  let getTicketsFor0 = getTickets(0),     // 平仓所有头寸
+      getTicketsFor1 = getTickets(1),     // 平仓盈利头寸
+      getTicketsFor2 = getTickets(2),     // 平仓亏损头寸
+      getTicketsForOrder = getTickets(3)  // 删除全部挂单
+
   // --- 表头下拉框内容
   const lastColMenu = (
     <Menu>
-      <Menu.Item onClick={() => onShowConfirmForAll(getTickets(0))}>
+      <Menu.Item 
+        onClick={() => onShowConfirmForAll(getTicketsFor0)}
+        disabled={!getTicketsFor0 || !getTicketsFor0.length}
+      >
         <>对所有头寸进行平仓</>
       </Menu.Item>
-      <Menu.Item onClick={() => onShowConfirmForAll(getTickets(1))}>
+      <Menu.Item 
+        onClick={() => onShowConfirmForAll(getTicketsFor1)}
+        disabled={!getTicketsFor1 || !getTicketsFor1.length}
+      >
         <>对盈利头寸进行平仓（净利）</>
       </Menu.Item>
-      <Menu.Item onClick={() => onShowConfirmForAll(getTickets(2))}>
+      <Menu.Item 
+        onClick={() => onShowConfirmForAll(getTicketsFor2)}
+        disabled={!getTicketsFor2 || !getTicketsFor2.length}
+      >
         <>对亏损头寸进行平仓（净利）</>
       </Menu.Item>
     </Menu>
@@ -166,14 +186,29 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         }
       },
       {
-        title: (
-          <Dropdown overlay={lastColMenu} placement="bottomRight">
-            <Button type="default">
-              <span>{type == 0 ? "平仓" : "取消"}</span>
-              <IconFont type="iconDD" className="iconDD" />
-            </Button>
-          </Dropdown>
-        ),
+        title: () => {
+          if(Number(type) === 0) {
+            return (
+              <Dropdown overlay={lastColMenu} placement="bottomRight">
+                <Button type="primary">
+                  <span>{type == 0 ? "平仓" : "取消"}</span>
+                  <IconFont type="iconDD" className="iconDD" />
+                </Button>
+              </Dropdown>
+            )
+          } else if(Number(type) === 1) {
+            return (
+              <Button 
+                type="primary" 
+                className="op-btn-closeOrder"
+                disabled={!getTicketsForOrder || !getTicketsForOrder.length}
+                onClick={() => onShowConfirmForAll(getTicketsForOrder)}
+              >
+                全部删除
+              </Button>
+            )
+          }
+        },
         dataIndex: 'closeOrder',
         key: 'closeOrder',
         className: 'op-cell-closeOrder',
@@ -332,7 +367,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
 const areEqual = (prevProps, nextProps) => {
   const prevData = prevProps.data,
         nextData = nextProps.data
-  console.log("====OSP areEqual", prevData.list, nextData.list,JSON.stringify(prevData.list) === JSON.stringify(nextData.list))
+  // console.log("====OSP areEqual", prevData.list, nextData.list,JSON.stringify(prevData.list) === JSON.stringify(nextData.list))
   if(JSON.stringify(prevData.list) === JSON.stringify(nextData.list) && prevData.isFetching === nextData.isFetching) {
     return true
   } else {

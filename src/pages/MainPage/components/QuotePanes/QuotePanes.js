@@ -10,8 +10,10 @@ import { _login } from '../../../../services/index.js';
 import QuoteSPane from './QuoteSPanes.js';
 import styles from './QuotePanes.module.scss';
 
+import { slist } from '../../../../services/mock'
+
 const QuotePanes = (props) => {
-  console.log("====QuotePanes render") 
+  console.log("====QuotePanes render", props) 
   const { 
     dispatch, symbolList, filterType, socket
   } = props
@@ -19,13 +21,23 @@ const QuotePanes = (props) => {
   
   const init = () => {
     dispatch(initSocket())
-    const keyLen = Object.keys(list).length
-    if (keyLen <= 1 && !isFetching) {
-      dispatch(getSymbols()).then((res) => {
-        const { list } = res.value
-        const defaultType = Object.keys(list)[0]
-        dispatch(setSymbolType(defaultType))
-      })
+    dispatch(getSymbols({ isFetching: true }))
+    // const keyLen = Object.keys(list).length
+    // if (keyLen <= 1 && !isFetching) {
+    //   dispatch(getSymbols()).then((res) => {
+    //     const { list } = res.value
+    //     const defaultType = Object.keys(list)[0]
+    //     dispatch(setSymbolType(defaultType))
+    //   })
+    // }
+  }
+  // 获取报价列表
+  const onMessage = (data) => {
+    if(data.type === "symbol") {
+      data = data.data
+      console.log("===QP symbol:", data)
+      dispatch(getSymbols({isFetching: false, list: slist }))
+      dispatch(setSymbolType(data[0].group))
     }
   }
   
@@ -46,19 +58,24 @@ const QuotePanes = (props) => {
   },[])
 
   useEffect(() => {
-    if(Object.keys(socket).length && socket.checkOpen()) {
-      socket.send({
-        "cmd": "symbols",
-        "args": [""]
+    // console.log(socket, Object.keys(socket).length && socket.checkOpen())
+    if(Object.keys(socket).length) {
+      socket.on("open", () => {
+        console.log("socket open, start to sending ms...")
+        socket.send({
+          "cmd": "symbols",
+          "args": [""]
+        })
+        socket.on("symbol", onMessage)
       })
-      const args = types.join(".")
-      // 获取报价信息
-      socket.send({
-        "cmd": "quote",
-        "args": [`${args}`]
-      })
+      // const args = types.join(".")
+      // // 获取报价信息
+      // socket.send({
+      //   "cmd": "quote",
+      //   "args": [`${args}`]
+      // })
     }
-  }, [JSON.stringify(socket) ,types.length])
+  }, [JSON.stringify(socket)])// ,types.length])
   
   return (
     <div className={styles['quote-panes-x']}> 

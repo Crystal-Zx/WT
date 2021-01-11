@@ -11,7 +11,7 @@ import {
 
 const initSocket = (state = {}, action) => {
   const { type, payload } = action
-  console.log(payload)
+  // console.log(payload)
   switch(type) {
     case INIT_SOCKET: {
       return payload

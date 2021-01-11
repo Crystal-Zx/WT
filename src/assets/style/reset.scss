@@ -33,6 +33,18 @@ p {
     color: $themeBlue;
   }
 }
+// antd btn primary
+.ant-btn-primary {
+  background: $themeBlue !important;
+  border-color: unset !important;
+  &:hover {
+    border-color: unset !important;
+  }
+  &[disabled],&[disabled]:hover {
+    color: #fff !important; 
+    opacity: .65 !important;
+  }
+}
 // antd modal common
 .ant-modal-footer button + button,
 .ant-modal-confirm .ant-modal-confirm-btns button + button {

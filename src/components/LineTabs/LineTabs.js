@@ -4,7 +4,7 @@ import propTypes from 'prop-types'
 const { TabPane } = Tabs
 
 const LineTabs = ({ onChange, initialPanes, activeKey }) => {
-  console.log("====LineTabs render", initialPanes)
+  // console.log("====LineTabs render", initialPanes)
   return (
     <Tabs 
       type="line"

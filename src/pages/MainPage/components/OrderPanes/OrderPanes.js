@@ -11,7 +11,7 @@ import { toDecimal, isBuy } from '../../../../utils/utilFunc'
 import IconFont from '../../../../utils/iconfont/iconfont'
 
 const OrderPanes = ({ socket, info, listArr, dispatch}) => {
-  console.log("====OrderPanes", listArr)
+  // console.log("====OrderPanes", listArr)
   const [activeKey, setActiveKey] = useState("0")
   // const [listArr, setListArr] = useState(opData)
   const volumeRef = useRef(null)
@@ -90,8 +90,10 @@ const OrderPanes = ({ socket, info, listArr, dispatch}) => {
   }
   const onCloseOrder = (tickets) => {
     const ticketsStr = Array.isArray(tickets) ? tickets.join(",") : tickets
-    dispatch(closeOrder({
-      lots: volumeRef.current.input.value, ticket: ticketsStr, activeKey
+    const lots = volumeRef.current ? volumeRef.current.input.value : 0.00
+    // console.log(ticketsStr, lots)
+    return dispatch(closeOrder({
+      lots, ticket: ticketsStr, activeKey
     })).then(res => {
       // console.log("====onOk then:",res)
       const { ticket } = res.value
@@ -113,7 +115,7 @@ const OrderPanes = ({ socket, info, listArr, dispatch}) => {
       icon: <IconFont type="iconWarning" />,
       content: (
         <>
-          <span>请选择平仓手数：</span>
+          <span>请选择操作手数：</span>
           <InputNumber
             ref={volumeRef}
             min={0.01}
@@ -137,19 +139,18 @@ const OrderPanes = ({ socket, info, listArr, dispatch}) => {
     })
   }
   const onShowConfirmForAll = (tickets) => {
+    // console.log(tickets, typeof tickets)
     confirm({
       title: `确定${Number(activeKey) === 0 ? '平仓' : '删除'}下列订单号的订单？`,
       icon: <IconFont type="iconWarning" />,
       content: (
-        <p>{tickets}</p>
+        <p>{tickets.join(",")}</p>
       ),
       className: "op-confirm-closeOrder",
       okText: "确定",
       cancelText: "取消",
       getContainer: () => document.querySelector(".main-middle-x .ant-tabs-card"),
-      onOk: () => {
-        return onCloseOrder(tickets)
-      },
+      onOk: () => onCloseOrder(tickets),
       onCancel: () => {
         console.log("cancel")
       }
@@ -201,7 +202,7 @@ const OrderPanes = ({ socket, info, listArr, dispatch}) => {
 const areEqual = (prevProps, nextProps) => {
   /* 如果把 nextProps 传入 render 方法的返回结果与将 prevProps 传入 render 方法的返回结果一致则返回 true，否则返回 false。
   即： 不更新返回true；需更新返回false */
-  console.log("====OP areEqual", prevProps.listArr, nextProps.listArr, JSON.stringify(prevProps.listArr) === JSON.stringify(nextProps.listArr))
+  // console.log("====OP areEqual", prevProps.listArr, nextProps.listArr, JSON.stringify(prevProps.listArr) === JSON.stringify(nextProps.listArr))
   if(JSON.stringify(prevProps.listArr) === JSON.stringify(nextProps.listArr) && JSON.stringify(prevProps.socket) === JSON.stringify(nextProps.socket) && JSON.stringify(prevProps.info) === JSON.stringify(nextProps.info)) {
     return true
   } else {
@@ -217,7 +218,7 @@ export default connect(
     } = state.OrderReducer
     const { initSocket, accountInfo } = state.MainReducer
     const { position, order } = positionOrder
-    console.log("store state:", state)
+    // console.log("store state:", state)
     return {
       socket: initSocket,
       info: accountInfo.info,

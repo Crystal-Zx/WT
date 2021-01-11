@@ -3,7 +3,8 @@ import {
   SET_SYMBOL_TYPE,
   GET_STYMBOLS_PENDING,
   GET_STYMBOLS_FULFILLED,
-  GET_STYMBOLS_REJECTED
+  GET_STYMBOLS_REJECTED,
+  GET_STYMBOLS
 } from './QuoteAction'
 
 // 选择显示哪一类报价列表
@@ -24,17 +25,21 @@ const symbolList = (state = {
 }, action) => {
   const { type, payload } = action
   switch(type) {
-    case GET_STYMBOLS_PENDING:
+    case GET_STYMBOLS:
       return Object.assign({}, state, {
-        isFetching: true
+        ...payload
       })
-    case GET_STYMBOLS_FULFILLED:
-      return Object.assign({}, state, {
-        list: payload.list,
-        types: payload.symbolTypes,
-        isFetching: false
-      })
-    case GET_STYMBOLS_REJECTED:
+    // case GET_STYMBOLS_PENDING:
+    //   return Object.assign({}, state, {
+    //     isFetching: true
+    //   })
+    // case GET_STYMBOLS_FULFILLED:
+    //   return Object.assign({}, state, {
+    //     list: payload.list,
+    //     types: payload.symbolTypes,
+    //     isFetching: false
+    //   })
+    // case GET_STYMBOLS_REJECTED:
     default:
       return state
   }

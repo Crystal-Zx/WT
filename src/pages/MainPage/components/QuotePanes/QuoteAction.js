@@ -8,7 +8,8 @@ export const SET_SYMBOL_TYPE = 'SET_SYMBOL_TYPE'
 export const GET_STYMBOLS = 'GET_STYMBOLS',
              GET_STYMBOLS_PENDING = 'GET_STYMBOLS_PENDING',
              GET_STYMBOLS_FULFILLED = 'GET_STYMBOLS_FULFILLED',
-             GET_STYMBOLS_REJECTED = 'GET_STYMBOLS_REJECTED'
+             GET_STYMBOLS_REJECTED = 'GET_STYMBOLS_REJECTED',
+             SET_STYMBOLS = 'SET_STYMBOLS'
 
 // export const getSymbols = createAction(GET_STYMBOLS, () => 
 //   _getSymbols().then(response => {
@@ -36,5 +37,6 @@ export const GET_STYMBOLS = 'GET_STYMBOLS',
 // )
 // --- 存储货币对（来源：websocket）
 export const getSymbols = createAction(GET_STYMBOLS, payload => payload)
+export const setSymbols = createAction(SET_STYMBOLS, payload => payload)
 // 选择显示哪一类报价列表
 export const setSymbolType = createAction(SET_SYMBOL_TYPE, filterType => filterType)

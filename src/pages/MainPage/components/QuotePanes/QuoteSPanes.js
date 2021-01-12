@@ -7,39 +7,50 @@ import { toDecimal } from '../../../../utils/utilFunc'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { addToKLine } from '../../MainAction'
+import { setSymbols } from './QuoteAction'
 
 const QuoteSPane = (props) => {
-  // console.log("====QSP render", props)
-  const { list, types, socket, addToKLine } = props
-  const currType = list.map(item => item.symbol)
+  console.log("====QSP render", props.list)
+  const { list, socket, addToKLine } = props
+  const currType = list.map(item => item.name)
   
   const [trData, setTrData] = useState(list)
   const [isExpandAll, setIsExpandAll] = useState(false)
   
-  useEffect(() => {
-    socket.on("quote", onMessage)
-  },[])
+  // useEffect(() => {
+  //   socket.on("quote", onMessage)
+  // },[])
   
   useEffect(() => {
-    sendMessage()
-  }, [types.length])
-
-  const sendMessage = () => {
-    const args = currType.join(".")
+    // const args = currType.join(".")
     // // 获取报价信息
     // socket.send({
     //   "cmd": "quote",
     //   "args": [`${args}`]
     // })
-    socket.send({
-      "cmd": "mini",
-      "args": [`${args}`]
-    })
-  }
+    // socket.send({
+    //   "cmd": "mini",
+    //   "args": [`${args}`]
+    // })
+    // socket.on("quote", onMessage)
+  }, [])
+
+  // const sendMessage = () => {
+  //   const args = currType.join(".")
+  //   // // 获取报价信息
+  //   // socket.send({
+  //   //   "cmd": "quote",
+  //   //   "args": [`${args}`]
+  //   // })
+  //   socket.send({
+  //     "cmd": "mini",
+  //     "args": [`${args}`]
+  //   })
+  // }
   const onMessage = (data) => {
     if(data.type === 'quote') {
       data = data.data
-      for(var item of trData) {
+      for(var item of list) {
         if(item.symbol === data.symbol) {
           item.isUp = item.buy ? data.ask > item.buy : 1
           item.buy = toDecimal(data.ask, data.digits)
@@ -48,7 +59,7 @@ const QuoteSPane = (props) => {
           break
         }
       }
-      setTrData(trData.concat([]))
+      // setTrData(trData.concat([]))
     }
     else if(data.type === 'mini') {
       data = data.data
@@ -63,7 +74,7 @@ const QuoteSPane = (props) => {
       // 将数据填到trData中以便更新视图
       for(var item of data) {
         if(currType.includes(item.symbol)) {
-          for(var trd of trData) {
+          for(var trd of list) {
             if(trd.symbol === item.symbol) {
               trd.high = item.high
               trd.low = item.low
@@ -73,7 +84,7 @@ const QuoteSPane = (props) => {
           }
         }
       }
-      setTrData(trData.concat([]))
+      // setTrData(trData.concat([]))
     }
   }
   const addToFavorite = (e) => {
@@ -106,7 +117,7 @@ const QuoteSPane = (props) => {
         </Button>
       </div>
       <TableBox
-        data={trData.filter(item => item.isShow)}
+        data={list.filter(item => item.isShow)}
         addToFavorite={addToFavorite}
         addToKLine={addToKLine}
         isExpandAll={isExpandAll}
@@ -135,6 +146,9 @@ export default connect(
       addToKLine: (e, symbol, digits) => {
         e.stopPropagation()
         dispatch(addToKLine({ symbol, digits }))
+      },
+      setSymbols: (data) => {
+        dispatch(setSymbols(data))
       }
     }
   }

@@ -1799,7 +1799,7 @@ export const slist = [{
 		"size": 1
 	}, {
 		"digits": 2,
-		"group": "C",
+		"group": "FOREX",
 		"name": "Boeing",
 		"point": 0.01,
 		"size": 1

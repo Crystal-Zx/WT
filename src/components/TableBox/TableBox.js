@@ -14,11 +14,11 @@ function TableBox (props) {
   }
   const renderContent = (val, row, index, type) => {
     const obj = {
-      children: val,
+      children: val || '---',
       props: {}
     }
-    if(expandedRows && expandedRows.includes(row.symbol)) {
-      obj.props.colSpan = type === 'buy' ? 3 : 0
+    if(expandedRows && expandedRows.includes(row.name)) {
+      obj.props.colSpan = type === 'ask' ? 3 : 0
       obj.children = (
         <div style={
           {display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}
@@ -27,7 +27,7 @@ function TableBox (props) {
             type="iconKLine"
             className="icon-kline"
             onClick={(e) => 
-              addToKLine(e,row.symbol, row.sell.split(".")[1].length)
+              addToKLine(e,row.name, row.bid.split(".")[1].length)
             }
           />
           <IconFont 
@@ -43,13 +43,13 @@ function TableBox (props) {
   const getColumns = () => [
     {
       title: '品种',
-      dataIndex: 'symbol',
-      key: 'symbol',
+      dataIndex: 'name',
+      key: 'name',
       width: '40.68%',
-      render: symbol => (
+      render: name => (
         <>
           <IconFont type="iconDown" className="iconDown" />
-          <span style={{ marginLeft: '8px' }}>{symbol}</span>
+          <span style={{ marginLeft: '8px' }}>{name}</span>
         </>
       )
     },
@@ -65,17 +65,17 @@ function TableBox (props) {
     },
     {
       title: '卖',
-      dataIndex: 'sell',
-      key: 'sell',
+      dataIndex: 'bid',
+      key: 'bid',
       align: 'center',
-      render: (...args) => renderContent(...args, 'sell')
+      render: (...args) => renderContent(...args, 'bid')
     },
     {
       title: '买',
-      dataIndex: 'buy',
-      key: 'buy',
+      dataIndex: 'ask',
+      key: 'ask',
       align: 'center',
-      render: (...args) => renderContent(...args, 'buy')
+      render: (...args) => renderContent(...args, 'ask')
     }
   ]
 
@@ -99,19 +99,18 @@ function TableBox (props) {
         className += index % 2 ? '' : 'dark-row'
         return className
       }}
-      expandedRowKeys={expandedRows}  // 展开的行
-      expandRowByClick={true}
-      onExpandedRowsChange={(expandedRows) => setExpandedRows(expandedRows)}
-      expandIconAsCell={false}
-      expandIconColumnIndex={-1}
-      expandedRowClassName={(record, index) => 'quote-expand-tr ' + (record.isUp ? 'quote-up' : 'quote-down')}
       expandable={{
-        expandedRowRender: record => { // record 是每一行的数据源
-          // const _record = Object.assign({}, record, {
-          //   spread: record.spread.replace("%",'')
-          // })
-          return <QuoteTr data={record} />
+        expandRowByClick: true,
+        expandIconAsCell: false,
+        expandIconColumnIndex: -1,
+        expandedRowKeys: expandedRows,  // 展开的行
+        expandedRowClassName: (record, index) => 'quote-expand-tr ' + (record.isUp ? 'quote-up' : 'quote-down'),
+        expandedRowRender: record => <QuoteTr data={record} />,
+        onExpandedRowsChange: (expandedRows) => {
+          setExpandedRows(expandedRows)
         }
+
+
       }}
     />
   )

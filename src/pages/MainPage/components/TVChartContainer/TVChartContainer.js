@@ -218,7 +218,6 @@ class TVChartContainer extends React.PureComponent {
   }
 
   getklinelist = (param) => {
-    // console.log("=======getKlinelist", this.interval)
     const that = this
     if (that.interval < 60) {
       that.socket.send({

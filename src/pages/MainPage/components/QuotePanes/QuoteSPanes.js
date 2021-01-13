@@ -2,38 +2,19 @@ import { Button } from 'antd'
 import SearchBox from '../../../../components/SearchBox/SearchBox.js'
 import TableBox from '../../../../components/TableBox/TableBox.js'
 import IconFont from '../../../../utils/iconfont/iconfont'
-import { toDecimal } from '../../../../utils/utilFunc'
 
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { addToKLine } from '../../MainAction'
-import { setSymbols } from './QuoteAction'
 
 const QuoteSPane = (props) => {
-  console.log("====QSP render", props.list)
-  const { list, socket, addToKLine } = props
+  // console.log("====QSP render", props)
+  const { slist, group, addToKLine } = props
+  const list = slist.filter(item => item.group === group)
   const currType = list.map(item => item.name)
   
-  const [trData, setTrData] = useState(list)
+  // const [trData, setTrData] = useState(list)
   const [isExpandAll, setIsExpandAll] = useState(false)
-  
-  // useEffect(() => {
-  //   socket.on("quote", onMessage)
-  // },[])
-  
-  useEffect(() => {
-    // const args = currType.join(".")
-    // // 获取报价信息
-    // socket.send({
-    //   "cmd": "quote",
-    //   "args": [`${args}`]
-    // })
-    // socket.send({
-    //   "cmd": "mini",
-    //   "args": [`${args}`]
-    // })
-    // socket.on("quote", onMessage)
-  }, [])
 
   // const sendMessage = () => {
   //   const args = currType.join(".")
@@ -47,57 +28,57 @@ const QuoteSPane = (props) => {
   //     "args": [`${args}`]
   //   })
   // }
-  const onMessage = (data) => {
-    if(data.type === 'quote') {
-      data = data.data
-      for(var item of list) {
-        if(item.symbol === data.symbol) {
-          item.isUp = item.buy ? data.ask > item.buy : 1
-          item.buy = toDecimal(data.ask, data.digits)
-          item.sell = toDecimal(data.bid, data.digits)
-          item.spread = toDecimal((data.ask - data.bid) * 100, data.digits < 2 ? data.digits : 2) + "%"
-          break
-        }
-      }
-      // setTrData(trData.concat([]))
-    }
-    else if(data.type === 'mini') {
-      data = data.data
-      // 计算每个货币对的高点、低点及（高点 - 低点）/低点
-      for(let item of data) {
-        if(item.ticks && item.ticks.length > 0) {
-          item.high = Math.max(...item.ticks)
-          item.low = Math.min(...item.ticks)
-          item.per = Math.floor((item.high - item.low) / item.low * 10000) / 100 + '%'
-        }
-      }
-      // 将数据填到trData中以便更新视图
-      for(var item of data) {
-        if(currType.includes(item.symbol)) {
-          for(var trd of list) {
-            if(trd.symbol === item.symbol) {
-              trd.high = item.high
-              trd.low = item.low
-              trd.per = item.per
-              break
-            }
-          }
-        }
-      }
-      // setTrData(trData.concat([]))
-    }
-  }
+  // const onMessage = (data) => {
+  //   if(data.type === 'quote') {
+  //     data = data.data
+  //     for(var item of list) {
+  //       if(item.symbol === data.symbol) {
+  //         item.isUp = item.buy ? data.ask > item.buy : 1
+  //         item.buy = toDecimal(data.ask, data.digits)
+  //         item.sell = toDecimal(data.bid, data.digits)
+  //         item.spread = toDecimal((data.ask - data.bid) * 100, data.digits < 2 ? data.digits : 2) + "%"
+  //         break
+  //       }
+  //     }
+  //     // setTrData(trData.concat([]))
+  //   }
+  //   else if(data.type === 'mini') {
+  //     data = data.data
+  //     // 计算每个货币对的高点、低点及（高点 - 低点）/低点
+  //     for(let item of data) {
+  //       if(item.ticks && item.ticks.length > 0) {
+  //         item.high = Math.max(...item.ticks)
+  //         item.low = Math.min(...item.ticks)
+  //         item.per = Math.floor((item.high - item.low) / item.low * 10000) / 100 + '%'
+  //       }
+  //     }
+  //     // 将数据填到trData中以便更新视图
+  //     for(var item of data) {
+  //       if(currType.includes(item.symbol)) {
+  //         for(var trd of list) {
+  //           if(trd.symbol === item.symbol) {
+  //             trd.high = item.high
+  //             trd.low = item.low
+  //             trd.per = item.per
+  //             break
+  //           }
+  //         }
+  //       }
+  //     }
+  //     // setTrData(trData.concat([]))
+  //   }
+  // }
   const addToFavorite = (e) => {
     e.stopPropagation()
     console.log("addToFavorite",e)
   }
-  const onSearch = (value) => {
-    const _trData = trData.map(
-      item => item.isShow = item.key.toUpperCase().indexOf(value.toUpperCase()) === -1 ? 0 : 1
-      // item => item.key.toUpperCase().indexOf(value.toUpperCase()) !== -1
-    )
-    setTrData(_trData)
-  }
+  // const onSearch = (value) => {
+  //   const _trData = trData.map(
+  //     item => item.isShow = item.key.toUpperCase().indexOf(value.toUpperCase()) === -1 ? 0 : 1
+  //     // item => item.key.toUpperCase().indexOf(value.toUpperCase()) !== -1
+  //   )
+  //   setTrData(_trData)
+  // }
   const onChangeExpand = () => {
     setIsExpandAll(!isExpandAll)
   }
@@ -106,7 +87,7 @@ const QuoteSPane = (props) => {
     <>
       <div className="qsp-search-x">
         <SearchBox 
-          onSearch={onSearch}
+          // onSearch={onSearch}
         />
         <Button 
           type="primary" 
@@ -136,9 +117,9 @@ const QuoteSPane = (props) => {
 
 export default connect(
   state => {
-    const socket = state.MainReducer.initSocket
+    const { symbolList } = state.QuoteReducer
     return {
-      socket
+      slist: symbolList.list
     }
   },
   dispatch => {
@@ -146,9 +127,6 @@ export default connect(
       addToKLine: (e, symbol, digits) => {
         e.stopPropagation()
         dispatch(addToKLine({ symbol, digits }))
-      },
-      setSymbols: (data) => {
-        dispatch(setSymbols(data))
       }
     }
   }

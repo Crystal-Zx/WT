@@ -1,6 +1,7 @@
 export const toDecimal = (num, digits = 2) => {
   num = num + ""
   digits = Number(digits)
+  // console.log("====toD", num, digits)
   // 取整数
   if(digits === 0) {
     return num.split(".")[0]

@@ -7,8 +7,6 @@ import reportWebVitals from './reportWebVitals';
 import { store } from './store/store'
 import { Provider } from 'react-redux'
 
-// import { setFilterType, axiosPosts } from './pages/MainPage/components/QuoteContainer/QuoteAction'
-
 ReactDOM.render(
   <Provider store={store}>
     <App />,

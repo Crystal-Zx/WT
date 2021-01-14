@@ -95,7 +95,6 @@ function TableBox (props) {
       rowClassName={(record, index) => {
         let className = ''
         className += record.isUp ? 'quote-up ' : 'quote-down '
-        className += record.isShow ? '' : 'hide '
         className += index % 2 ? '' : 'dark-row'
         return className
       }}

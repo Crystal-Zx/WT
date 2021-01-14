@@ -55,13 +55,13 @@ function MainPage () {
     <div className={styles['main-x']}>
       <div className="main-top-x">
         <QuotePanes />
-        <TopRPanes />
+        {/* <TopRPanes /> */}
       </div>
       <div className="main-middle-x card-container">
         <OrderPanes />
       </div>
       <div className="main-bottom-x">
-        <AccountInfo />
+        {/* <AccountInfo /> */}
       </div>
       <div className="main-topright-x">
         <span className="tr-currtime-x">{currDate}</span>

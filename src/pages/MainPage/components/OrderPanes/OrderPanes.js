@@ -5,7 +5,7 @@ import styles from './OrderPanes.module.scss'
 
 import React,{ useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
-import { getPositions, getHistories, closeOrder } from './OrderAction' 
+import { getPositions, getHistories, closeOrder } from '../../MainAction' 
 import { setAccountInfo } from '../../MainAction'
 import { toDecimal, isBuy } from '../../../../utils/utilFunc'
 import IconFont from '../../../../utils/iconfont/iconfont'
@@ -213,12 +213,13 @@ const areEqual = (prevProps, nextProps) => {
 export default connect(
   state => {
     const {
+      initSocket,
       positionOrder,
-      history = {}
-    } = state.OrderReducer
-    const { initSocket, accountInfo } = state.MainReducer
+      history = {},
+      accountInfo
+    } = state.MainReducer
     const { position, order } = positionOrder
-    // console.log("store state:", state)
+    
     return {
       socket: initSocket,
       info: accountInfo.info,
@@ -227,4 +228,4 @@ export default connect(
       ]
     }
   }
-)(React.memo(OrderPanes, areEqual))
+)(OrderPanes)

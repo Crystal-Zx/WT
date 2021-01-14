@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { deleteFromKLine } from '../../MainAction'
 
 const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
-  // console.log("====ChartPanes render")
+  console.log("====ChartPanes render")
   
   const initKLineList = (kLineList) => {
     return kLineList.map((item, index) => {
@@ -192,7 +192,7 @@ export default connect(
       initSocket: state.MainReducer.initSocket
     }
   },
-  (dispatch, ownProps) => {
+  dispatch => {
     return {
       deleteFromKLine: (symbol) => {
         dispatch(deleteFromKLine(symbol))

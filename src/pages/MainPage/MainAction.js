@@ -16,7 +16,8 @@ import * as actionTypes from './MainActionTypes'
 // --- socket
 export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
     // var ws = new socket("ws://47.113.231.12:5885/")
-    var ws = new socket("ws://118.193.38.199")
+    // var ws = new socket("ws://118.193.38.199")
+    var ws = new socket("ws://156.226.24.38:61029")
     ws.doOpen()
     return ws
   }
@@ -40,12 +41,16 @@ export const deleteFromKLine = createAction(actionTypes.DELETE_FROM_KLINE, symbo
 export const getPositions = createAction(actionTypes.GET_POSITIONS, () => {
   return _getPositions().then(response => {
     let position = [], order = []
-    for(var p of response) {
-      if(Number(p.cmd) < 2) {  // 持仓单
-        position.push(p)
-      } else {  // 挂单
-        order.push(p)
+    try {
+      for(var p of response) {
+        if(Number(p.cmd) < 2) {  // 持仓单
+          position.push(p)
+        } else {  // 挂单
+          order.push(p)
+        }
       }
+    } catch (error) {
+      console.log("====error",error)
     }
     return {
       position: position,
@@ -56,10 +61,14 @@ export const getPositions = createAction(actionTypes.GET_POSITIONS, () => {
 // 获取指定时间段的历史订单（默认为全部）
 export const getHistories = createAction(actionTypes.GET_HISTORIES, params => {
   return _getHistories(params).then(response => {
-    for(var p of response) {
-      p.cmdForCh = getCmdArr()[p.cmd]
+    try {
+      for(var p of response) {
+        p.cmdForCh = getCmdArr()[p.cmd]
+      }
+      return response
+    } catch (error) {
+      return []
     }
-    return response
   })
 })
 // 修改订单止盈止损

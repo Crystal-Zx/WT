@@ -8,9 +8,8 @@ import { toDecimal } from '../../../../utils/utilFunc'
 import { getAccountInfo } from '../../MainAction'
 
 const AccountInfo = ({ accountInfo, getAccountInfo }) => {
-  // console.log("====AccountInfo render")
   const { info, isFetching } = accountInfo
-
+  console.log("====AccountInfo render", info)
   useEffect(() => {
     // 获取账户信息
     getAccountInfo()

@@ -3,28 +3,43 @@ import CardTabs from '../../../../components/CardTabs/CardTabs'
 import OrderSPanes from './OrderSPanes'
 import styles from './OrderPanes.module.scss'
 
-import React,{ useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
 import { getPositions, getHistories, closeOrder } from '../../MainAction' 
 import { setAccountInfo } from '../../MainAction'
 import { toDecimal, isBuy } from '../../../../utils/utilFunc'
 import IconFont from '../../../../utils/iconfont/iconfont'
 
-const OrderPanes = ({ socket, info, listArr, dispatch}) => {
-  // console.log("====OrderPanes", listArr)
+const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
+  // console.log("====OrderPanes")
+  const { confirm } = Modal
+  const { info, isFetching } = accountInfo
   const [activeKey, setActiveKey] = useState("0")
-  // const [listArr, setListArr] = useState(opData)
   const volumeRef = useRef(null)
 
-  const { confirm } = Modal
-
-
-  const init = () => {
-    if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
-      activeKey < 2 && dispatch(getPositions())
-      activeKey >= 2 && dispatch(getHistories({
-        from: 0, to: new Date().getTime()
+  const _getPositions = (activeKey) => {
+    return dispatch(getPositions()).then(res => {
+      console.log("=====456", res)
+      const { position,order } = res.value
+      dispatch(setAccountInfo({
+        profit: activeKey == 0 ? 
+          position.reduce((prev, item) => prev + Number(item.profit), 0) :
+          order.reduce((prev, item) => prev + Number(item.profit), 0)
       }))
+    })
+  }
+  const _getHistories = (from = 0, to = new Date().getTime()) => {
+    return dispatch(getHistories(from, to)).then(res => {
+      dispatch(setAccountInfo({ 
+        profit: res.value.reduce((prev, item) => prev + Number(item.profit), 0)
+      }))
+    })
+  }
+  const init = () => {
+    console.log("====init", activeKey)
+    if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
+      activeKey < 2 && _getPositions(activeKey)
+      activeKey >= 2 && _getHistories()
     }
   }
   // 右上角全局提示
@@ -35,57 +50,89 @@ const OrderPanes = ({ socket, info, listArr, dispatch}) => {
     })
   }
   const onChange = activeKey => {
-    setActiveKey(activeKey)
-    // socket.on("order", (data) => onMessage(data, activeKey))
+    console.log("====onChange", activeKey)
+    setActiveKey(activeKey)  // 不要依赖于setActiveKey去重新获取列表值
     if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
-      activeKey < 2 && dispatch(getPositions())
-      activeKey >= 2 && dispatch(getHistories({
-        from: 0, to: new Date().getTime()
-      })).then(res => {
-        const totalProfit = res.value.reduce((prev, item) => prev + Number(item.profit), 0)
-        dispatch(setAccountInfo({ profit: totalProfit }))
-      })
-    } else if(activeKey === "2") {
-      const totalProfit = listArr[2].list.reduce((prev, item) => prev + Number(item.profit), 0)
+      activeKey < 2 && _getPositions(activeKey)
+      activeKey >= 2 && _getHistories()
+    } else {// if(activeKey === "2") {
+      const totalProfit = listArr[activeKey].list.reduce((prev, item) => prev + Number(item.profit), 0)
+      console.log("====totalProfit", totalProfit)
       dispatch(setAccountInfo({ profit: totalProfit }))
     }
   }
-  const onMessage = (data, activeKey) => {
-    const ospData = listArr[activeKey].list
-    // console.log("====ospData:", ospData)
-    if(data.type === 'quote' && Number(activeKey) !== 2) {  // 理论上说应该没必要再判断一次data.type，不过保险起见
-      data = data.data
-      for(let item of ospData) {
-        if(item.symbol !== data.symbol) continue
-        let flag
-        if(isBuy(item.cmdForCh)) {  // 多单 buy
-          item.close_price = data.bid
-          flag = 1
-        } else {  // 空单 sell
-          item.close_price = data.ask
-          flag = -1
+  // const onMessage = (data, activeKey) => {
+  //   const ospData = listArr[activeKey].list
+  //   // console.log("====ospData:", ospData)
+  //   if(data.type === 'quote' && Number(activeKey) !== 2) {  // 理论上说应该没必要再判断一次data.type，不过保险起见
+  //     data = data.data
+  //     for(let item of ospData) {
+  //       if(item.symbol !== data.symbol) continue
+  //       let flag
+  //       if(isBuy(item.cmdForCh)) {  // 多单 buy
+  //         item.close_price = data.bid
+  //         flag = 1
+  //       } else {  // 空单 sell
+  //         item.close_price = data.ask
+  //         flag = -1
+  //       }
+  //       if(!Number(activeKey)) {
+  //         item.profit = ((item.close_price - item.open_price) * item.volume * data.contract_size * data.trans_price_ask * flag).toFixed(2)
+  //       }
+  //       item.close_price = toDecimal(item.close_price, data.digits)
+  //     }
+  //     listArr[activeKey].list = ospData
+  //     // console.log(listArr[0].list)
+  //     // setListArr(listArr.concat([]))
+  //     // 更新store中用户账户信息数据
+  //     if(Object.keys(info).length) {
+  //       // 浮动盈亏，即盈利
+  //       info.profit = ospData.reduce((prev, item) => prev + Number(item.profit),0)
+  //       // 净值
+  //       info.equity = info.balance + info.profit
+  //       // 可用保证金
+  //       info.freeMargin = info.equity - info.margin
+  //       // 保证金比例
+  //       info.marginLevel = info.equity - info.freeMargin ? Math.floor(info.equity / (info.equity - info.freeMargin) * 10000) / 100 : 0
+  //       // setAccountInfo(info)
+  //       dispatch(setAccountInfo(info))
+  //     }
+  //   }
+  // }
+  const updateOspData = () => {
+    const ospData = listArr[activeKey].list  // 引用类型，修改ospData就是在修改listArr[activeKey].list
+    for(let oItem of ospData) {
+      for(let qItem of quoteList) {
+        // 加上bid的判断是保证当前货币已有报价数据，否则就保持原数据不变
+        if(qItem.name === oItem.symbol && qItem.bid) {  
+          let flag
+          // 当quoteList中尚未接入报价数据时需保持原有即时价格
+          if(isBuy(oItem.cmdForCh)) {  // 多单 buy
+            oItem.close_price = qItem.bid
+            flag = 1
+          } else {  // 空单 sell
+            oItem.close_price = qItem.ask
+            flag = -1
+          }
+          if(!Number(activeKey)) {
+            oItem.profit = ((oItem.close_price - oItem.open_price) * oItem.volume * qItem.size * qItem.trans_price_ask * flag).toFixed(2)
+          }
+          oItem.close_price = toDecimal(oItem.close_price, qItem.digits)
         }
-        if(!Number(activeKey)) {
-          item.profit = ((item.close_price - item.open_price) * item.volume * data.contract_size * data.trans_price_ask * flag).toFixed(2)
-        }
-        item.close_price = toDecimal(item.close_price, data.digits)
       }
-      listArr[activeKey].list = ospData
-      // console.log(listArr[0].list)
-      // setListArr(listArr.concat([]))
-      // 更新store中用户账户信息数据
-      if(Object.keys(info).length) {
-        // 浮动盈亏，即盈利
-        info.profit = ospData.reduce((prev, item) => prev + Number(item.profit),0)
-        // 净值
-        info.equity = info.balance + info.profit
-        // 可用保证金
-        info.freeMargin = info.equity - info.margin
-        // 保证金比例
-        info.marginLevel = info.equity - info.freeMargin ? Math.floor(info.equity / (info.equity - info.freeMargin) * 10000) / 100 : 0
-        // setAccountInfo(info)
-        dispatch(setAccountInfo(info))
-      }
+    }
+    // 更新store中用户账户信息数据
+    if(!Number(activeKey) && Object.keys(info).length) {
+      // 浮动盈亏，即盈利
+      info.profit = ospData.reduce((prev, item) => prev + Number(item.profit),0)
+      // 净值
+      info.equity = info.balance + info.profit
+      // 可用保证金
+      info.freeMargin = info.equity - info.margin
+      // 保证金比例
+      info.marginLevel = info.equity - info.freeMargin ? Math.floor(info.equity / (info.equity - info.freeMargin) * 10000) / 100 : 0
+      // console.log("info", info,ospData)
+      dispatch(setAccountInfo(info))
     }
   }
   const onCloseOrder = (tickets) => {
@@ -101,7 +148,7 @@ const OrderPanes = ({ socket, info, listArr, dispatch}) => {
         type: 'success', msg: `${Number(activeKey) === 0 ? '平仓' : '删除挂单'}成功`, desc: `被操作的订单编号为：${ticket.join(",")}`
       })
       // 重新获取持仓/挂单列表
-      dispatch(getPositions())
+      _getPositions(activeKey)
     }).catch(err => {
       // console.log("====onOk catch:",err)
       openNotificationWithIcon({
@@ -162,14 +209,15 @@ const OrderPanes = ({ socket, info, listArr, dispatch}) => {
   }, [])
 
   // useEffect(() => {
-  //   setListArr(opData)
-  // }, [JSON.stringify(opData)])
-
+  //   if(Object.keys(socket).length && listArr[0].list && listArr[0].list.length) {
+  //     socket.on("order", (data) => onMessage(data, activeKey))
+  //   }
+  // }, [JSON.stringify(socket), JSON.stringify(listArr[0])])
   useEffect(() => {
-    if(Object.keys(socket).length && listArr[0].list && listArr[0].list.length) {
-      socket.on("order", (data) => onMessage(data, activeKey))
+    if(quoteList && quoteList.length) {
+      updateOspData()
     }
-  }, [JSON.stringify(socket), JSON.stringify(listArr[0])])
+  }, [JSON.stringify(quoteList)])
 
   return (
     <CardTabs
@@ -199,33 +247,43 @@ const OrderPanes = ({ socket, info, listArr, dispatch}) => {
   )
 }
 
-const areEqual = (prevProps, nextProps) => {
-  /* 如果把 nextProps 传入 render 方法的返回结果与将 prevProps 传入 render 方法的返回结果一致则返回 true，否则返回 false。
-  即： 不更新返回true；需更新返回false */
-  // console.log("====OP areEqual", prevProps.listArr, nextProps.listArr, JSON.stringify(prevProps.listArr) === JSON.stringify(nextProps.listArr))
-  if(JSON.stringify(prevProps.listArr) === JSON.stringify(nextProps.listArr) && JSON.stringify(prevProps.socket) === JSON.stringify(nextProps.socket) && JSON.stringify(prevProps.info) === JSON.stringify(nextProps.info)) {
-    return true
-  } else {
-    return false
-  }
-}
-
 export default connect(
   state => {
     const {
       initSocket,
       positionOrder,
       history = {},
-      accountInfo
+      accountInfo,
+      symbolList
     } = state.MainReducer
     const { position, order } = positionOrder
+    let pSymbols = position.list.map(item => item.symbol),
+        oSymbols = order.list.map(item => item.symbol)
+    const symbolsArr = [...new Set(pSymbols.concat(oSymbols))]
     
+    // console.log("symbolsArr",symbolsArr)
     return {
       socket: initSocket,
-      info: accountInfo.info,
+      accountInfo,
       listArr: [
         position, order, history
-      ]
+      ],
+      quoteList: symbolList.list && symbolList.list.filter(item => symbolsArr.includes(item.name))
     }
   }
+  // dispatch => {
+  //   return {
+  //     getPositions: () => {
+  //       return dispatch(getPositions()).then(res => {
+  //         console.log("=====456", res)
+  //         const { position,order } = res.value
+  //         dispatch(setAccountInfo({
+  //           profit: activeKey == 0 ? 
+  //             position.reduce((prev, item) => prev + Number(item.profit), 0) :
+  //             order.reduce((prev, item) => prev + Number(item.profit), 0)
+  //         }))
+  //       })
+  //     }
+  //   }
+  // }
 )(OrderPanes)

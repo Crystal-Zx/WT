@@ -1,14 +1,14 @@
 import axios from 'axios'
 
 // 默认URL
-axios.defaults.baseURL = 'http://47.113.231.12:6886'
+axios.defaults.baseURL = 'http://156.226.24.38:61029'
 // 允许跨域携带cookie
 axios.defaults.withCredentials = false
 // 超时时间
 axios.defaults.timeout = 10000 // 5s
 // 标识这是一个ajax请求
 axios.defaults.headers = {
-  'Accept': 'MTE5MjI6MTYxMDYxMzY3OTpjMDY5YWZlZTNjOGJjMDcyY2JkZjIxOTdlNjlmY2IzYw==',
+  'Accept': 'MTE5MjI6MTYxMDcwNTEzNzpjYmU0YzMyZDg5NzViZjQ1NTgzMjI1ZGYyOTBhM2RhZQ==',
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 // 请求拦截

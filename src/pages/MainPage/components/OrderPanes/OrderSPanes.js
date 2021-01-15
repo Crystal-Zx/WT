@@ -5,7 +5,7 @@ import EditOrderPop from './EditOrderPop'
 import { getCmdArr, toDecimal } from '../../../../utils/utilFunc'
 
 const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }) => {
-  // console.log("====OrderSPanes render", data)
+  console.log("====OrderSPanes render", data)
   
   let { list, isFetching } = data
   
@@ -131,15 +131,14 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         align: 'left'
       },
       {
-        title: '止损',
-        dataIndex: 'sl',
-        key: 'sl',
-        width: '7.09%',
+        title: '止盈',
+        dataIndex: 'tp',
+        key: 'tp',
+        width: '6.98%',
         align: 'left',
-        render: (sl, item) => {
-          // console.log("====getColumns sl render")
+        render: (tp, item) => {
           return (<>
-            <span>{sl}</span>
+            <span>{tp}</span>
             {
               (isFoldRow(item.key) || (!isFoldRow(item.key) && item.ticket.length <= 1))
               &&
@@ -149,14 +148,15 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         }
       },
       {
-        title: '止盈',
-        dataIndex: 'tp',
-        key: 'tp',
-        width: '6.98%',
+        title: '止损',
+        dataIndex: 'sl',
+        key: 'sl',
+        width: '7.09%',
         align: 'left',
-        render: (tp, item) => {
+        render: (sl, item) => {
+          // console.log("====getColumns sl render")
           return (<>
-            <span>{tp}</span>
+            <span>{sl}</span>
             {
               (isFoldRow(item.key) || (!isFoldRow(item.key) && item.ticket.length <= 1))
               &&
@@ -298,6 +298,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
       align: 'center'
     }
   ]
+  // 将扁平化数据格式化为页面渲染所需格式
   const handleList = (response) => {
     if(response.length) {
       const cmdArr = getCmdArr()

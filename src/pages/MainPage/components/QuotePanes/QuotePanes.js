@@ -17,7 +17,7 @@ import { slist } from '../../../../services/mock'
 import { toDecimal } from '../../../../utils/utilFunc'
 
 const QuotePanes = (props) => {
-  console.log("====QuotePanes render", props) 
+  // console.log("====QuotePanes render", props.orderSymbols) 
   const { 
     dispatch, symbolList, filterGroup, socket, orderSymbols
   } = props
@@ -90,15 +90,21 @@ const QuotePanes = (props) => {
     }
     cacheListRef.current = cacheList.concat([])
   }
+  const getQuoteSymbols = () => {
+    const qspList = cacheList.filter(item => item.group === filterGroup)
+    return qspList.map(item => item.name)
+  }
   const sendQuoteMsg = (quoteSymbols) => {
+    quoteSymbols = quoteSymbols || getQuoteSymbols()
     const currType = [...new Set(quoteSymbols.concat(orderSymbols))]
     const args = currType.join(".")
-    console.log("====currType", currType)
-    // 获取报价信息
-    socket.send({
-      "cmd": "quote",
-      "args": [`${args}`]
-    })
+    // socket.on("open", () => {
+      // 获取报价信息
+      socket.send({
+        "cmd": "quote",
+        "args": [`${args}`]
+      })
+    // })
   }
   // 切换QSP页面
   const onChangeType = (sType) => {
@@ -107,16 +113,7 @@ const QuotePanes = (props) => {
     // --- 报价板块
     const qspList = cacheList.filter(item => item.group === sType)
     const quoteSymbols = qspList.map(item => item.name)
-    // setQuoteSymbols(quoteSymbols)
     sendQuoteMsg(quoteSymbols)
-    // --- 订单板块 orderSymbols
-    // const currType = [...new Set(quoteSymbols.concat(orderSymbols))]
-    // const args = currType.join(".")
-    // // 获取报价信息
-    // socket.send({
-    //   "cmd": "quote",
-    //   "args": [`${args}`]
-    // })
     const args = quoteSymbols.join(".")
     socket.send({
       "cmd": "mini",
@@ -159,6 +156,12 @@ const QuotePanes = (props) => {
   }, [JSON.stringify(socket)])
 
   useEffect(() => {
+    if(orderSymbols.length) {
+      sendQuoteMsg()
+    }
+  }, [JSON.stringify(orderSymbols)])
+
+  useEffect(() => {
     filterGroup && onChangeType(filterGroup)
   }, [filterGroup])
   
@@ -192,19 +195,19 @@ const getOrderSymbols = (data) => {
   return [...new Set(arrP.concat(arrO))]
 }
 
-const areEqual = (prevProps, nextProps) => {
-  const prevGroup = prevProps.filterGroup,
-        nextGroup = nextProps.filterGroup,
-        prevList = prevProps.symbolList.list.filter(item => item.group === prevGroup),
-        nextList = nextProps.symbolList.list.filter(item => item.group === nextGroup)
-  /* 不更新返回true；需更新返回false */
-  console.log("====OP areEqual", prevProps.orderSymbols, nextProps.orderSymbols)
-  if(!!prevList.length && !!nextList.length && JSON.stringify(prevList) === JSON.stringify(nextList) && JSON.stringify(prevProps.orderSymbols) === JSON.stringify(nextProps.orderSymbols)) {
-    return true
-  } else {
-    return false
-  }
-}
+// const areEqual = (prevProps, nextProps) => {
+//   const prevGroup = prevProps.filterGroup,
+//         nextGroup = nextProps.filterGroup,
+//         prevList = prevProps.symbolList.list.filter(item => item.group === prevGroup),
+//         nextList = nextProps.symbolList.list.filter(item => item.group === nextGroup)
+//   /* 不更新返回true；需更新返回false */
+//   console.log("====OP areEqual", prevProps.orderSymbols, nextProps.orderSymbols)
+//   if(!!prevList.length && !!nextList.length && JSON.stringify(prevList) === JSON.stringify(nextList) && JSON.stringify(prevProps.orderSymbols) === JSON.stringify(nextProps.orderSymbols)) {
+//     return true
+//   } else {
+//     return false
+//   }
+// }
 
 export default connect(
   state => {
@@ -215,7 +218,7 @@ export default connect(
       positionOrder
     } = state.MainReducer
     const orderSymbols = getOrderSymbols(positionOrder)
-    
+    // console.log("===orderSymbols",orderSymbols)
     return {
       socket: initSocket,
       symbolList,

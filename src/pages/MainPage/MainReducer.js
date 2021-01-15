@@ -155,17 +155,17 @@ const positionOrder = (state = {
           isFetching: false
         }
       })
-    case actionTypes.GET_POSITIONS_REJECTED: // mock
-      return Object.assign({}, state, {
-        position: {
-          isFetching: false,
-          list: plist
-        },
-        order: {
-          isFetching: false,
-          list: olist
-        }
-      })
+    // case actionTypes.GET_POSITIONS_REJECTED: // mock
+    //   return Object.assign({}, state, {
+    //     position: {
+    //       isFetching: false,
+    //       list: plist
+    //     },
+    //     order: {
+    //       isFetching: false,
+    //       list: olist
+    //     }
+    //   })
     case actionTypes.CLOSE_ORDER_REJECTED:
       return Object.assign({}, state, {
         ...state,
@@ -178,6 +178,7 @@ const positionOrder = (state = {
           isFetching: false
         }
       })
+    case actionTypes.GET_POSITIONS_REJECTED:
     default:
       return state
   }

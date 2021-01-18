@@ -52,8 +52,8 @@ class socket {
     try {
       const data = JSON.parse(message)
       const quoteType = ['symbol', 'quote', 'mini'],
-            KLineTypes = ['req', 'update'],
-            orderType = ['quote']
+            KLineTypes = ['req', 'update']
+            // orderType = ['quote']
       // if(data.type === 'symbol') {
       //   this.onReceiver({
       //     Event: 'symbol',
@@ -72,9 +72,15 @@ class socket {
           Data: data
         })
       }
-      if(orderType.includes(data.type)) {
+      // if(orderType.includes(data.type)) {
+      //   this.onReceiver({
+      //     Event: 'order',
+      //     Data: data
+      //   })
+      // }
+      if(data.type === "order") {
         this.onReceiver({
-          Event: 'order',
+          Event: 'orderChange',
           Data: data
         })
       }

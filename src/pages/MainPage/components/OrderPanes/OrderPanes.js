@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
 import { getPositions, getHistories, closeOrder } from '../../MainAction' 
 import { setAccountInfo } from '../../MainAction'
-import { toDecimal, isBuy } from '../../../../utils/utilFunc'
+import { openNotificationWithIcon, toDecimal, isBuy } from '../../../../utils/utilFunc'
 import IconFont from '../../../../utils/iconfont/iconfont'
 
 const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
@@ -19,7 +19,7 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
 
   const _getPositions = (activeKey) => {
     return dispatch(getPositions()).then(res => {
-      console.log("=====456", res)
+      // console.log("=====456", res)
       const { position,order } = res.value
       dispatch(setAccountInfo({
         profit: activeKey == 0 ? 
@@ -36,21 +36,14 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     })
   }
   const init = () => {
-    console.log("====init", activeKey)
+    // console.log("====init", activeKey)
     if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
       activeKey < 2 && _getPositions(activeKey)
       activeKey >= 2 && _getHistories()
     }
   }
-  // 右上角全局提示
-  const openNotificationWithIcon = params => {
-    const { type, msg, desc } = params
-    notification[type]({
-      message: msg, description: desc
-    })
-  }
   const onChange = activeKey => {
-    console.log("====onChange", activeKey)
+    // console.log("====onChange", activeKey)
     setActiveKey(activeKey)  // 不要依赖于setActiveKey去重新获取列表值
     if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
       activeKey < 2 && _getPositions(activeKey)

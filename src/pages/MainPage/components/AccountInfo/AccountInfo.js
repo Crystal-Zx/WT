@@ -9,7 +9,7 @@ import { getAccountInfo } from '../../MainAction'
 
 const AccountInfo = ({ accountInfo, getAccountInfo }) => {
   const { info, isFetching } = accountInfo
-  console.log("====AccountInfo render", info)
+  // console.log("====AccountInfo render", info)
   useEffect(() => {
     // 获取账户信息
     getAccountInfo()
@@ -56,7 +56,7 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
           <span>&nbsp;USD</span>
         </div>
       </div>
-      <Button type="primary" className="btn-more">
+      <Button type="default" className="btn-more">
         <IconFont type="iconQues" className="main-icon-ques" />
       </Button>
     </>

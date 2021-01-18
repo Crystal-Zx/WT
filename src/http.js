@@ -8,7 +8,7 @@ axios.defaults.withCredentials = false
 axios.defaults.timeout = 10000 // 5s
 // 标识这是一个ajax请求
 axios.defaults.headers = {
-  'Accept': 'MTE5MjI6MTYxMDcwNTEzNzpjYmU0YzMyZDg5NzViZjQ1NTgzMjI1ZGYyOTBhM2RhZQ==',
+  'Accept': 'MTE5MjI6MTYxMDk2NTQ0MTo4ZmIwZGY1OWQzMmUwNDhkNzNjZDIzNmMyOTc5ZGNmZg==',
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 // 请求拦截
@@ -46,5 +46,39 @@ axios.interceptors.response.use(response => {
     // throw Error(response.data.msg || '服务异常')
   }
 })
+
+// jsonp
+axios.jsonp = (url,data)=>{
+  if(!url)
+      throw new Error('url is necessary')
+  const callback = 'CALLBACK' + Math.random().toString().substr(9,18)
+  const JSONP = document.createElement('script')
+        JSONP.setAttribute('type','text/javascript')
+
+  const headEle = document.getElementsByTagName('head')[0]
+
+  let ret = '';
+  if(data){
+      if(typeof data === 'string')
+          ret = '&' + data;
+      else if(typeof data === 'object') {
+          for(let key in data)
+              ret += '&' + key + '=' + encodeURIComponent(data[key]);
+      }
+      ret += '&_time=' + Date.now();
+  }
+  JSONP.src = `${url}?callback=${callback}${ret}`;
+  return new Promise((resolve,reject) => {
+      window[callback] = r => {
+        console.log("====r", r)
+        resolve(r)
+        headEle.removeChild(JSONP)
+        delete window[callback]
+      }
+      headEle.appendChild(JSONP)
+  })
+  
+}
+
 
 export default axios

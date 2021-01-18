@@ -9,12 +9,11 @@ import {
   setSymbols, 
   setSymbolGroup
 } from '../../MainAction'
+import { toDecimal } from '../../../../utils/utilFunc'
 
 import QuoteSPane from './QuoteSPanes.js';
 import styles from './QuotePanes.module.scss';
 
-import { slist } from '../../../../services/mock'
-import { toDecimal } from '../../../../utils/utilFunc'
 
 const QuotePanes = (props) => {
   // console.log("====QuotePanes render", props.orderSymbols) 
@@ -39,13 +38,18 @@ const QuotePanes = (props) => {
     })
   }
   // 获取报价列表数据
-  const onMessage = (data) => { // slist 为 mock 数据
+  const onMessage = (data) => {
     if(data.type === "symbol") {
       data = data.data
-      cacheList = slist.map(item => ({
-        ...item,
-        key: item.name
-      }))
+      cacheList = data.map(item => {
+        var obj = {
+          ...item,
+          key: item.name,
+          symbol: item.name
+        }
+        delete obj.name
+        return obj
+      })
       dispatch(getSymbols({ isFetching: false, list: cacheList }))
       dispatch(setSymbolGroup(cacheList[0].group))
       // init qsp
@@ -56,7 +60,7 @@ const QuotePanes = (props) => {
       data = data.data
       
       for(let item of cacheList) {
-        if(item.name === data.symbol) {
+        if(item.symbol === data.symbol) {
           data.isUp = item.bid ? data.bid >= item.bid : 1
           data.size = data.contract_size
           data.spread = toDecimal((data.ask - data.bid) * 100, data.digits < 2 ? data.digits : 2) + "%"
@@ -69,8 +73,8 @@ const QuotePanes = (props) => {
       data = data.data
       const symbols = data.map(item => item.symbol)
       cacheList = cacheList.map(item => {
-        if(symbols.includes(item.name)) {
-          const _data = data.filter(_item => _item.symbol === item.name)[0]
+        if(symbols.includes(item.symbol)) {
+          const _data = data.filter(_item => _item.symbol === item.symbol)[0]
           if(_data.ticks && _data.ticks.length) {
             const high = Math.max(..._data.ticks),
                   low = Math.min(..._data.ticks)
@@ -92,7 +96,7 @@ const QuotePanes = (props) => {
   }
   const getQuoteSymbols = () => {
     const qspList = cacheList.filter(item => item.group === filterGroup)
-    return qspList.map(item => item.name)
+    return qspList.map(item => item.symbol)
   }
   const sendQuoteMsg = (quoteSymbols) => {
     quoteSymbols = quoteSymbols || getQuoteSymbols()
@@ -112,7 +116,7 @@ const QuotePanes = (props) => {
     // 获取需监听quote信息的货币对列表
     // --- 报价板块
     const qspList = cacheList.filter(item => item.group === sType)
-    const quoteSymbols = qspList.map(item => item.name)
+    const quoteSymbols = qspList.map(item => item.symbol)
     sendQuoteMsg(quoteSymbols)
     const args = quoteSymbols.join(".")
     socket.send({
@@ -144,14 +148,15 @@ const QuotePanes = (props) => {
 
   useEffect(() => { // 会执行3次： socket = null, connState = 1, connState = 2
     if(Object.keys(socket).length) {
-      socket.on("open", () => {
+      // socket.on("open", () => {
         // console.log("socket open, start to sending ms...")
-        socket.send({
-          "cmd": "symbols",
-          "args": [""]
-        })
+        // socket.send({
+        //   "cmd": "symbols",
+        //   "args": [""]
+        // })
+        // socket.checkOpen() && 
         socket.on("quote", onMessage)
-      })
+      // })
     }
   }, [JSON.stringify(socket)])
 

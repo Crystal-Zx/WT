@@ -7,7 +7,6 @@ import { useState,useEffect } from 'react'
 
 function TableBox (props) {
   const { data, addToFavorite, addToKLine, isExpandAll } = props
-  
   const changeExpandedRowKeys = () => {
     const _expandedRows = isExpandAll ? data.map(item => item.key) : []
     return _expandedRows
@@ -17,7 +16,7 @@ function TableBox (props) {
       children: val || '---',
       props: {}
     }
-    if(expandedRows && expandedRows.includes(row.name)) {
+    if(expandedRows && expandedRows.includes(row.symbol)) {
       obj.props.colSpan = type === 'ask' ? 3 : 0
       obj.children = (
         <div style={
@@ -27,7 +26,7 @@ function TableBox (props) {
             type="iconKLine"
             className="icon-kline"
             onClick={(e) => 
-              addToKLine(e,row.name, row.bid.split(".")[1].length)
+              addToKLine(e,row.symbol, row.bid.split(".")[1].length)
             }
           />
           <IconFont 
@@ -43,13 +42,13 @@ function TableBox (props) {
   const getColumns = () => [
     {
       title: '品种',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'symbol',
+      key: 'symbol',
       width: '40.68%',
-      render: name => (
+      render: symbol => (
         <>
           <IconFont type="iconDown" className="iconDown" />
-          <span style={{ marginLeft: '8px' }}>{name}</span>
+          <span style={{ marginLeft: '8px' }}>{symbol}</span>
         </>
       )
     },

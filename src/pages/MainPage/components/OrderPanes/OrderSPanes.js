@@ -5,7 +5,7 @@ import EditOrderPop from './EditOrderPop'
 import { getCmdArr, toDecimal } from '../../../../utils/utilFunc'
 
 const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }) => {
-  console.log("====OrderSPanes render", data)
+  // console.log("====OrderSPanes render", data)
   
   let { list, isFetching } = data
   

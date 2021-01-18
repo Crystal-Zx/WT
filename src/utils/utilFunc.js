@@ -1,3 +1,12 @@
+import { notification } from 'antd'
+// 全局提示
+export const openNotificationWithIcon = params => {
+  const { type, msg, desc } = params
+  notification[type]({
+    message: msg, description: desc
+  })
+}
+
 export const toDecimal = (num, digits = 2) => {
   num = num + ""
   digits = Number(digits)

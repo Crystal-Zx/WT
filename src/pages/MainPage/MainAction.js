@@ -1,16 +1,21 @@
+import axios from 'axios'
 import { createAction } from 'redux-actions'
 import socket from '../../socket'
 import { 
   _getAccountInfo,
   _getPositions, 
   _getHistories, 
+  _openOrder,
   _modifyOrder,
-  _closeOrder
+  _closeOrder,
+  _getNewsData
 } from '../../services/index'
 import { 
   getCmdArr
 } from '../../utils/utilFunc'
 import * as actionTypes from './MainActionTypes'
+import resolve from 'resolve'
+import { reject } from 'lodash'
 
 // 全局
 // --- socket
@@ -19,9 +24,26 @@ export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
     // var ws = new socket("ws://118.193.38.199")
     var ws = new socket("ws://156.226.24.38:61029")
     ws.doOpen()
+    // console.log("ws", ws)
+    ws.on("open", function () {
+      console.log("ws sending...")
+      ws.send({
+        "cmd": "symbols",
+        "args": [""]
+      })
+      ws.send({
+        "cmd": "order",
+        "args": "MTE5MjI6MTYxMDk1MDIyNzo3ZjI3NzYzYzIxZTFlYzU4NDBkYmYyNjk1ODZmYjRlNA=="
+      })
+    })
     return ws
   }
 )
+export const openOrder = createAction(actionTypes.OPEN_ORDER, params => {
+  return _openOrder(params).then(response => {
+    console.log(response)
+  })
+})
 
 // --- 报价板块
 // ----- 存储货币对（来源：websocket）
@@ -35,6 +57,39 @@ export const setSymbolGroup = createAction(actionTypes.SET_SYMBOL_GROUP, payload
 export const addToKLine = createAction(actionTypes.ADD_TO_KLINE, symbol => symbol)
 // --- 删除指定货币对的K线
 export const deleteFromKLine = createAction(actionTypes.DELETE_FROM_KLINE, symbol => symbol)
+
+// 新闻版块
+export const getNewsData = createAction(actionTypes.GET_NEWSDATA, params => {
+  const { t } = params
+  // const url = `https://www.jin10.com/flash_newest.js?t=${t}`
+  // return new Promise((resolve, reject) => {
+  //   window.getNewsData = ((res) => {
+  //     console.log(res)
+  //     resolve(res)
+  //     document.getElementsByTagName('head')[0].removeChild(jsonp)
+  //   })()
+  //   const jsonp = document.createElement("script")
+  //   jsonp.type = "text/javascript"
+  //   jsonp.src = url
+  //   document.getElementsByTagName("head")[0].appendChild(jsonp)
+  // })  
+  // return axios({
+  //   url: 'https://www.jin10.com/flash_newest.js?t=1609839179540',
+  //   method: 'get',
+  //   headers: {
+  //     'Access-Control-Allow-Origin': '*',
+  //     'Access-Control-Allow-Headers': '*',
+  //     'Access-Control-Allow-Methods': '*'
+  //   },
+  //   data: t
+  //   // dataType: 'jsonp'
+  // }).then(res => {
+  //   console.log(res)
+  // })
+  return _getNewsData({t}).then(response => {
+    console.log(response)
+  })
+})
 
 // 订单板块
 // 获取持仓单&挂单

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button, InputNumber, notification } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
-import { isBuy } from '../../../../utils/utilFunc'
+import { openNotificationWithIcon, isBuy } from '../../../../utils/utilFunc'
 
 import { modifyOrder } from '../../MainAction'
 
@@ -22,13 +22,6 @@ const EditOrderPop = ({ data, dispatch }) => {
     console.log("====showModal",e)
     e.stopPropagation()
     setVisible(true)
-  }
-  // 右上角全局提示
-  const openNotificationWithIcon = params => {
-    const { type, msg, desc } = params
-    notification[type]({
-      message: msg, description: desc
-    })
   }
 
   // 订单修改

@@ -1,6 +1,10 @@
 // actionTypes
 // --- 全局
 export const INIT_SOCKET = 'INIT_SOCKET'
+export const OPEN_ORDER = 'OPEN_ORDER',
+             OPEN_ORDER_PENDING = 'OPEN_ORDER_PENDING',
+             OPEN_ORDER_FULFILLED = 'OPEN_ORDER_FULFILLED',
+             OPEN_ORDER_REJECTED = 'OPEN_ORDER_REJECTED'
 
 // --- 报价板块
 export const GET_SYMBOLS = 'GET_SYMBOLS',
@@ -13,6 +17,12 @@ export const SET_SYMBOL_GROUP = 'SET_SYMBOL_GROUP'
 // --- K线
 export const ADD_TO_KLINE = 'ADD_TO_KLINE'
 export const DELETE_FROM_KLINE = 'DELETE_FROM_KLINE'
+
+// --- 新闻
+export const GET_NEWSDATA = 'GET_NEWSDATA',
+             GET_NEWSDATA_PENDING = 'GET_NEWSDATA_PENDING',
+             GET_NEWSDATA_FULFILLED = 'GET_NEWSDATA_FULFILLED',
+             GET_NEWSDATA_REJECTED = 'GET_NEWSDATA_REJECTED'
 
 // --- 订单
 export const GET_POSITIONS = 'GET_POSITIONS',

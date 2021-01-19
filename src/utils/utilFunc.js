@@ -50,3 +50,15 @@ export const isBuy = (type,filter = ["buy","buylimit","buystop"]) => {
 export const getCmdArr = () => (
   ['Buy', 'Sell', 'Buy Limit', 'Sell Limit', 'Buy Stop', 'Sell Stop', 'Balance']
 )
+
+// 日期相关
+export const currDateInfo = () => {
+  let d = new Date()
+  return ({
+    year: d.getFullYear(),
+    month: d.getMonth() + 1,
+    day: d.getDate(),
+    hour: d.getHours(),
+    minutes: d.getMinutes()
+  })
+}

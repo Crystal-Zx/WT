@@ -42,3 +42,10 @@ export function _closeOrder (params = {}) {
 export function _getNewsData (params = {}) {
   return http.get(apis.getNewsData, params)
 }
+// --- 财经日历
+export function _getCalendarData (params = {}) {
+  const { year, date, timestamp } = params
+  return http.get(
+    `https://cdn-rili.jin10.com/data/${year}/${date}/economics.json?_=${timestamp}`
+  )
+}

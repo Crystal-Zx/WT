@@ -1,0 +1,47 @@
+.calendar-x {
+  padding: 10px;
+  :global {
+    .ant-picker {
+      width: 160px;
+    }
+    .ant-select {
+      min-width: 90px;
+    }
+    .cp-filter-x {
+      font-size: 12px;
+      & * {
+        font-size: inherit;
+      }
+      .ant-radio-button-wrapper,
+      .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+        height: 30px;
+        line-height: 28px;
+      }
+      .ant-picker {
+        height: 30px;
+      }
+    }
+    .cp-tables-ul {
+      width: 100%;
+      .cp-table-li {
+        .ant-table-title {
+          padding: 0 0 15px 2px;
+          font-size: 13px;
+          font-weight: bold;
+          color: $themeBlue;
+        }
+        .ant-table-thead > tr > th {
+          height: 40px;
+          padding: 0;
+          box-sizing: border-box;
+          border-top: 1px solid #f0f0f0;
+          font-size: 12px;
+          background: unset;
+        }
+      }
+    }
+    .mt-0 {
+      margin-top: 0 !important;
+    }
+  }
+}

@@ -8,14 +8,13 @@ import {
   _openOrder,
   _modifyOrder,
   _closeOrder,
-  _getNewsData
+  _getNewsData,
+  _getCalendarData
 } from '../../services/index'
 import { 
   getCmdArr
 } from '../../utils/utilFunc'
 import * as actionTypes from './MainActionTypes'
-import resolve from 'resolve'
-import { reject } from 'lodash'
 
 // 全局
 // --- socket
@@ -89,6 +88,13 @@ export const getNewsData = createAction(actionTypes.GET_NEWSDATA, params => {
   return _getNewsData({t}).then(response => {
     console.log(response)
   })
+})
+// --- 财经日历
+export const getCalendarData = createAction(actionTypes.GET_CALENDARDATA, params => {
+  return _getCalendarData(params)
+  // .then(response => {
+  //   console.log("====response",response)
+  // })
 })
 
 // 订单板块

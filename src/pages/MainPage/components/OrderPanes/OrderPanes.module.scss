@@ -1,6 +1,6 @@
 .order-x {
   :global {
-    // 此容器下的antd table覆盖样式
+    /* 此容器下的antd table覆盖样式 */
     .ant-table-wrapper,
     .ant-spin-nested-loading,
     .ant-spin-container,
@@ -17,7 +17,7 @@
     .ant-table {
       font-size: 12px;
       color: $fontColor;
-      // header&body common
+      /* header&body common */
       .ant-table-cell {
         padding: 0;
         padding-left: 30px;
@@ -32,11 +32,8 @@
           }
         }
       }
-      // header
+      /* header */
       .ant-table-thead {
-        // .ant-table-cell:nth-last-of-type(2) {
-        //   padding-left: unset;
-        // }
         & > tr > .ant-table-cell {
           height: 40px;
           box-sizing: border-box;
@@ -100,8 +97,8 @@
         }
       }
     }
-    // Modal弹窗
-    // --- 订单修改弹窗
+    /* Modal弹窗 */
+    /* --- 订单修改弹窗 */
     .eop-modal-x {
       .ant-modal-body {
         padding: unset;
@@ -160,13 +157,13 @@
         justify-content: center;
       }
     }
-    // --- 确认平仓/删除挂单的弹窗
+    /* --- 确认平仓/删除挂单的弹窗 */
     .op-confirm-closeOrder {
       input {
         color: $fontColorForLight !important;
       }
     }
-    // common style
+    /* common style */
     .color-up {
       color: $buyColor;
     }

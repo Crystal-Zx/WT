@@ -81,6 +81,32 @@ p {
   }
   
 }
+// --- antd radio.group
+.ant-radio-group {
+  // & * {
+  //   font-size: 12px;
+  // }
+  .ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
+    border-right-color: $themeBlue;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
+    border-color: $themeBlue;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: $themeBlue;
+  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    color: $themeBlue;
+    border-color: $themeBlue;
+  }
+  .ant-radio-button-wrapper:hover {
+    color: $themeBlue !important;
+  }
+}
+// --- antd datepicker
+.ant-picker:hover, .ant-picker-focused {
+  border-color: $themeBlue;
+}
 
 // wt common
 // --- btn group (主要是返回和确定按钮)

@@ -8,7 +8,7 @@ axios.defaults.withCredentials = false
 axios.defaults.timeout = 10000 // 5s
 // 标识这是一个ajax请求
 axios.defaults.headers = {
-  'Accept': 'MTE5MjI6MTYxMDk2NTQ0MTo4ZmIwZGY1OWQzMmUwNDhkNzNjZDIzNmMyOTc5ZGNmZg==',
+  'Accept': 'MTE5MjI6MTYxMTA0MzI0OTo0NTc1ODA3N2MyMDA4MjMyNjExNWI0Nzk2NDMwNDJiNw==',
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 // 请求拦截
@@ -32,11 +32,12 @@ axios.interceptors.request.use(
 // axios拦截器
 axios.interceptors.response.use(response => {
   const code = response.data.code
+  const data = response.data.data || response.data
   if (code == 204 ) {
     throw Error('token过期')
   } else if(response.status == 200) {
-    if(code == 1) {
-      return response.data.data || response.data
+    if(code == 1 || data.length > 0) {
+      return data
     } else {
       throw response.data.msg
     }

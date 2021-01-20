@@ -43,9 +43,15 @@ export function _getNewsData (params = {}) {
   return http.get(apis.getNewsData, params)
 }
 // --- 财经日历
-export function _getCalendarData (params = {}) {
+export function _getEcoData (params = {}) {
   const { year, date, timestamp } = params
   return http.get(
     `https://cdn-rili.jin10.com/data/${year}/${date}/economics.json?_=${timestamp}`
+  )
+}
+export function _getEcoEvent (params = {}) {
+  const { year, date, timestamp } = params
+  return http.get(
+    `https://cdn-rili.jin10.com/data/${year}/${date}/event.json?_=${timestamp}`
   )
 }

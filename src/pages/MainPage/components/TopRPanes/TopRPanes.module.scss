@@ -1,5 +1,8 @@
 .calendar-x {
+  height: 100%;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
   :global {
     .ant-picker {
       width: 160px;
@@ -23,7 +26,26 @@
     }
     .cp-tables-ul {
       width: 100%;
+      margin-top: 15px;
+      flex: 1;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 0 !important;
+      }
       .cp-table-li {
+        .cp-icon-stars {
+          position: relative;
+          width: 70px;
+          height: calc(70px / (1135 / 200));
+          margin: 0 auto;
+          background: url(../../../../assets/image/home_sprite.png) 0 0 / 70px auto no-repeat;
+          &.cp-icon-stars.active {
+            position: absolute;
+            top: 0;left: 0;
+            color: $themeBlue;
+            background-position: 0 100%;
+          }
+        }
         .ant-table-title {
           padding: 0 0 15px 2px;
           font-size: 13px;
@@ -37,6 +59,13 @@
           border-top: 1px solid #f0f0f0;
           font-size: 12px;
           background: unset;
+        }
+        .cp-img-flag {
+          width: 44px;
+        }
+        .cp-img-people {
+          width: 40px;
+          margin-right: 5px;
         }
       }
     }

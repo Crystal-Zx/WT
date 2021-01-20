@@ -1,4 +1,4 @@
-import { Space, DatePicker, Select, Radio, Table } from 'antd'
+import { Space, DatePicker, Select, Radio, Table, Button } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
@@ -11,21 +11,64 @@ import styles from './TopRPanes.module.scss'
 const CalendarPanes = ({ dispatch }) => {
   const { Option } = Select
   const chWeek = '日一二三四五六'
-  const [currStamp, setCurrStamp] = useState(0)
+  // let currStamp = moment().valueOf()
+  const [currStamp, setCurrStamp] = useState(moment().valueOf())
+  const [ecoData, setEcoData] = useState({ list: [], isFetching: false})
+  const [ecoEvent, setEcoEvent] = useState({ list: [], isFetching: false})
+  const [region, setRegion] = useState()  // 1 -> 全部
+  const [keyword, setKeyword] = useState()
 
-  const getList = (timestamp) => {
-    console.log("====timestamp", timestamp)
+  const getEcoList = (timestamp) => {
+    if(!timestamp && ecoData.isFetching) return
+    setEcoData({...ecoData, isFetching: true})
+    setEcoEvent({...ecoEvent, isFetching: true})
     dispatch(getCalendarData({
       year: moment(timestamp).year(),
       date: moment(timestamp).format('MMDD'),
-      timestamp
+      timestamp: timestamp
     })).then(res => {
-      console.log(res)
+      const data = res.value
+      setEcoData({
+        list: data[0].map(item => {
+          return ({
+            ...item,
+            date: moment(item.pub_time).format("HH:mm"),
+            title: `${item.country}${item.time_period}${item.name}`
+          })
+        }).concat([]), 
+        isFetching: false
+      })
+      setEcoEvent({
+        list: data[1].map(item => {
+          return ({
+            ...item,
+            date: moment(item.event_time).format("HH:mm"),
+            title: item.event_content
+          })
+        }).concat([]), 
+        isFetching: false
+      })
     }).catch(err => {
       console.log("====err", err)
+      setEcoData({
+        list: [], 
+        isFetching: false
+      })
+      setEcoEvent({
+        list: [], 
+        isFetching: false
+      })
     })
   }
-  const getColumns = [
+  /**
+   * 
+   * @param {string} index 指标值
+   * @param {string | null} unit 数值单位（%、亿美元...）
+   */ 
+  const handleIndex = (index, unit) => {
+    return index ? (unit === "%" ? index + "%" : index) : '---'
+  }
+  const getDataCol = [
     {
       title: '时间',
       dataIndex: 'date',
@@ -36,100 +79,240 @@ const CalendarPanes = ({ dispatch }) => {
       title: '地区',
       dataIndex: 'country',
       key: 'country',
-      align: 'center'
+      align: 'center',
+      render: (country) => {
+        return <img 
+          className="cp-img-flag"
+          src={`https://cdn.jin10.com/assets/img/commons/flag/${country}.png`} 
+          alt={country}
+        />
+      }
     },
     {
       title: '指标名称',
-      dataIndex: 'name',
-      key: 'name',
-      align: 'center'
+      dataIndex: 'title',
+      key: 'title',
+      align: 'center',
+      render: (title, item) => {
+        if(item.unit && item.unit !== "%") {
+          return `${title}（${item.unit}）`
+        } else {
+          return title
+        }
+      }
     },
     {
       title: '重要性',
       dataIndex: 'star',
       key: 'star',
-      align: 'center'
+      width: '13%',
+      align: 'center',
+      render: star => (
+        <div className="cp-icon-stars">
+          <i 
+            className="cp-icon-stars active"
+            style={{ width: star / 5 * 100 + "%" }}
+          >
+          </i>
+        </div>
+      )
     },
     {
       title: '今值',
       dataIndex: 'actual',
       key: 'actual',
-      align: 'center'
+      align: 'center',
+      render: (actual, item) => {
+        return handleIndex(actual, item.unit)
+      }
     },
     {
       title: '预期',
       dataIndex: 'consensus',
       key: 'consensus',
-      align: 'center'
+      align: 'center',
+      render: (consensus, item) => {
+        return handleIndex(consensus, item.unit)
+      }
     },
     {
       title: '前值',
       dataIndex: 'previous',
       key: 'previous',
-      align: 'center'
+      align: 'center',
+      render: (previous, item) => {
+        return item.revised || handleIndex(previous, item.unit)
+      }
     },
     {
       title: '数据解读',
       dataIndex: 'detail',
       key: 'detail',
-      align: 'center'
+      align: 'center',
+      render: () => {
+        return <a href="javascript:;">详情</a>
+      }
     }
   ]
-  const onChangeDate = (value) => {
-    console.log(value)
+  const getEventCol = [
+    {
+      title: '时间',
+      dataIndex: 'date',
+      key: 'date',
+      align: 'center'
+    },
+    {
+      title: '地区',
+      dataIndex: 'country',
+      key: 'country',
+      align: 'center',
+      render: (country) => {
+        return <img 
+          className="cp-img-flag"
+          src={`https://cdn.jin10.com/assets/img/commons/flag/${country}.png`} 
+          alt={country}
+        />
+      }
+    },
+    {
+      title: '城市',
+      dataIndex: 'region',
+      key: 'region',
+      align: 'center',
+      render: region => region || '---'
+    },
+    {
+      title: '指标名称',
+      dataIndex: 'title',
+      key: 'title',
+      align: 'center',
+      render: (title, item) => {
+        return (
+          <>
+            {
+              item.people &&
+              <img 
+                className="cp-img-people"
+                src={`https://cdn.jin10.com/images/flag/tx/${item.people}.png`} 
+              />
+            }
+            {title}
+          </>
+        )
+      }
+    },
+    {
+      title: '重要性',
+      dataIndex: 'star',
+      key: 'star',
+      width: '13%',
+      align: 'center',
+      render: star => (
+        <div className="cp-icon-stars">
+          <i 
+            className="cp-icon-stars active"
+            style={{ width: star / 5 * 100 + "%" }}
+          >
+          </i>
+        </div>
+      )
+    }
+  ]
+  const onChangeDate = (_moment) => {
+    setCurrStamp(_moment.valueOf())
+    getEcoList(_moment.valueOf())
+  }
+  
+  const getFilterList = (list) => {
+    const filterArr = [region, keyword].filter(item => !!item)
+    console.log(filterArr)
+    if(filterArr.length > 0) {
+      const _list = list.filter(item => {
+        return item.name.indexOf(region) !== -1 || item.name.indexOf() !== -1
+      })
+      console.log(_list)
+      return _list
+    } else {
+      return list
+    }
   }
 
   useEffect(() => {
-    const timestamp = moment().valueOf()
-    // console.log("====123",moment(timestamp).day(String))
-    setCurrStamp(timestamp)
-    getList(timestamp)
+    currStamp && getEcoList(currStamp)
+    console.log(moment(currStamp - 86400).format("YYYY-MM-DD"))
   }, [])
+
+  useEffect(() => {
+    console.log("====keywords", [region, keyword])
+    getFilterList(ecoData.list)
+  }, [region, keyword])
 
   return (
     <div className={styles['calendar-x']}>
       <Space className="cp-filter-x" align="center">
-        <Radio.Group>
-          <Radio.Button value="0">昨天</Radio.Button>
-          <Radio.Button value="1">今天</Radio.Button>
-          <Radio.Button value="2">明天</Radio.Button>
+        <Radio.Group 
+          defaultValue={moment().format("YYYY-MM-DD")}
+          value={moment(currStamp).format("YYYY-MM-DD")}
+          onChange={(e) => onChangeDate(moment(e.target.value))}
+        >
+          <Radio.Button value={moment().subtract(1, 'd').format("YYYY-MM-DD")}>昨天</Radio.Button>
+          <Radio.Button value={moment().format("YYYY-MM-DD")}>今天</Radio.Button>
+          <Radio.Button value={moment().add(1, 'd').format("YYYY-MM-DD")}>明天</Radio.Button>
         </Radio.Group>
-        <DatePicker  
+        <DatePicker
+          allowClear={false}
+          defaultValue={moment()}
+          defaultPickerValue={moment()}
+          value={moment(currStamp)}
           onChange={onChangeDate} 
           placeholder={moment().format("YYYY-MM-DD")}
         />
         <Select 
           placeholder="地区"
           suffixIcon={<IconFont type="iconDD" className="main-icon-dd mt-0" />}
+          onChange={value => isNaN(Number(value)) && setRegion(value)}
         >
-          <Option value="0">全部</Option>
-          <Option value="1">欧元区</Option>
-          <Option value="2">美国</Option>
-          <Option value="3">英国</Option>
-          <Option value="4">日本</Option>
-          <Option value="5">加拿大</Option>
-          <Option value="6">瑞士</Option>
+          <Option value="1">全部</Option>
+          <Option value="欧元区">欧元区</Option>
+          <Option value="美国">美国</Option>
+          <Option value="英国">英国</Option>
+          <Option value="日本">日本</Option>
+          <Option value="加拿大">加拿大</Option>
+          <Option value="瑞士">瑞士</Option>
         </Select>
         <Select 
           placeholder="关键字"
           suffixIcon={<IconFont type="iconDD" className="main-icon-dd mt-0" />}
+          onChange={value => isNaN(Number(value)) && setKeyword(value)}
         >
-          <Option value="0">会议纪要</Option>
-          <Option value="1">央行</Option>
-          <Option value="2">失业率</Option>
-          <Option value="3">CPI</Option>
-          <Option value="4">GDP</Option>
+          <Option value="1">全部</Option>
+          <Option value="会议纪要">会议纪要</Option>
+          <Option value="央行">央行</Option>
+          <Option value="失业率">失业率</Option>
+          <Option value="CPI">CPI</Option>
+          <Option value="GDP">GDP</Option>
         </Select>
       </Space>
       <Space 
         className="cp-tables-ul"
         direction="vertical"
+        size="large"
       >
         <Table 
           title={() => `${moment(currStamp).format('YYYY-MM-DD')} 周${chWeek.substr(moment(currStamp).day(), 1)} 经济数据一览表`}
           className="cp-table-li"
-          columns={getColumns}
-          // loading={true}
+          dataSource={ecoData.list}
+          columns={getDataCol}
+          loading={ecoData.isFetching}
+          pagination={false}
+        />
+        <Table 
+          title={() => `${moment(currStamp).format('YYYY-MM-DD')} 周${chWeek.substr(moment(currStamp).day(), 1)} 财经大事一览表`}
+          className="cp-table-li"
+          dataSource={ecoEvent.list}
+          columns={getEventCol}
+          loading={ecoEvent.isFetching}
+          pagination={false}
         />
       </Space>
     </div>

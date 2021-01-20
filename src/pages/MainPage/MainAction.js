@@ -9,7 +9,8 @@ import {
   _modifyOrder,
   _closeOrder,
   _getNewsData,
-  _getCalendarData
+  _getEcoData,
+  _getEcoEvent
 } from '../../services/index'
 import { 
   getCmdArr
@@ -91,9 +92,13 @@ export const getNewsData = createAction(actionTypes.GET_NEWSDATA, params => {
 })
 // --- 财经日历
 export const getCalendarData = createAction(actionTypes.GET_CALENDARDATA, params => {
-  return _getCalendarData(params)
-  // .then(response => {
-  //   console.log("====response",response)
+  console.log("params", params)
+  return Promise.all([_getEcoData(params), _getEcoEvent(params)])
+  // .then(res => {
+
+  // })
+  // _getEcoData(params).then((ecoData) => {
+
   // })
 })
 

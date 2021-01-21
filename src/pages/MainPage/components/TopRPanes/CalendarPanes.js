@@ -27,6 +27,7 @@ const CalendarPanes = ({ dispatch }) => {
       date: moment(timestamp).format('MMDD'),
       timestamp: timestamp
     })).then(res => {
+      // console.log("====getEcoList data", res)
       const data = res.value
       setEcoData({
         list: data[0].map(item => {
@@ -49,7 +50,7 @@ const CalendarPanes = ({ dispatch }) => {
         isFetching: false
       })
     }).catch(err => {
-      console.log("====err", err)
+      // console.log("====err", err)
       setEcoData({
         list: [], 
         isFetching: false
@@ -179,6 +180,7 @@ const CalendarPanes = ({ dispatch }) => {
       dataIndex: 'region',
       key: 'region',
       align: 'center',
+      width: '10%',
       render: region => region || '---'
     },
     {
@@ -224,17 +226,14 @@ const CalendarPanes = ({ dispatch }) => {
   }
   
   const getFilterList = (list) => {
-    const filterArr = [region, keyword].filter(item => !!item)
-    console.log(filterArr)
-    if(filterArr.length > 0) {
-      const _list = list.filter(item => {
-        return item.name.indexOf(region) !== -1 || item.name.indexOf() !== -1
-      })
-      console.log(_list)
-      return _list
-    } else {
-      return list
+    let filterList = list
+    if(region && region !== "1") {
+      filterList = filterList.filter(item => item.country.indexOf(region) !== -1)
     }
+    if(keyword && keyword !== "1") {
+      filterList = filterList.filter(item => item.title.indexOf(keyword) !== -1)
+    }
+    return filterList
   }
 
   useEffect(() => {
@@ -242,10 +241,10 @@ const CalendarPanes = ({ dispatch }) => {
     console.log(moment(currStamp - 86400).format("YYYY-MM-DD"))
   }, [])
 
-  useEffect(() => {
-    console.log("====keywords", [region, keyword])
-    getFilterList(ecoData.list)
-  }, [region, keyword])
+  // useEffect(() => {
+  //   console.log("====keywords", [region, keyword])
+  //   getFilterList(ecoData.list)
+  // }, [region, keyword])
 
   return (
     <div className={styles['calendar-x']}>
@@ -270,7 +269,7 @@ const CalendarPanes = ({ dispatch }) => {
         <Select 
           placeholder="地区"
           suffixIcon={<IconFont type="iconDD" className="main-icon-dd mt-0" />}
-          onChange={value => isNaN(Number(value)) && setRegion(value)}
+          onChange={value => setRegion(value)}
         >
           <Option value="1">全部</Option>
           <Option value="欧元区">欧元区</Option>
@@ -283,7 +282,7 @@ const CalendarPanes = ({ dispatch }) => {
         <Select 
           placeholder="关键字"
           suffixIcon={<IconFont type="iconDD" className="main-icon-dd mt-0" />}
-          onChange={value => isNaN(Number(value)) && setKeyword(value)}
+          onChange={value => setKeyword(value)}
         >
           <Option value="1">全部</Option>
           <Option value="会议纪要">会议纪要</Option>
@@ -301,7 +300,7 @@ const CalendarPanes = ({ dispatch }) => {
         <Table 
           title={() => `${moment(currStamp).format('YYYY-MM-DD')} 周${chWeek.substr(moment(currStamp).day(), 1)} 经济数据一览表`}
           className="cp-table-li"
-          dataSource={ecoData.list}
+          dataSource={getFilterList(ecoData.list)}
           columns={getDataCol}
           loading={ecoData.isFetching}
           pagination={false}
@@ -309,7 +308,7 @@ const CalendarPanes = ({ dispatch }) => {
         <Table 
           title={() => `${moment(currStamp).format('YYYY-MM-DD')} 周${chWeek.substr(moment(currStamp).day(), 1)} 财经大事一览表`}
           className="cp-table-li"
-          dataSource={ecoEvent.list}
+          dataSource={getFilterList(ecoEvent.list)}
           columns={getEventCol}
           loading={ecoEvent.isFetching}
           pagination={false}

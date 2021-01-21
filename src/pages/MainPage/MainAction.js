@@ -33,7 +33,7 @@ export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
       })
       ws.send({
         "cmd": "order",
-        "args": "MTE5MjI6MTYxMDk1MDIyNzo3ZjI3NzYzYzIxZTFlYzU4NDBkYmYyNjk1ODZmYjRlNA=="
+        "args": ["MTE5MjI6MTYxMDk1MDIyNzo3ZjI3NzYzYzIxZTFlYzU4NDBkYmYyNjk1ODZmYjRlNA=="]
       })
     })
     return ws
@@ -92,13 +92,16 @@ export const getNewsData = createAction(actionTypes.GET_NEWSDATA, params => {
 })
 // --- 财经日历
 export const getCalendarData = createAction(actionTypes.GET_CALENDARDATA, params => {
-  console.log("params", params)
   return Promise.all([_getEcoData(params), _getEcoEvent(params)])
-  // .then(res => {
-
-  // })
-  // _getEcoData(params).then((ecoData) => {
-
+  
+  // let data = []
+  // return _getEcoData(params).then((ecoData) => {
+  //   console.log(ecoData)
+  //   data.push(ecoData)
+  //   return _getEcoEvent(params)
+  // }).then(res => {
+  //   data.push(res)
+  //   return data
   // })
 })
 

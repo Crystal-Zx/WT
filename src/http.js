@@ -36,7 +36,7 @@ axios.interceptors.response.use(response => {
   if (code == 204 ) {
     throw Error('token过期')
   } else if(response.status == 200) {
-    if(code == 1 || data.length > 0) {
+    if(code == 1 || data.length >= 0) {
       return data
     } else {
       throw response.data.msg

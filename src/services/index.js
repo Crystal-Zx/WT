@@ -55,3 +55,15 @@ export function _getEcoEvent (params = {}) {
     `https://cdn-rili.jin10.com/data/${year}/${date}/event.json?_=${timestamp}`
   )
 }
+export function _getEcoCharts (params = {}) {
+  const { id } = params
+  return http.get(
+    `https://v1.alphazone-data.cn/academy/api/v1/calendarDetail/${id}`
+  )
+}
+export function _getEcoDesc (params = {}) {
+  const { id } = params
+  return http.get(
+    `https://cdn-rili.jin10.com/data/jiedu/${id}.json`
+  )
+}

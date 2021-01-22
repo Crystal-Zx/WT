@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { createAction } from 'redux-actions'
 import socket from '../../socket'
 import { 
@@ -10,7 +9,9 @@ import {
   _closeOrder,
   _getNewsData,
   _getEcoData,
-  _getEcoEvent
+  _getEcoEvent,
+  _getEcoCharts,
+  _getEcoDesc
 } from '../../services/index'
 import { 
   getCmdArr
@@ -103,6 +104,10 @@ export const getCalendarData = createAction(actionTypes.GET_CALENDARDATA, params
   //   data.push(res)
   //   return data
   // })
+})
+// ---- 财经日历 详情
+export const getEcoDetail = createAction(actionTypes.GET_ECODETAIL, params => {
+  return Promise.all([_getEcoCharts(params), _getEcoDesc(params)])
 })
 
 // 订单板块

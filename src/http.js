@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { isJSON } from './utils/utilFunc'
 
 // 默认URL
 axios.defaults.baseURL = 'http://156.226.24.38:61029'
@@ -32,11 +33,12 @@ axios.interceptors.request.use(
 // axios拦截器
 axios.interceptors.response.use(response => {
   const code = response.data.code
-  const data = response.data.data || response.data
+  let data = response.data.data || response.data
+  data = isJSON(data) ? JSON.parse(data) : data
   if (code == 204 ) {
     throw Error('token过期')
   } else if(response.status == 200) {
-    if(code == 1 || data.length >= 0) {
+    if(code == 1 || data.length >= 0 || Object.keys(data).length > 0) {
       return data
     } else {
       throw response.data.msg

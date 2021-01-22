@@ -1,12 +1,13 @@
-import { Space, DatePicker, Select, Radio, Table, Button } from 'antd'
+import { Space, DatePicker, Select, Radio, Table, Modal } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
 // import http from '../../../../http'
 
-import { getCalendarData } from '../../MainAction'
+import { getCalendarData, getEcoDetail } from '../../MainAction'
 import styles from './TopRPanes.module.scss'
+import EcoDetailModal from './EcoDetailModal'
 
 const CalendarPanes = ({ dispatch }) => {
   const { Option } = Select
@@ -17,6 +18,8 @@ const CalendarPanes = ({ dispatch }) => {
   const [ecoEvent, setEcoEvent] = useState({ list: [], isFetching: false})
   const [region, setRegion] = useState()  // 1 -> 全部
   const [keyword, setKeyword] = useState()
+  const [visible, setVisible] = useState(false)
+  const [ecoDetail, setEcoDetail] = useState({})
 
   const getEcoList = (timestamp) => {
     if(!timestamp && ecoData.isFetching) return
@@ -68,6 +71,18 @@ const CalendarPanes = ({ dispatch }) => {
    */ 
   const handleIndex = (index, unit) => {
     return index ? (unit === "%" ? index + "%" : index) : '---'
+  }
+  const showEcoDetail = (id) => {
+    dispatch(getEcoDetail({id})).then(res => {
+      console.log("====getEcoDetail data", res)
+      // for(let item of res.value[0].data) {
+      //   if(item.full_time_period) {
+      //     item.time_period = item.full_time_period
+      //   }
+      // }
+      setVisible(true)
+      setEcoDetail(res.value)
+    })
   }
   const getDataCol = [
     {
@@ -150,8 +165,11 @@ const CalendarPanes = ({ dispatch }) => {
       dataIndex: 'detail',
       key: 'detail',
       align: 'center',
-      render: () => {
-        return <a href="javascript:;">详情</a>
+      render: (detail,item) => {
+        return <a 
+          href="javascript:;" 
+          onClick={() => showEcoDetail(item.id)}
+        >详情</a>
       }
     }
   ]
@@ -242,9 +260,8 @@ const CalendarPanes = ({ dispatch }) => {
   }, [])
 
   // useEffect(() => {
-  //   console.log("====keywords", [region, keyword])
-  //   getFilterList(ecoData.list)
-  // }, [region, keyword])
+  //   console.log("====ecoDetail changed:", ecoDetail)
+  // }, [JSON.stringify(ecoDetail)])
 
   return (
     <div className={styles['calendar-x']}>
@@ -314,6 +331,23 @@ const CalendarPanes = ({ dispatch }) => {
           pagination={false}
         />
       </Space>
+      {
+        Object.keys(ecoDetail).length &&
+        <EcoDetailModal 
+          data={ecoDetail}
+          visible={visible}
+          onCancel={() => setVisible(false)}
+        />
+      }
+      {/* {
+        Object.keys(ecoDetail).length &&
+        <Modal 
+          title={ecoDetail.title}
+          visible={visible}
+          footer={null}
+          onCancel={() => setVisible(false)}
+        />
+      } */}
     </div>
   )
 }

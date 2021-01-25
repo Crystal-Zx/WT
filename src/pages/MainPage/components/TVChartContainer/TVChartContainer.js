@@ -310,7 +310,7 @@ class TVChartContainer extends React.PureComponent {
 
   // 渲染数据
   onMessage = (data) => { // 通过参数将数据传递进来    
-    
+    // console.log("====tvc data:", data)
     let that = this
     // 计算当前resolution
     let _type = data.data.ticks ? data.data.id : data.data.type

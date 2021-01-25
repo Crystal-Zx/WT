@@ -7,9 +7,9 @@ import { useState } from 'react'
 
 const topRPanes = [
   { title: '图表', content: <ChartPanes />, key: '1' },
-  { title: '新闻信息', content: <NewsPanes />, key: '2' },
+  // { title: '新闻信息', content: <NewsPanes />, key: '2' },
   { title: '财经日历', content: <CalendarPanes />, key: '3' },
-  { title: '市场分析', content: '市场分析', key: '4' }
+  // { title: '市场分析', content: '市场分析', key: '4' }
 ]
 
 export default function TopRPanes () {

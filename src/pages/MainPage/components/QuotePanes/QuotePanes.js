@@ -16,7 +16,7 @@ import styles from './QuotePanes.module.scss';
 
 
 const QuotePanes = (props) => {
-  // console.log("====QuotePanes render", props.orderSymbols) 
+  // console.log("====QuotePanes render", props)
   const { 
     dispatch, symbolList, filterGroup, socket, orderSymbols
   } = props
@@ -41,6 +41,7 @@ const QuotePanes = (props) => {
   const onMessage = (data) => {
     if(data.type === "symbol") {
       data = data.data
+      // console.log("===onMsg symbol data:", data)
       cacheList = data.map(item => {
         var obj = {
           ...item,
@@ -58,7 +59,7 @@ const QuotePanes = (props) => {
       // onChangeType(cacheList[0].group)
     } else if(data.type === "quote") {
       data = data.data
-      
+      // data.symbol === "AUDUSD" && console.log("===onMsg quote data:", data)
       for(let item of cacheList) {
         if(item.symbol === data.symbol) {
           data.isUp = item.bid ? data.bid >= item.bid : 1
@@ -71,6 +72,7 @@ const QuotePanes = (props) => {
       }
     } else if(data.type === "mini") {
       data = data.data
+      // console.log("===onMsg mini data:", data)
       const symbols = data.map(item => item.symbol)
       cacheList = cacheList.map(item => {
         if(symbols.includes(item.symbol)) {
@@ -125,9 +127,9 @@ const QuotePanes = (props) => {
     })
   }
   
-  useEffect(() => {
-    prevListRef.current = list
-  })
+  // useEffect(() => {
+  //   prevListRef.current = list
+  // })
   useEffect(() => { // 仅didmounted时执行一次
     dispatch(initSocket())
     const t = setInterval(() => {
@@ -138,8 +140,9 @@ const QuotePanes = (props) => {
        */ 
       const cacheVal = JSON.stringify(cacheListRef.current),
             prevVal = JSON.stringify(prevListRef.current)
-      
+            
       if(cacheVal !== prevVal) {
+        prevListRef.current = JSON.parse(cacheVal)
         dispatch(setSymbols(JSON.parse(cacheVal)))
       }
     }, 500);

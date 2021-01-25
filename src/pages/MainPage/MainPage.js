@@ -1,6 +1,5 @@
 import { Menu, Dropdown, Button } from 'antd';
 
-// import CardTabs from '../../components/CardTabs/CardTabs.js';
 import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import OrderPanes from './components/OrderPanes/OrderPanes.js'
@@ -9,7 +8,6 @@ import IconFont from '../../utils/iconfont/iconfont';
 import styles from './MainPage.module.scss';
 
 import { useEffect, useState } from 'react';
-// import { connect } from 'react-redux'
 import { getCurrDate } from '../../utils/utilFunc'
 
 const menu = (
@@ -39,12 +37,12 @@ function MainPage () {
 
   const init = () => {
     // 开启右上角时钟计时
-    // const t = setInterval(() => {
-    //   setCurrDate(getCurrDate())
-    // }, 1000);
-    // return () => {
-    //   clearInterval(t)
-    // }
+    const t = setInterval(() => {
+      setCurrDate(getCurrDate())
+    }, 1000);
+    return () => {
+      clearInterval(t)
+    }
   }
   
   useEffect(() => {

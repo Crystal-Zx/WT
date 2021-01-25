@@ -70,8 +70,34 @@
       }
     }
     .ecod-modal-x {
-      .ecod-chart-x {
-        height: 300px;
+      .ant-modal-body {
+        position: relative;
+        .ecod-btn-download {
+          position: absolute;
+          top: 14px;
+          right: 24px;
+          border: 0;
+          font-size: 12px;
+          z-index: 1;
+          outline: none;
+          .icon-download {
+            position: relative;
+            top: 1px;
+            font-size: 14px;
+          }
+        }
+        .ecod-desc-x {
+          margin-top: 2em;
+          font-size: 14px;
+          line-height: 1.8em;
+          color: $fontColor;
+          p + p {
+            margin-top: .5em;
+          }
+          p > span:first-child {
+            font-weight: bold;
+          }
+        }
       }
     }
     .mt-0 {

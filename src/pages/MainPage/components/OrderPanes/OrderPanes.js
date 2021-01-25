@@ -5,13 +5,17 @@ import styles from './OrderPanes.module.scss'
 
 import { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
-import { getPositions, getHistories, closeOrder } from '../../MainAction' 
+import { 
+  getPositions, 
+  getHistories, 
+  closeOrder 
+} from '../../MainAction' 
 import { setAccountInfo } from '../../MainAction'
 import { openNotificationWithIcon, toDecimal, isBuy } from '../../../../utils/utilFunc'
 import IconFont from '../../../../utils/iconfont/iconfont'
 
 const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
-  // console.log("====OrderPanes")
+  // console.log("====OrderPanes", quoteList)
   const { confirm } = Modal
   const { info, isFetching } = accountInfo
   const [activeKey, setActiveKey] = useState("0")
@@ -50,15 +54,19 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
       activeKey >= 2 && _getHistories()
     } else {// if(activeKey === "2") {
       const totalProfit = listArr[activeKey].list.reduce((prev, item) => prev + Number(item.profit), 0)
-      console.log("====totalProfit", totalProfit)
+      // console.log("====totalProfit", totalProfit)
       dispatch(setAccountInfo({ profit: totalProfit }))
     }
   }
+  // const onOrderChange = (data) => {
+  //   console.log(data)
+  //   _getPositions(activeKey)
+  // }
   // const onMessage = (data, activeKey) => {
   //   const ospData = listArr[activeKey].list
-  //   // console.log("====ospData:", ospData)
   //   if(data.type === 'quote' && Number(activeKey) !== 2) {  // 理论上说应该没必要再判断一次data.type，不过保险起见
   //     data = data.data
+  //     // console.log("====onmsg data:", data)
   //     for(let item of ospData) {
   //       if(item.symbol !== data.symbol) continue
   //       let flag
@@ -70,13 +78,11 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   //         flag = -1
   //       }
   //       if(!Number(activeKey)) {
-  //         item.profit = ((item.close_price - item.open_price) * item.volume * data.contract_size * data.trans_price_ask * flag).toFixed(2)
+  //         item.profit = ((item.close_price - item.open_price) * item.volume * data.size * data.trans_price_ask * flag).toFixed(2)
   //       }
   //       item.close_price = toDecimal(item.close_price, data.digits)
   //     }
   //     listArr[activeKey].list = ospData
-  //     // console.log(listArr[0].list)
-  //     // setListArr(listArr.concat([]))
   //     // 更新store中用户账户信息数据
   //     if(Object.keys(info).length) {
   //       // 浮动盈亏，即盈利
@@ -92,12 +98,12 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   //     }
   //   }
   // }
-  const updateOspData = () => {
+  const onQuoteChange = () => {
     const ospData = listArr[activeKey].list  // 引用类型，修改ospData就是在修改listArr[activeKey].list
     for(let oItem of ospData) {
       for(let qItem of quoteList) {
         // 加上bid的判断是保证当前货币已有报价数据，否则就保持原数据不变
-        if(qItem.name === oItem.symbol && qItem.bid) {  
+        if(qItem.symbol === oItem.symbol && qItem.bid) {  
           let flag
           // 当quoteList中尚未接入报价数据时需保持原有即时价格
           if(isBuy(oItem.cmdForCh)) {  // 多单 buy
@@ -201,16 +207,17 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     init()
   }, [])
 
-  // useEffect(() => {
-  //   if(Object.keys(socket).length && listArr[0].list && listArr[0].list.length) {
-  //     socket.on("order", (data) => onMessage(data, activeKey))
-  //   }
-  // }, [JSON.stringify(socket), JSON.stringify(listArr[0])])
+  useEffect(() => {
+    if(Object.keys(socket).length && listArr[0].list && listArr[0].list.length) {
+      socket.on("order", () => _getPositions(activeKey))
+    }
+  }, [JSON.stringify(socket), JSON.stringify(listArr[0])])
   useEffect(() => {
     if(quoteList && quoteList.length) {
-      updateOspData()
+      onQuoteChange()
     }
   }, [JSON.stringify(quoteList)])
+
 
   return (
     <CardTabs
@@ -254,14 +261,14 @@ export default connect(
         oSymbols = order.list.map(item => item.symbol)
     const symbolsArr = [...new Set(pSymbols.concat(oSymbols))]
     
-    // console.log("symbolsArr",symbolsArr)
+    // console.log("===quoteList", symbolList.list && symbolList.list.filter(item => symbolsArr.includes(item.symbol)))
     return {
       socket: initSocket,
       accountInfo,
       listArr: [
         position, order, history
       ],
-      quoteList: symbolList.list && symbolList.list.filter(item => symbolsArr.includes(item.name))
+      quoteList: symbolList.list && symbolList.list.filter(item => symbolsArr.includes(item.symbol))
     }
   }
   // dispatch => {

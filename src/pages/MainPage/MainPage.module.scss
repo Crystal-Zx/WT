@@ -13,7 +13,8 @@ $bottomH: 4.3vh;
   justify-content: space-between;
   align-content: space-between;
   flex-wrap: nowrap;
-  background-color: $mainBgColor;
+  @include bg-color();
+  // background-color: $mainBgColor;
   overflow: hidden;
   :global {
     .main-icon-layout {
@@ -92,7 +93,8 @@ $bottomH: 4.3vh;
             &-active {
               color: $themeBlue;
               border-color: $bgColor;
-              background: $bgColor;
+              @include bg-panel-color();
+              // background: $bgColor;
               border-radius: 0 !important;
               .ant-tabs-tab-btn {
                 color: inherit !important;
@@ -216,6 +218,10 @@ $bottomH: 4.3vh;
       *:nth-child(n+3) { 
         margin-left: 16px;
       }
+      .tr-btn-changetheme {
+        height: auto;
+        margin-top: 1px;
+      }
       .tr-btn-changeAcc {
         width: 123px;
         height: 100%;
@@ -225,6 +231,24 @@ $bottomH: 4.3vh;
         font-size: 12px;
         font-weight: bold;
       }
+      // .tr-switch-theme.tr-switch-theme {
+      //   min-width: 42px;
+      //   height: 24px;
+      //   line-height: 18px;
+      //   border: 3px solid #d1d5da !important;
+      //   background-color: transparent;
+      //   .ant-switch-handle {
+      //     position: absolute;
+      //     top: -5px;
+      //     left: -5px;
+      //     width: 28px;
+      //     height: 28px;
+      //     &::before {
+      //       background-color: #2f363d;
+      //       border-radius: 50%;
+      //     }
+      //   }
+      // }
     }
     /* css style */
     .color-up {

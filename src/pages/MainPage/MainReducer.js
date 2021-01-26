@@ -63,7 +63,7 @@ const filterGroup = (state = "", action) => {
 }
 
 // K线
-const KLineList = (state = [
+const kLineList = (state = [
   { symbol: 'EURUSD', digits: 5},
   { symbol: 'GBPUSD', digits: 5}
 ], action) => {
@@ -246,7 +246,7 @@ export default combineReducers({
   initSocket,
   symbolList,
   filterGroup,
-  KLineList,
+  kLineList,
   positionOrder,
   history,
   accountInfo

@@ -45,6 +45,17 @@ p {
     opacity: .65 !important;
   }
 }
+.ant-btn-default {
+  padding: 0 5px;
+  background: unset;
+  border: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background: unset;
+  }
+}
 // antd modal common
 .ant-modal-footer button + button,
 .ant-modal-confirm .ant-modal-confirm-btns button + button {

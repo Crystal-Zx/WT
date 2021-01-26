@@ -1,4 +1,4 @@
-import { Menu, Dropdown, Button } from 'antd';
+import { Menu, Dropdown, Button, Switch } from 'antd';
 
 import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
@@ -32,8 +32,9 @@ const menu = (
 
 
 function MainPage () {
-  console.log("====MainPage render")
+  const defaultTheme = sessionStorage.getItem("wt-theme") || 'light'
   const [currDate, setCurrDate] = useState(getCurrDate())
+  const [theme, setTheme] = useState(defaultTheme)
 
   const init = () => {
     // 开启右上角时钟计时
@@ -42,6 +43,15 @@ function MainPage () {
     }, 1000);
     return () => {
       clearInterval(t)
+    }
+  }
+  const changeTheme = () => {
+    if(theme === 'light') {
+      setTheme('dark')
+      window.document.documentElement.setAttribute("data-theme", 'dark')
+    } else {
+      setTheme('light')
+      window.document.documentElement.setAttribute("data-theme", 'light')
     }
   }
   
@@ -63,8 +73,22 @@ function MainPage () {
       </div>
       <div className="main-topright-x">
         <span className="tr-currtime-x">{currDate}</span>
-        <IconFont type="iconLayout" className="main-icon-layout" />
-        <IconFont type="iconDark" className="main-icon-dark" />
+        {/* <IconFont type="iconLayout" className="main-icon-layout" /> */}
+        {/* <Switch className="tr-switch-theme" /> */}
+        <Button 
+          type="default" 
+          className="tr-btn-changetheme"
+          onClick={changeTheme}
+        >
+          {
+            theme === 'light' &&
+            <IconFont type="iconDark" className="main-icon-dark" />
+          }
+          {
+            theme === 'dark' &&
+            <IconFont type="iconLight" className="main-icon-dark" />
+          }
+        </Button>
         <IconFont type="iconWifi" className="main-icon-wifi" />
         <Dropdown overlay={menu} placement="bottomRight">
           <Button className="tr-btn-changeAcc">DEMO 11593

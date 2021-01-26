@@ -27,7 +27,7 @@ export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
     ws.doOpen()
     // console.log("ws", ws)
     ws.on("open", function () {
-      console.log("ws sending...")
+      // console.log("ws sending...")
       ws.send({
         "cmd": "symbols",
         "args": [""]

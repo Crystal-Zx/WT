@@ -41,8 +41,9 @@ class datafeeds extends React.Component {
    * @param {*Function} onErrorCallback  回调函数
    */
   getBars(symbolInfo, resolution, rangeStartDate, rangeEndDate, onDataCallback) {
-    // console.log('=============getBars running',symbolInfo)
+    console.log('=============getBars running', resolution)
     const onLoadedCallback = (data) => {
+      console.log(data)
       data && data.length ? onDataCallback(data, {
         noData: false
       }) : onDataCallback([], {

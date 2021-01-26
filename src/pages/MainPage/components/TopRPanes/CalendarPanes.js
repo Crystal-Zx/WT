@@ -332,7 +332,7 @@ const CalendarPanes = ({ dispatch }) => {
         />
       </Space>
       {
-        Object.keys(ecoDetail).length &&
+        Object.keys(ecoDetail).length > 0 &&
         <EcoDetailModal 
           data={ecoDetail}
           visible={visible}

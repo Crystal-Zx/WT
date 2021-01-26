@@ -14,10 +14,10 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
   const initKLineList = (kLineList) => {
     return kLineList.map((item, index) => {
       return {
+        key: item.symbol,
         symbol: item.symbol,
         resolution: '1',
         closable: kLineList.length !== 1 ? true : false,
-        key: item.symbol,
         pricePrecision: item.digits
       }
     })
@@ -126,11 +126,13 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
   }
 
   useEffect(() => {
-    const symbolList = initKLineList(kLineList)
-    setSymbolList(symbolList)
-    setActiveKey(symbolList[kLineList.length - 1].key)
-    setSymbol(symbolList[kLineList.length - 1].symbol)
-  }, [kLineList.length])
+    if(kLineList.length) {
+      const symbolList = initKLineList(kLineList)
+      setSymbolList(symbolList)
+      setActiveKey(symbolList[kLineList.length - 1].key)
+      setSymbol(symbolList[kLineList.length - 1].symbol)
+    }
+  }, [JSON.stringify(kLineList)])
 
   useEffect(() => {
     setSocket(initSocket)
@@ -151,7 +153,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
           socket={socket}
           symbol={symbol}
           resolution={getResolutionBySymbol(symbol)}
-          symbolList={symbolList}
+          symbolList={symbolList}  //.filter(item => item.symbol === symbol)
           onChangeResolution={onChangeResolution}
         />
       }
@@ -187,9 +189,14 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
 
 export default connect(
   state => {
+    const {
+      kLineList,
+      initSocket
+    } = state.MainReducer
+    
     return {
-      kLineList: state.MainReducer.KLineList,
-      initSocket: state.MainReducer.initSocket
+      kLineList,
+      initSocket
     }
   },
   dispatch => {

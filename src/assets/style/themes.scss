@@ -1,0 +1,30 @@
+$themes: (
+  light: (
+    // font color
+    color-primary: #363636,
+    color-default: #9ea4a9,
+
+    // bg color
+    bg-color-main: #e2e6e9,
+    bg-color-primary: #fff,
+    bg-color-tab: #3f535a,
+    bg-color-tabActive: #fff,
+
+    // border color
+    border-color-main: #e2e6e9
+  ),
+  dark: (
+    // font
+    color-primary: #fff,
+    color-default: #698490,
+
+    // bg color
+    bg-color-main: #000,
+    bg-color-primary: #152126,
+    bg-color-tab: #2d3940,
+    bg-color-tabActive: #152126,
+
+    // border color
+    border-color-main: #000
+  )
+)

@@ -24,7 +24,10 @@
       justify-content: space-between;
       align-items: center;
       background-color: #f7f7f7;
-      border-top: 2px solid $mainBgColor;
+      border-top: 2px solid;
+      @include themify {
+        border-top-color: themed('border-color-main');
+      }
       cursor: pointer;
       &.active {
         border-top-color: $bgColor;

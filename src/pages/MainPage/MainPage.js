@@ -37,6 +37,7 @@ function MainPage () {
   const [theme, setTheme] = useState(defaultTheme)
 
   const init = () => {
+    window.document.documentElement.setAttribute("data-theme", defaultTheme)
     // 开启右上角时钟计时
     const t = setInterval(() => {
       setCurrDate(getCurrDate())

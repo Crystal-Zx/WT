@@ -13,8 +13,10 @@ $bottomH: 4.3vh;
   justify-content: space-between;
   align-content: space-between;
   flex-wrap: nowrap;
-  @include bg-color();
-  // background-color: $mainBgColor;
+  @include themify {
+    background-color: themed('bg-color-main');
+    color: themed('color-primary');
+  }
   overflow: hidden;
   :global {
     .main-icon-layout {
@@ -87,14 +89,22 @@ $bottomH: 4.3vh;
             font-size: 12px;
             font-weight: bold;
             color: #fff;
-            border-color: $themeBlue;
-            background: $themeBlue;
+            // border-color: $themeBlue;
+            // background: $themeBlue;
+            @include themify {
+              border-color: themed('bg-color-tab');
+              background-color: themed('bg-color-tab');
+            }
             border-radius: 0 !important;
             &-active {
-              color: $themeBlue;
-              border-color: $bgColor;
-              @include bg-panel-color();
+              color: inherit;
+              // color: $themeBlue;
+              // border-color: $bgColor;
               // background: $bgColor;
+              @include themify {
+                border-color: themed('bg-color-tabActive');
+                background-color: themed('bg-color-tabActive');
+              }
               border-radius: 0 !important;
               .ant-tabs-tab-btn {
                 color: inherit !important;
@@ -144,7 +154,9 @@ $bottomH: 4.3vh;
       margin-top: $gap;
       display: flex;
       justify-content: space-between;
-      background-color: $bgColor;
+      @include themify {
+        background-color: themed('bg-color-primary');
+      }
       .user-x {
         width: 142px;
         height: 100%;
@@ -163,7 +175,7 @@ $bottomH: 4.3vh;
       }
       .account-info-x {
         flex: 1;
-        margin: 0 16px 0 30px;
+        padding: 0 16px 0 30px;
         display: inline-flex;
         justify-content: space-between;
         align-items: center;
@@ -195,9 +207,11 @@ $bottomH: 4.3vh;
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        background: $bgColor;
         border: 0;
-        border-left: 1px solid $mainBgColor;
+        border-left: 1px solid;
+        @include themify {
+          border-left-color: themed('border-color-main');
+        }
       }
     }
     .main-topright-x {

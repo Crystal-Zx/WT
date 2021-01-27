@@ -19,15 +19,20 @@ $tableRow: #f7f7f7;
         }
       }
     }
+    .ant-table {
+      background: transparent;
+    }
     .ant-table-thead.ant-table-thead > tr > th {
       position: relative;
       height: 26px;
       padding: 0;
       text-align: center;
       font-size: 12px;
-      color: $lightGray;
+      color: inherit;
       background-color: unset;
-      border-color: $cutOffLine;
+      @include themify {
+        border-color: themed('border-color-table');
+      }
       & + th::before {
         position: absolute;
         top: 50%;
@@ -36,21 +41,31 @@ $tableRow: #f7f7f7;
         content: "";
         width: 1px;
         height: 11px;
-        background-color: $cutOffLine;
+        background-color: currentColor;
       }
     }
     .ant-table-tbody { 
       .ant-table-row {
         &.dark-row {
-          background-color: $tableRow;
+          // background-color: $tableRow;
+          @include themify {
+            background-color: themed('bg-color-trActive');
+          }
+        }
+        @include themify {
+          color: themed('color-primary');
         }
         .ant-table-cell {
           height: 30px;
           padding: 0;
           font-size: 12px;
-          color: $fontColor;
           &:not(:first-child) {
             text-align: center;
+          }
+        }
+        &:hover > td {
+          @include themify {
+            background: themed('bg-color-trHover');
           }
         }
       }
@@ -58,6 +73,9 @@ $tableRow: #f7f7f7;
     }
     /* 展开行样式 */
     /* reset */
+    tr.ant-table-expanded-row > td, tr.ant-table-expanded-row:hover > td {
+      background: unset;
+    }
     .ant-table-expanded-row > .ant-table-cell {
       padding: 0 !important;
     }
@@ -144,7 +162,9 @@ $tableRow: #f7f7f7;
         justify-content: space-between;
         align-items: center;
         font-size: 12px;
-        background-color: #fff;
+        @include themify {
+          color: themed('color-primary');
+        }
         .qtr-val {
           min-width: 30%;
           max-width: 40%;

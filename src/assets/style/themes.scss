@@ -1,30 +1,57 @@
+$themeBlue: #3f535a;
+$themeRed: #fc3131;
+$themeGreen: #00b276;
+
 $themes: (
   light: (
     // font color
     color-primary: #363636,
     color-default: #9ea4a9,
+    color-tabActive: $themeBlue,
+    color-input: #9ea4a9,
+    color-icon: $themeBlue,
 
     // bg color
-    bg-color-main: #e2e6e9,
-    bg-color-primary: #fff,
-    bg-color-tab: #3f535a,
-    bg-color-tabActive: #fff,
+    bg-color-1: #e2e6e9,
+    bg-color-2: #fff,
+    bg-color-3: $themeBlue,
+    bg-color-4: #fff,
+    bg-color-search: #fff,
+    bg-color-trActive: #f7f7f7,
+    bg-color-trHover: #e2e6e9,
+    bg-color-subTab: #f7f7f7,
+    bg-color-cdToday: $themeBlue,
 
     // border color
-    border-color-main: #e2e6e9
+    border-color-main: #e2e6e9,
+    border-color-search: #ebeced,
+    border-color-table: #e2e6e9,
+    border-active: $themeBlue,
   ),
   dark: (
     // font
     color-primary: #fff,
-    color-default: #698490,
+    color-default: #889399,
+    color-tabActive: #fff,
+    color-input: #bfbfbf,
+    // color-input: #757575,
+    color-icon: #698490,
 
     // bg color
-    bg-color-main: #000,
-    bg-color-primary: #152126,
-    bg-color-tab: #2d3940,
-    bg-color-tabActive: #152126,
+    bg-color-1: #000,
+    bg-color-2: #152126,
+    bg-color-3: #2d3940,
+    bg-color-4: #152126,
+    bg-color-search: #273137,
+    bg-color-trActive: #1f282d,
+    bg-color-trHover: #2d3940,
+    bg-color-subTab: #283239,
+    bg-color-cdToday: #889399,
 
     // border color
-    border-color-main: #000
+    border-color-main: #000,
+    border-color-search: #273137,
+    border-color-table: transparent,
+    border-active: #889399,
   )
 )

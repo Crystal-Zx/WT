@@ -16,12 +16,28 @@
         font-size: inherit;
       }
       .ant-radio-button-wrapper,
-      .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-        height: 30px;
-        line-height: 28px;
-      }
+      .ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
       .ant-picker {
         height: 30px;
+        line-height: 28px;
+        @include themify {
+          color: themed('color-input');
+          background: themed('bg-color-search');
+          border: 1px solid themed('border-color-search');
+        }
+      }
+      // .ant-radio-button-wrapper,
+      // .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+      //   height: 30px;
+      //   line-height: 28px;
+      // }
+      .ant-picker {
+        .ant-picker-input > input,
+        .ant-picker-suffix {
+          @include themify {
+            color: themed('color-input');
+          }
+        }
       }
     }
     .cp-tables-ul {
@@ -46,19 +62,37 @@
             background-position: 0 100%;
           }
         }
-        .ant-table-title {
-          padding: 0 0 15px 2px;
-          font-size: 13px;
-          font-weight: bold;
-          color: $themeBlue;
-        }
-        .ant-table-thead > tr > th {
-          height: 40px;
-          padding: 0;
-          box-sizing: border-box;
-          border-top: 1px solid #f0f0f0;
-          font-size: 12px;
-          background: unset;
+        .ant-table {
+          background-color: unset;
+          @include themify {
+            color: themed('color-primary');
+          }
+          .ant-table-title {
+            padding: 0 0 15px 2px;
+            font-size: 13px;
+            font-weight: bold;
+            color: inherit;
+          }
+          .ant-table-thead > tr > th {
+            height: 40px;
+            padding: 0;
+            box-sizing: border-box;
+            border-top: 1px solid;
+            color: inherit;
+            font-size: 12px;
+            background: unset;
+          }
+          .ant-table-thead > tr > th,
+          .ant-table-tbody > tr > td {
+            @include themify {
+              border-color: themed('border-color-table');
+            }
+          }
+          .ant-table-tbody > tr.ant-table-row:hover > td {
+            @include themify {
+              background: themed('bg-color-trHover');
+            }
+          }
         }
         .cp-img-flag {
           width: 44px;

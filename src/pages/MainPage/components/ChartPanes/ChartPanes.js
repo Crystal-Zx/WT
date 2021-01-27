@@ -3,7 +3,7 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import { Button } from 'antd'
 import TVChartContainer from '../TVChartContainer/TVChartContainer.js'
 
-import './ChartPanes.scss'
+import styles from './ChartPanes.module.scss'
 
 import { connect } from 'react-redux'
 import { deleteFromKLine } from '../../MainAction'
@@ -149,7 +149,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
       /> */}
       {
         Object.keys(socket).length > 0 && 
-        <TVChartContainer 
+        <TVChartContainer
           socket={socket}
           symbol={symbol}
           resolution={getResolutionBySymbol(symbol)}
@@ -157,7 +157,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
           onChangeResolution={onChangeResolution}
         />
       }
-      <div className="symbol-x">
+      <div className={styles["symbol-x"]}>
         <div className="symbol-ul">
           {
             symbolList.map(sb => (

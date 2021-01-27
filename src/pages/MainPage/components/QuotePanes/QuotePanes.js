@@ -106,10 +106,10 @@ const QuotePanes = (props) => {
     const args = currType.join(".")
     // socket.on("open", () => {
       // 获取报价信息
-      // socket.send({
-      //   "cmd": "quote",
-      //   "args": [`${args}`]
-      // })
+      socket.send({
+        "cmd": "quote",
+        "args": [`${args}`]
+      })
     // })
   }
   // 切换QSP页面

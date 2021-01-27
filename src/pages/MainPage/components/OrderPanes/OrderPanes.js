@@ -33,7 +33,7 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     })
   }
   const _getHistories = (from = 0, to = new Date().getTime()) => {
-    return dispatch(getHistories(from, to)).then(res => {
+    return dispatch(getHistories({from, to})).then(res => {
       dispatch(setAccountInfo({ 
         profit: res.value.reduce((prev, item) => prev + Number(item.profit), 0)
       }))

@@ -14,7 +14,7 @@ $bottomH: 4.3vh;
   align-content: space-between;
   flex-wrap: nowrap;
   @include themify {
-    background-color: themed('bg-color-main');
+    background-color: themed('bg-color-1');
     color: themed('color-primary');
   }
   overflow: hidden;
@@ -41,7 +41,7 @@ $bottomH: 4.3vh;
     /* tabs组件 */
     .ant-tabs {
       .ant-tabs-nav {
-        margin-bottom: 0;
+        margin-bottom: -1px;
       }
       /* line 类型 */
       &.ant-tabs-line {  /* 自定义类名 并不是antd自带的 */
@@ -59,15 +59,22 @@ $bottomH: 4.3vh;
               justify-content: center;
               .ant-tabs-tab-btn {
                 font-weight: bold;
-                color: $lightGray;
+                @include themify {
+                  color: themed('color-default');
+                }
               }
               &-active .ant-tabs-tab-btn {
-                color: $themeBlack;
+                @include themify {
+                  color: themed('color-tabActive');
+                }
               }
             }
             .ant-tabs-ink-bar {
               height: 1px;
-              background: $themeBlack;
+              // background: $themeBlack;
+              @include themify {
+                background-color: themed('color-tabActive');
+              }
             }
           }
         }
@@ -89,21 +96,16 @@ $bottomH: 4.3vh;
             font-size: 12px;
             font-weight: bold;
             color: #fff;
-            // border-color: $themeBlue;
-            // background: $themeBlue;
             @include themify {
-              border-color: themed('bg-color-tab');
-              background-color: themed('bg-color-tab');
+              border-color: themed('bg-color-3');
+              background-color: themed('bg-color-3');
             }
             border-radius: 0 !important;
             &-active {
-              color: inherit;
-              // color: $themeBlue;
-              // border-color: $bgColor;
-              // background: $bgColor;
               @include themify {
-                border-color: themed('bg-color-tabActive');
-                background-color: themed('bg-color-tabActive');
+                color: themed('color-tabActive');
+                border-color: themed('bg-color-4');
+                background-color: themed('bg-color-4');
               }
               border-radius: 0 !important;
               .ant-tabs-tab-btn {
@@ -112,7 +114,9 @@ $bottomH: 4.3vh;
               }
             }
             .ant-tabs-tab-btn:focus,.ant-tabs-tab-btn:active {
-              color: $themeBlue;
+              @include themify {
+                color: themed('color-tabActive');
+              }
             }
           }
         }
@@ -120,7 +124,10 @@ $bottomH: 4.3vh;
           height: 100%;
           & > .ant-tabs-tabpane {
             position: relative;
-            background-color: $bgColor;
+            @include themify {
+              background-color: themed('bg-color-2');
+            }
+            // background-color: $bgColor;
           }
         }
       }
@@ -155,7 +162,7 @@ $bottomH: 4.3vh;
       display: flex;
       justify-content: space-between;
       @include themify {
-        background-color: themed('bg-color-primary');
+        background-color: themed('bg-color-2');
       }
       .user-x {
         width: 142px;

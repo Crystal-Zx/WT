@@ -17,6 +17,7 @@ class TVChartContainer extends React.PureComponent {
 
   constructor(props) {
     super(props)
+    console.log(props)
     this.tvWidget = null
     this.socket = props.socket
     this.datafeeds = new Datafeed(this)
@@ -66,13 +67,12 @@ class TVChartContainer extends React.PureComponent {
     // )
     this.socket.on('kLine', that.onMessage.bind(this))
     this.socket.on('close', that.onClose.bind(this))
-    
   }
 
   init = () => {
     const that = this
     // var chartType = (localStorage.getItem('tradingview.chartType') || '1') * 1;
-    const theme = 'white'
+    // const theme = window.document.documentElement.getAttribute("data-theme")
     if (!this.tvWidget) {
       this.tvWidget = new widget({
         symbol: this.symbol, // 图表的初始商品
@@ -83,9 +83,9 @@ class TVChartContainer extends React.PureComponent {
         library_path: '/charting_library/', // static文件夹的路径              
         timezone: 'Asia/Shanghai',
         autosize: true,
-        // custom_css_url: './css/tradingview_'+ theme +'.css',  // 本地css样式，放在public下
+        // custom_css_url: '../../../../../public/tv.module.scss',  // 本地css样式，放在public下（1.14+支持）
         locale: getLanguageFromURL() || 'en', // 图表的本地化处理
-        toolbar_bg: '#fff',
+        toolbar_bg: '#fff0',
         // studies_overrides: {
         //   'volume.volume.color.0': 'rgba(29, 178, 112,1)',
         //   'volume.volume.color.1': 'rgba(239, 64, 52, 1)'
@@ -113,9 +113,14 @@ class TVChartContainer extends React.PureComponent {
     const thats = this.tvWidget;
 
     thats.onChartReady(function () {
+      // console.log(document.querySelector(".TVChartContainer iframe"))
+      // const tvcIframe = document.querySelector(".TVChartContainer iframe")
+      // const head = tvcIframe.contentWindow.document.body
+
       createButton(buttons)
       // 设定图表自定义样式
-      thats.applyOverrides(that.getOverrides(theme))
+      thats.applyOverrides(that.getOverrides(that.props.theme))
+      
     })
 
     // chartType: 0 => Bar; 1 => Candle; 2 => Line; 3 => Area
@@ -469,51 +474,38 @@ class TVChartContainer extends React.PureComponent {
 
   getOverrides = (theme) => {
     var themes = {
-      "white": {
-        //url: "day.css",
+      "light": {
         up: "#00b276",
         down: "#fc3131",
         bg: "#fff",
         grid: "#dadde0",
         cross: "#23283D",
         border: "#dadde0",
-        text: "#9ea4a9",
-        areatop: "rgba(71, 78, 112, 0.1)",
-        areadown: "rgba(71, 78, 112, 0.02)",
+        text: "#363636",
+        areatop: "rgba(0, 178, 118, 0.1)",
+        areadown: "rgba(252, 49, 49, 0.02)",
         line: "#737375"
       },
-      "black": {
+      "dark": {
         //url: "night.css",
-        up: "#589065",
-        down: "#ae4e54",
-        bg: "#181B2A",
-        grid: "#1f2943",
-        cross: "#9194A3",
-        border: "#4e5b85",
-        text: "#61688A",
-        areatop: "rgba(122, 152, 247, .1)",
-        areadown: "rgba(122, 152, 247, .02)",
+        up: "#24a06b",     // 上行蜡烛颜色，"#589065",
+        down: "#cc2e3c",   // 下行蜡烛颜色，"#ae4e54",
+        bg: "#152126",
+        grid: "#1f292f",   // 网格线
+        cross: "#43545e",  // 鼠标悬浮的十字线
+        border: "#f00",
+        text: "#fff",
+        areatop: "rgba(36, 160, 107, .1)",
+        areadown: "rgba(204, 46, 60, .02)",
         line: "#737375"
-      },
-      "mobile": {
-        //url: "mobile.css",
-        up: "#03C087",
-        down: "#E76D42",
-        bg: "#ffffff",
-        grid: "#f7f8fa",
-        cross: "#23283D",
-        border: "#C5CFD5",
-        text: "#8C9FAD",
-        areatop: "rgba(71, 78, 112, 0.1)",
-        areadown: "rgba(71, 78, 112, 0.02)",
-        showLegend: !0
       }
     };
     var t = themes[theme];
     return {
-      "scalesProperties.lineColor": t.text,
+      // 坐标轴和刻度标签颜色
+      "scalesProperties.lineColor": t.grid,
       "scalesProperties.textColor": t.text,
-      "paneProperties.background": t.bg,
+      "paneProperties.background": t.bg,  // charts区域背景色
       "paneProperties.vertGridProperties.color": t.grid,
       "paneProperties.horzGridProperties.color": t.grid,
       "paneProperties.crossHairProperties.color": t.cross,
@@ -523,9 +515,10 @@ class TVChartContainer extends React.PureComponent {
       "paneProperties.legendProperties.showStudyValues": !0,
       "paneProperties.legendProperties.showSeriesTitle": !0,
       "paneProperties.legendProperties.showSeriesOHLC": !0,
+      // K线蜡烛图
       "mainSeriesProperties.candleStyle.upColor": t.up,
       "mainSeriesProperties.candleStyle.downColor": t.down,
-      "mainSeriesProperties.candleStyle.drawWick": !0,
+      "mainSeriesProperties.candleStyle.drawWick": !0,  // 烛心：即蜡烛柱中间竖着的那根线
       "mainSeriesProperties.candleStyle.drawBorder": !0,
       "mainSeriesProperties.candleStyle.borderColor": t.border,
       "mainSeriesProperties.candleStyle.borderUpColor": t.up,
@@ -533,6 +526,7 @@ class TVChartContainer extends React.PureComponent {
       "mainSeriesProperties.candleStyle.wickUpColor": t.up,
       "mainSeriesProperties.candleStyle.wickDownColor": t.down,
       "mainSeriesProperties.candleStyle.barColorsOnPrevClose": !1,
+      // 空心K线蜡烛图
       "mainSeriesProperties.hollowCandleStyle.upColor": t.up,
       "mainSeriesProperties.hollowCandleStyle.downColor": t.down,
       "mainSeriesProperties.hollowCandleStyle.drawWick": !0,
@@ -599,6 +593,9 @@ class TVChartContainer extends React.PureComponent {
     if(Object.keys(prevProps.socket) === 0 && Object.keys(prevProps.socket) !== Object.keys(that.props.socket)) {
       console.log("socket changed!, the value of socket this time is: ", that.props.socket)
     }
+    if(prevProps.theme !== that.props.theme) {
+      that.tvWidget.applyOverrides(that.getOverrides(that.props.theme))
+    }
   }
 
   render() {
@@ -615,6 +612,7 @@ class TVChartContainer extends React.PureComponent {
 
 export default connect(
   state => ({
-    socket: state.MainReducer.initSocket
+    socket: state.MainReducer.initSocket,
+    theme: state.MainReducer.theme
   })
 )(TVChartContainer)

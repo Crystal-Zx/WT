@@ -17,6 +17,18 @@ const initSocket = (state = {}, action) => {
     default: return state
   }
 }
+const theme = (
+  state = sessionStorage.getItem("wt-theme") || 'light', 
+  action
+) => {
+  const { type, payload } = action
+  switch(type) {
+    case actionTypes.SET_THEME: {
+      return payload
+    }
+    default: return state
+  }
+}
 
 // 报价
 // --- 货币对列表
@@ -244,6 +256,7 @@ const accountInfo = (state = {
 
 export default combineReducers({
   initSocket,
+  theme,
   symbolList,
   filterGroup,
   kLineList,

@@ -8,8 +8,10 @@ $gap: 6px;
     .icon-kline,.icon-favorite {
       margin-right: 25px;
       font-size: 14px;
-      color: $fontColor;
       cursor: pointer;
+      @include themify {
+        color: themed('color-primary');
+      }
     }
     .icon-kline {
       margin-right: 20px;
@@ -30,7 +32,10 @@ $gap: 6px;
           width: 0 !important;
         }
         .ant-table-header {
-          background-color: #fff;
+          @include themify {
+            color: themed('color-default');
+            background-color: themed('bg-color-2');
+          }
         }
         .ant-table-tbody > tr > td {
           border: 0;
@@ -63,39 +68,52 @@ $gap: 6px;
       justify-content: space-between;
       align-items: center;
       .ant-input-search {
-        .ant-input-affix-wrapper,.ant-btn-icon-only {
+        .ant-input-affix-wrapper,.ant-input-group-addon {
           height: 24px;
+          @include themify {
+            color: themed('color-input');
+            background: themed('bg-color-search');
+            border: 1px solid themed('border-color-search');
+          }
+          .ant-btn-icon-only {
+            height: 100%;
+            border: 0;
+          }
+        }
+        .ant-input-affix-wrapper,.ant-btn-icon-only {
           display: flex;
           justify-content: center;
           align-items: center;
         }
         .ant-input-affix-wrapper {
-          &:focus, &-focused {
-            border-color: $themeBlue;
+          &:hover, &:focus, &-focused {
+            border-color: currentColor;
             -webkit-box-shadow: none;
             box-shadow: none;
           }
-          &:hover {
-            border-color: $themeBlue;
-          }
           .ant-input {
             font-size: 12px;
-            color: $lightGray;
+            background: transparent;
+            color: inherit;
             &::placeholder {
               font-size: 12px;
-              color: $lightGray;
+              color: currentColor;
             }
+          }
+          .ant-input-suffix .ant-input-clear-icon{
+            color: inherit;
           }
         }
         .ant-btn {
-          &:hover, &:focus {
-            color: $themeBlue;
-            border-color: currentColor;
+          background: transparent;
+          &.ant-btn-icon-only {
+            color: inherit;
+            svg {
+              vertical-align: -1px;
+            }
           }
-        }
-        .ant-btn-icon-only {
-          svg {
-            vertical-align: -1px;
+          &:hover, &:focus {
+            border-color: currentColor;
           }
         }
       }
@@ -111,7 +129,9 @@ $gap: 6px;
         box-shadow: none;
         .icon-fold {
           font-size: 15px;
-          color: $themeBlue;
+          @include themify {
+            color: themed('color-icon');
+          }
         }
       }
 

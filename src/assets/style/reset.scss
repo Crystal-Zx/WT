@@ -94,29 +94,89 @@ p {
 }
 // --- antd radio.group
 .ant-radio-group {
-  // & * {
-  //   font-size: 12px;
+  .ant-radio-button-wrapper:not(:first-child)::before {
+    background-color: unset;
+  }
+  // .ant-radio-button-wrapper-checked {
+  //   @include themify {
+  //     color: themed('color-tabActive');
+  //   }
   // }
   .ant-radio-button-wrapper-checked:not([class*=' ant-radio-button-wrapper-disabled']).ant-radio-button-wrapper:first-child {
-    border-right-color: $themeBlue;
+    @include themify {
+      border-right-color: themed('border-active');
+    }
   }
   .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
-    border-color: $themeBlue;
+    @include themify {
+      border-color: themed('border-active');
+    }
   }
   .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
-    background-color: $themeBlue;
+    @include themify {
+      background-color: themed('border-active');
+    }
   }
-  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-    color: $themeBlue;
-    border-color: $themeBlue;
-  }
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled),
   .ant-radio-button-wrapper:hover {
-    color: $themeBlue !important;
+    @include themify {
+      color: themed('color-tabActive') !important;
+      border-color: themed('border-active') !important;
+    }
   }
+  // .ant-radio-button-wrapper:hover {
+  //   color: $themeBlue !important;
+
+  // }
 }
 // --- antd datepicker
-.ant-picker:hover, .ant-picker-focused {
-  border-color: $themeBlue;
+.ant-picker-dropdown {
+  @include themify {
+    color: themed('color-primary');
+  }
+  .ant-picker-panel-container {
+    @include themify {
+      background: themed('bg-color-search');
+    }
+    .ant-picker-cell:not(.ant-picker-cell-in-view) {
+      @include themify {
+        color: themed('color-default');
+      }
+    }
+    .ant-picker-header,
+    .ant-picker-header button,
+    .ant-picker-content th, 
+    .ant-picker-cell-in-view,
+    .ant-picker-today-btn { 
+      color: inherit;
+    }
+    .ant-picker-panel,
+    .ant-picker-footer {
+      border-bottom: none;
+    }
+    .ant-picker-header,
+    .ant-picker-panel,
+    .ant-picker-footer {
+      @include themify {
+        border-color: themed('border-color-table');
+      }
+    }
+    .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+      @include themify {
+        background: themed('bg-color-cdToday');
+      }
+    }
+    .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+      @include themify {
+        border-color: themed('bg-color-cdToday');
+      }
+    }
+    .ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-range-start):not(.ant-picker-cell-range-end):not(.ant-picker-cell-range-hover-start):not(.ant-picker-cell-range-hover-end) .ant-picker-cell-inner {
+      @include themify {
+        background: themed('bg-color-trHover');
+      }
+    }
+  }
 }
 
 // wt common

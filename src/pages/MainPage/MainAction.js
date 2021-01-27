@@ -45,6 +45,8 @@ export const openOrder = createAction(actionTypes.OPEN_ORDER, params => {
     console.log(response)
   })
 })
+// --- 主题设置（本不必存store，在此是为了统一tradingview的主题）
+export const setTheme = createAction(actionTypes.SET_THEME, params => params)
 
 // --- 报价板块
 // ----- 存储货币对（来源：websocket）
@@ -134,6 +136,7 @@ export const getPositions = createAction(actionTypes.GET_POSITIONS, () => {
 })
 // 获取指定时间段的历史订单（默认为全部）
 export const getHistories = createAction(actionTypes.GET_HISTORIES, params => {
+  console.log(params)
   return _getHistories(params).then(response => {
     try {
       for(var p of response) {

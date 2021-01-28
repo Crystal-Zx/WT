@@ -129,9 +129,9 @@ $gap: 6px;
         box-shadow: none;
         .icon-fold {
           font-size: 15px;
-          @include themify {
-            color: themed('color-icon');
-          }
+          // @include themify {
+          //   color: themed('color-icon');
+          // }
         }
       }
 

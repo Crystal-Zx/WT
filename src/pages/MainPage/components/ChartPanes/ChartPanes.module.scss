@@ -32,8 +32,8 @@
         &.active {
           @include themify {
             color: themed('color-primary');
-            background-color: themed('bg-color-4');
-            border-top-color: themed('bg-color-4');
+            background-color: themed('bg-color-2');
+            border-top-color: themed('bg-color-2');
           }
         }
         & + .symbol-li {

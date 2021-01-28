@@ -3,8 +3,10 @@ import { Modal, Button } from 'antd'
 import { DualAxes } from '@ant-design/charts'
 import IconFont from '../../../../utils/iconfont/iconfont'
 
+import { connect } from 'react-redux'
+
 const EcoDetailModal = (props) => {
-  const { visible, data, onCancel } = props
+  const { visible, data, onCancel, theme } = props
   const ecoCharts = data[0].data.map(item => {
     if(item.time_period.indexOf("季度") !== -1) {
       item.xx = `${item.pub_time.split("-")[0]}年${item.time_period}`
@@ -18,78 +20,120 @@ const EcoDetailModal = (props) => {
   }
   const ref = useRef()
   
-  const chartsConfig = {
-    data: [ecoCharts, ecoCharts],
-    height: 300,
-    padding: 'auto',
-    xField: 'xx',
-    yField: ['actual', 'consensus'],
-    xAxis: {
-      line: {
-        style: {
-          stroke: '#363636',
-          lineWidth: 1,
-          strokeOpacity: 0.5,
-          shadowColor: '#363636',
-          shadowBlur: 5,
-          shadowOffsetX: 3,
-          shadowOffsetY: 3
-        }
-      }
-    },
-    yAxis: [{
-      line: {
-        style: {
-          stroke: '#363636',
-          lineWidth: 2,
-          strokeOpacity: 0.3,
-          shadowColor: '#363636',
-          shadowBlur: 5,
-          shadowOffsetX: 3,
-          shadowOffsetY: 3
-        }
-      }
-    }],
-    legend: {
-      position: 'top-left',
-      itemName: {
-        formatter: (text, item, index) => seriesForCh[text]
-      }
-    },
-    geometryOptions: [
-      {
-        geometry: 'line',
-        lineStyle: { 
-          lineWidth: 2, 
-          shadowColor: '#3f535a',
-          lineDash: [4,5],
-          strokeOpacity: 0.7,
-          shadowBlur: 5,
-          shadowOffsetX: 2,
-          shadowOffsetY: 2,
-        },
-        tooltip: {
-          formatter: (data) => ({ name: seriesForCh['actual'], value: data.actual })
-        },
-        color: '#3f535a'
+  const getChartsConfig = (theme) => {
+    const themes = {
+      "light": {
+        grid: "#9ea4a9",
+        text: "#363636",
+        line1: "#3f535a",
+        line2: "#9ea4a9",
+        blur: 5,
+        offset: 3,
+        gridOpacity: .5,
+        lineOpacity: 1
       },
-      { 
-        geometry: 'line',
-        lineStyle: {
-          lineWidth: 2, 
-          shadowColor: '#9ea4a9',
-          strokeOpacity: 0.7,
-          shadowBlur: 3,
-          shadowOffsetX: 1,
-          shadowOffsetY: 1,
-        },
-        tooltip: {
-          formatter: (data) => ({ name: seriesForCh['consensus'], value: data.consensus})
-        },
-        color: '#9ea4a9'
+      "dark": {
+        grid: "#889399",
+        text: "#889399",
+        line1: "#fff",
+        line2: "#bfbfbf",
+        blur: 0,
+        offset: 0,
+        gridOpacity: 1,
+        lineOpacity: 1
       }
-    ]
+    }
+    const t = themes[theme]
+    return {
+      data: [ecoCharts, ecoCharts],
+      height: 300,
+      padding: 'auto',
+      xField: 'xx',
+      yField: ['actual', 'consensus'],
+      xAxis: {
+        line: {
+          style: {
+            stroke: t.grid,
+            lineWidth: 1
+          }
+        },
+        label: {
+          style: {
+            fill: t.text
+          }
+        }
+      },
+      yAxis: [{
+        grid: {  // y轴网格线
+          line: {
+            style: {
+              lineWidth: 1,
+              stroke: t.grid,
+              strokeOpacity: t.gridOpacity,
+            }
+          }
+        },
+        line: null,  // y轴线
+        label: {
+          style: {
+            fill: t.text
+          }
+        }
+      },{
+        line: null,
+        label: {
+          style: {
+            fill: t.text
+          }
+        }
+      }],
+      legend: {
+        position: 'top-left',
+        itemName: {
+          formatter: (text, item, index) => seriesForCh[text],
+          style: {
+            fill: t.text
+          }
+        },
+      },
+      geometryOptions: [
+        {
+          geometry: 'line',
+          lineStyle: { 
+            lineWidth: 2, 
+            shadowColor: t.line1,
+            lineDash: [4,5],
+            strokeOpacity: t.lineOpacity,
+            shadowBlur: t.blur,
+            shadowOffsetX: t.offset,
+            shadowOffsetY: t.offset,
+          },
+          tooltip: {
+            formatter: (data) => ({ name: seriesForCh['actual'], value: data.actual })
+          },
+          color: t.line1
+        },
+        { 
+          geometry: 'line',
+          lineStyle: {
+            lineWidth: 2, 
+            shadowColor: t.line2,
+            strokeOpacity: t.lineOpacity,
+            shadowBlur: t.blur,
+            shadowOffsetX: t.offset,
+            shadowOffsetY: t.offset,
+          },
+          tooltip: {
+            formatter: (data) => ({ name: seriesForCh['consensus'], value: data.consensus})
+          },
+          color: t.line2
+        }
+      ]
+    }
   }
+  // const chartsConfig = {
+    
+  // }
 
   // 下载图表
   const onDownload = () => {
@@ -116,7 +160,7 @@ const EcoDetailModal = (props) => {
           <IconFont type="iconxiazai" className="icon-download" />
           <span>保存为图片</span>
         </Button>
-        <DualAxes {...chartsConfig} chartRef={ref} />
+        <DualAxes {...getChartsConfig(theme)} chartRef={ref} />
         <div className="ecod-desc-x">
           <p>
             <span>数据影响：</span>
@@ -152,4 +196,8 @@ const EcoDetailModal = (props) => {
   )
 }
 
-export default EcoDetailModal
+export default connect(
+  state => ({
+    theme: state.MainReducer.theme
+  })
+)(EcoDetailModal)

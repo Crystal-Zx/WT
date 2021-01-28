@@ -71,8 +71,6 @@ class TVChartContainer extends React.PureComponent {
 
   init = () => {
     const that = this
-    // var chartType = (localStorage.getItem('tradingview.chartType') || '1') * 1;
-    // const theme = window.document.documentElement.getAttribute("data-theme")
     if (!this.tvWidget) {
       this.tvWidget = new widget({
         symbol: this.symbol, // 图表的初始商品
@@ -86,6 +84,9 @@ class TVChartContainer extends React.PureComponent {
         // custom_css_url: '../../../../../public/tv.module.scss',  // 本地css样式，放在public下（1.14+支持）
         locale: getLanguageFromURL() || 'en', // 图表的本地化处理
         toolbar_bg: '#fff0',
+        loading_screen: {
+          backgroundColor: '#fff0'
+        },
         // studies_overrides: {
         //   'volume.volume.color.0': 'rgba(29, 178, 112,1)',
         //   'volume.volume.color.1': 'rgba(239, 64, 52, 1)'
@@ -120,7 +121,7 @@ class TVChartContainer extends React.PureComponent {
       createButton(buttons)
       // 设定图表自定义样式
       thats.applyOverrides(that.getOverrides(that.props.theme))
-      
+      // thats.changeTheme("light")
     })
 
     // chartType: 0 => Bar; 1 => Candle; 2 => Line; 3 => Area

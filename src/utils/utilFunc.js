@@ -9,6 +9,7 @@ export const openNotificationWithIcon = params => {
     desc
   } = params
   notification[type]({
+    className: `wt-noti-${type}`,
     message: msg,
     description: desc
   })

@@ -17,16 +17,27 @@
     .ant-table {
       font-size: 12px;
       color: $fontColor;
+      background-color: unset;
+      @include themify {
+        color: themed('color-primary');
+      }
       /* header&body common */
       .ant-table-cell {
         padding: 0;
         padding-left: 30px;
+        @include themify {
+          border-color: themed('border-color-table');
+        }
       }
       .op-cell-closeOrder {
         padding-left: unset;
         .op-btn-close {
+          margin: 0 auto;
           border: 0;
           background: unset;
+          @include themify {
+            color: themed('color-order');
+          }
           &:hover,&:focus {
             color: $themeBlue;
           }
@@ -34,11 +45,15 @@
       }
       /* header */
       .ant-table-thead {
+        .ant-table-cell-scrollbar {
+          display: none;
+        }
         & > tr > .ant-table-cell {
           height: 40px;
           box-sizing: border-box;
           font-weight: bold;
           background-color: unset;
+          color: inherit;
         }
         .ant-dropdown-trigger, .op-btn-closeOrder {
           width: 70px;
@@ -50,7 +65,10 @@
           font-size: 12px;
           font-weight: bold;
           color: #fff;
-          background-color: $themeBlue;
+          border: none;
+          @include themify {
+            background-color: themed('color-order');
+          }
           .iconDD {
             color: inherit;
           }
@@ -63,9 +81,11 @@
             height: 30px;
             .op-icon-edit {
               margin-left: 1em;
-              cursor: pointer;
               font-size: 13px;
-              color: $themeBlue;
+              cursor: pointer;
+              @include themify {
+                color: themed('color-icon');
+              }
             }
             .op-icon-close {
               font-size: 13px;
@@ -88,6 +108,7 @@
             }
             .op-btn-edit {
               padding: unset;
+              display: inline-block;
               border: 0;
             }
           }
@@ -109,8 +130,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: $themeBlue;
         color: #fff;
+        @include themify {
+          background-color: themed('modal-bg-header');
+        }
         .eop-symbol {
           margin-right: 5px;
           font-size: 18px;
@@ -130,14 +153,16 @@
         }
       }
       .eop-body-x {
-        color: $fontColor;
         .eop-input-x {
           height: 47px;
           padding: 0 30px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 1px solid $tableBorder;
+          border-bottom: 1px solid;
+          @include themify {
+            border-color: themed('border-color-table');
+          }
         }
         .eop-info-x {
           margin: 1em 0;
@@ -159,16 +184,19 @@
     }
     /* --- 确认平仓/删除挂单的弹窗 */
     .op-confirm-closeOrder {
-      input {
-        color: $fontColorForLight !important;
+      .ant-input-number {
+        @include themify {
+          color: themed('color-input');
+        }
       }
+      
     }
     /* common style */
-    .color-up {
-      color: $buyColor;
-    }
-    .color-down {
-      color: $sellColor;
-    }
+    // .color-up {
+    //   color: $buyColor;
+    // }
+    // .color-down {
+    //   color: $sellColor;
+    // }
   }
 }

@@ -54,12 +54,15 @@
           width: 70px;
           height: calc(70px / (1135 / 200));
           margin: 0 auto;
-          background: url(../../../../assets/image/home_sprite.png) 0 0 / 70px auto no-repeat;
+          background: url(../../../../assets/image/home_sprite_1.png) 0 0 / 70px auto no-repeat;
           &.cp-icon-stars.active {
             position: absolute;
             top: 0;left: 0;
             color: $themeBlue;
-            background-position: 0 100%;
+            // background-position: 0 100%;
+            @include themify {
+              background-position: themed('position-star');
+            }
           }
         }
         .ant-table {
@@ -101,6 +104,12 @@
           width: 40px;
           margin-right: 5px;
         }
+        .cp-btn-ecoDetail {
+          @include themify {
+            color: themed('color-icon');
+          }
+          // &:hover
+        }
       }
     }
     .ecod-modal-x {
@@ -112,6 +121,7 @@
           right: 24px;
           border: 0;
           font-size: 12px;
+          color: inherit;
           z-index: 1;
           outline: none;
           .icon-download {
@@ -124,7 +134,7 @@
           margin-top: 2em;
           font-size: 14px;
           line-height: 1.8em;
-          color: $fontColor;
+          // color: $fontColor;
           p + p {
             margin-top: .5em;
           }

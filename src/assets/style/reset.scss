@@ -19,23 +19,54 @@ p {
 }
 // antd inputNumber
 .ant-input-number {
-  &:hover,&:focus {
-    border-color: $themeBlue;
+  @include themify {
+    color: themed('color-primary');
+    background-color: themed('bg-color-search');
+    border-color: themed('border-color-search');
   }
-  &:focus {
-    box-shadow: unset;
-  }
+  &:hover,&:focus,
   &.ant-input-number-focused {
-    border-color: $themeBlue;
     box-shadow: unset;
+    // @include themify {
+    //   border-color: themed('border-activeh');
+    // }
   }
-  .ant-input-number-handler:hover .ant-input-number-handler-up-inner, .ant-input-number-handler:hover .ant-input-number-handler-down-inner {
-    color: $themeBlue;
+  // &:focus {
+  //   box-shadow: unset;
+  // }
+  // &.ant-input-number-focused {
+  //   border-color: $themeBlue;
+  //   box-shadow: unset;
+  // }
+  .ant-input-number-handler-wrap {
+    @include themify {
+      color: themed('color-primary');
+      background-color: themed('bg-color-2');
+      border-color: themed('border-color-table');
+      .ant-input-number-handler-down {
+        border-color: inherit;
+      }
+    }
+    .ant-input-number-handler,
+    .ant-input-number-handler-up-inner,
+    .ant-input-number-handler-down-inner {
+      color: inherit;
+    }
+    .ant-input-number-handler:active {
+      @include themify {
+        background-color: themed('bg-color-trHover');
+      }
+    }
+    // .ant-input-number-handler:hover .ant-input-number-handler-up-inner, .ant-input-number-handler:hover .ant-input-number-handler-down-inner {
+    //   color: inherit;
+    // }
   }
 }
 // antd btn primary
+.ant-btn:hover, .ant-btn:focus, .ant-btn:active {
+  background: unset;
+}
 .ant-btn-primary {
-  background: $themeBlue !important;
   border-color: unset !important;
   &:hover {
     border-color: unset !important;
@@ -64,31 +95,18 @@ p {
 // --- antd confirm
 .ant-modal-confirm {
   .ant-modal-confirm-title {
-    color: $fontColor !important;
+    color: inherit !important;
   }
   .ant-modal-confirm-content {
     margin-top: 1.5em !important;
-    color: $fontColorForLight !important;
+    @include themify {
+      color: themed('color-default');
+    }
   }
   .ant-modal-confirm-btns {
     margin-top: 1.5em !important;
     float: unset !important;
     text-align: center !important;
-    .ant-btn-primary {
-      background: $themeBlue !important;
-      border-color: $themeBlue !important;
-      &[disabled],&[disabled]:hover {
-        color: #fff !important; 
-        opacity: .65 !important;
-      }
-    }
-    .ant-btn:not(.ant-btn-primary) {
-      color: $fontColor !important;
-      &:hover {
-        color: $themeBlue !important;
-        border-color: $themeBlue !important;
-      }
-    }
   }
   
 }
@@ -178,25 +196,179 @@ p {
     }
   }
 }
+// --- antd dropdown
+.ant-select-dropdown {
+  @include themify {
+    color: themed('color-primary');
+    background-color: themed('bg-color-search');
+  }
+  .ant-select-item {
+    color: inherit;
+  }
+  .ant-select-item-option-active:not(.ant-select-item-option-disabled),
+  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+    @include themify {
+      background-color: themed('bg-color-trHover');
+    }
+  }
+  
+}
+// --- antd dropdown1 {
+.ant-dropdown-menu {
+  @include themify {
+    color: themed('color-primary');
+    background-color: themed('bg-color-search');
+  }
+  .ant-dropdown-menu-item:not(.ant-dropdown-menu-item-disabled),
+  .ant-dropdown-menu-item:not(.ant-dropdown-menu-item-disabled) > a {
+    color: inherit;
+  }
+  .ant-dropdown-menu-item:hover {
+    @include themify {
+      background-color: themed('bg-color-trHover');
+    }
+  }
+  .ant-dropdown-menu-item-disabled {
+    @include themify {
+      color: themed('color-disabled');
+    }
+  }
+}
+// --- antd table 补充
+.ant-table-tbody {
+  & > tr.ant-table-placeholder,
+  & > tr.ant-table-row {
+    &:hover > td {
+      @include themify {
+        // color: themed('color-primary');
+        background-color: themed('bg-color-trHover');
+      }
+    }
+    .ant-empty-normal {
+      @include themify {
+        color: themed('color-input');
+      }
+    }
+  }
+
+}
+// --- antd modal
+.ant-modal-content {
+  @include themify {
+    color: themed('color-primary');
+    background-color: themed('bg-color-2');
+  }
+  .ant-modal-close {
+    color: inherit;
+  }
+  .ant-modal-header {
+    color: inherit;
+    @include themify {
+      background: themed('modal-bg-header');
+      border-color: themed('border-color-table');
+    }
+    .ant-modal-title {
+      color: inherit;
+    }
+  }
+}
+// --- antd notification
+// .anticon.ant-notification-notice-icon-success {
+//   @include themify {
+//     color: themed('color-green');
+//   }
+// }
+// .anticon.ant-notification-notice-icon-error {
+//   @include themify {
+//     color: themed('color-red');
+//   }
+// }
+.ant-notification-notice-close,
+.ant-notification-notice-message,
+.ant-notification-notice-description {
+  @include themify {
+    color: themed('color-primary');
+  }
+}
+
 
 // wt common
 // --- btn group (主要是返回和确定按钮)
-.wt-btn-ok {
-  background: $themeBlue !important;
-  border-color: $themeBlue !important;
+.wt-btn-ok,
+.ant-modal-confirm-btns .ant-btn.ant-btn-primary {
+  border: 0;
+  @include themify {
+    background: themed('modal-bg-btnOk') !important;
+  }
   &[disabled],&[disabled]:hover {
-    color: #fff !important; 
     opacity: .65 !important;
   }
 }
-.wt-btn-cancel {
-  color: $fontColor !important;
+.wt-btn-cancel,
+.ant-modal-confirm-btns .ant-btn:not(.ant-btn-primary) {
+  @include themify {
+    color: themed('modal-color-btnCancel');
+    background-color: themed('modal-bg-btnCancel');
+    border-color: themed('border-color-table');
+  }
   &:hover {
-    color: $themeBlue !important;
-    border-color: $themeBlue !important;
+    @include themify {
+      color: themed('modal-color-btnHover');
+    }
+    border-color: currentColor;
   }
 }
 .wt-input-error {
   border-color: $sellColor !important;
   color: $sellColor !important;
+}
+.ant-btn {
+  .wt-icon {
+    @include themify {
+      color: themed('color-icon');
+    }
+  }
+  &:hover .wt-icon {
+    color: $themeActive;
+  }
+}
+// --- notification
+.wt-noti-success {
+  @include themify {
+    background: themed('bg-color-notiSuccess');
+  }
+  .anticon.ant-notification-notice-icon-success,
+  .anticon.ant-notification-notice-icon-error {
+    @include themify {
+      color: themed('color-notiSuccess');
+    }
+  }
+}
+.wt-noti-error {
+  @include themify {
+    background: themed('bg-color-notiError');
+  }
+  .anticon.ant-notification-notice-icon-success,
+  .anticon.ant-notification-notice-icon-error {
+    @include themify {
+      color: themed('color-notiError');
+    }
+  }
+}
+
+// common css style
+.dp-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.color-up {
+  @include themify {
+    color: themed('color-green') !important;
+  }
+}
+.color-down {
+  @include themify {
+    color: themed('color-red') !important;
+  }
 }

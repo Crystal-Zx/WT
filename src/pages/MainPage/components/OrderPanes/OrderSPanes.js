@@ -65,7 +65,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         title: '品种',
         dataIndex: 'symbol',
         key: 'symbol',
-        width: '23.02%',
+        width: '20.02%',
         align: 'left',
         render: (symbol, item) => {
           return isFoldRow(item.key) ? 
@@ -134,7 +134,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         title: '止盈',
         dataIndex: 'tp',
         key: 'tp',
-        width: '6.98%',
+        width: '8.98%',
         align: 'left',
         render: (tp, item) => {
           return (<>
@@ -151,7 +151,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         title: '止损',
         dataIndex: 'sl',
         key: 'sl',
-        width: '7.09%',
+        width: '8.09%',
         align: 'left',
         render: (sl, item) => {
           // console.log("====getColumns sl render")

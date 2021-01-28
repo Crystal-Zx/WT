@@ -167,6 +167,7 @@ const CalendarPanes = ({ dispatch }) => {
       align: 'center',
       render: (detail,item) => {
         return <a 
+          className="cp-btn-ecoDetail"
           href="javascript:;" 
           onClick={() => showEcoDetail(item.id)}
         >详情</a>

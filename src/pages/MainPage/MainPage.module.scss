@@ -22,8 +22,11 @@ $bottomH: 4.3vh;
     .main-icon-layout {
       font-size: 15px;
     }
-    .main-icon-dark,.main-icon-menu, .main-icon-wifi {
+    .main-icon-dark, .main-icon-light, .main-icon-menu, .main-icon-wifi {
       font-size: 18px;
+    }
+    .main-icon-light {
+      color: $themeGolden !important;
     }
     .main-icon-wifi {
       color: $buyColor;
@@ -35,7 +38,7 @@ $bottomH: 4.3vh;
     }
     .main-icon-ques {
       font-size: 18px;
-      color: $themeBlack;
+      // color: $themeBlack;
     }
     /* common & antd此页面公用组件 */
     /* tabs组件 */
@@ -104,8 +107,8 @@ $bottomH: 4.3vh;
             &-active {
               @include themify {
                 color: themed('color-tabActive');
-                border-color: themed('bg-color-4');
-                background-color: themed('bg-color-4');
+                border-color: themed('bg-color-2');
+                background-color: themed('bg-color-2');
               }
               border-radius: 0 !important;
               .ant-tabs-tab-btn {
@@ -171,8 +174,10 @@ $bottomH: 4.3vh;
         justify-content: center;
         align-items: center;
         font-size: 12px;
-        color: #e2e6e9;
-        background-color: $themeBlue;
+        @include themify {
+          color: themed('color-hl');
+          background-color: themed('bg-color-hl');
+        }
         .account-type,.account {
           font-weight: bold;
         }
@@ -199,7 +204,10 @@ $bottomH: 4.3vh;
           & > :nth-child(2) {
             font-size: 13px;
             font-weight: bold;
-            color: $buyColor;
+            // color: $buyColor;
+            @include themify {
+              color: themed('color-green')
+            }
           }
           &.profit {
             flex: 1;
@@ -229,12 +237,13 @@ $bottomH: 4.3vh;
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      color: $themeBlack;
+      @include themify {
+        color: themed('color-primary')
+      }
       .tr-currtime-x {
         margin-right: 30px;
         font-size: 12px;
         font-weight: bold;
-        color: $fontColor;
       }
       *:nth-child(n+3) { 
         margin-left: 16px;
@@ -251,6 +260,11 @@ $bottomH: 4.3vh;
         align-items: center;
         font-size: 12px;
         font-weight: bold;
+        @include themify {
+          color: themed('color-primary');
+          background-color: themed('bg-color-2');
+          border-color: themed('border-color-table');
+        }
       }
       // .tr-switch-theme.tr-switch-theme {
       //   min-width: 42px;
@@ -272,11 +286,15 @@ $bottomH: 4.3vh;
       // }
     }
     /* css style */
-    .color-up {
-      color: $buyColor !important;
-    }
-    .color-down {
-      color: $sellColor !important;
-    }
+    // .color-up {
+    //   @include themify {
+    //     color: themed('color-green');
+    //   }
+    // }
+    // .color-down {
+    //   @include themify {
+    //     color: themed('color-red');
+    //   }
+    // }
   }
 }

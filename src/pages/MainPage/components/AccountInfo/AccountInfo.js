@@ -57,7 +57,7 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
         </div>
       </div>
       <Button type="default" className="btn-more">
-        <IconFont type="iconQues" className="main-icon-ques" />
+        <IconFont type="iconQues" className="wt-icon main-icon-ques" />
       </Button>
     </>
   )

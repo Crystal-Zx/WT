@@ -31,11 +31,11 @@ const QuoteSPane = (props) => {
           onSearch={(val) => setSearchVal(val.trim())}
         />
         <Button 
-          type="primary" 
+          type="default"
           className="qsp-btn-fold"
           onClick={onChangeExpand}
         >
-          <IconFont type="iconFold" className="icon-fold" />
+          <IconFont type="iconFold" className="wt-icon icon-fold" />
         </Button>
       </div>
       <TableBox

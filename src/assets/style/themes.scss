@@ -1,6 +1,8 @@
 $themeBlue: #3f535a;
-$themeRed: #fc3131;
-$themeGreen: #00b276;
+// $themeRed: #fc3131;
+// $themeGreen: #00b276;
+$themeGolden: #ff8f00;
+$themeActive: #4f5966;
 
 $themes: (
   light: (
@@ -10,23 +12,42 @@ $themes: (
     color-tabActive: $themeBlue,
     color-input: #9ea4a9,
     color-icon: $themeBlue,
+    color-order: $themeBlue,
+    color-disabled: rgba(0, 0, 0, .25),
+    color-hl: #e2e6e9,
+    color-red: #fc3131,
+    color-green: #00b276,    
+    color-notiSuccess: #00b276,
+    color-notiError: #fc3131,
 
     // bg color
     bg-color-1: #e2e6e9,
     bg-color-2: #fff,
     bg-color-3: $themeBlue,
-    bg-color-4: #fff,
     bg-color-search: #fff,
     bg-color-trActive: #f7f7f7,
     bg-color-trHover: #e2e6e9,
     bg-color-subTab: #f7f7f7,
     bg-color-cdToday: $themeBlue,
+    bg-color-hl: $themeBlue,
+    bg-color-notiSuccess: #fff,
+    bg-color-notiError: #fff,
 
     // border color
     border-color-main: #e2e6e9,
     border-color-search: #ebeced,
     border-color-table: #e2e6e9,
     border-active: $themeBlue,
+
+    // sprite position
+    position-star: 0 50%,
+
+    // modal style
+    modal-bg-header: $themeBlue,
+    modal-bg-btnOk: $themeBlue,
+    modal-bg-btnCancel: #fff,
+    modal-color-btnCancel: #363636,
+    modal-color-btnHover: $themeBlue,
   ),
   dark: (
     // font
@@ -34,24 +55,42 @@ $themes: (
     color-default: #889399,
     color-tabActive: #fff,
     color-input: #bfbfbf,
-    // color-input: #757575,
     color-icon: #698490,
+    color-order: #e53935,
+    color-disabled: rgba(255, 255, 255, .25),
+    color-hl: #fff,
+    color-red:#cc2e3c,
+    color-green: #24a06b,
+    color-notiSuccess: #fff,
+    color-notiError: #fff,
 
     // bg color
     bg-color-1: #000,
     bg-color-2: #152126,
     bg-color-3: #2d3940,
-    bg-color-4: #152126,
     bg-color-search: #273137,
     bg-color-trActive: #1f282d,
     bg-color-trHover: #2d3940,
     bg-color-subTab: #283239,
     bg-color-cdToday: #889399,
+    bg-color-hl: $themeGolden,
+    bg-color-notiSuccess: #24a06b,
+    bg-color-notiError: #cc2e3c,
 
     // border color
     border-color-main: #000,
     border-color-search: #273137,
     border-color-table: transparent,
     border-active: #889399,
+    
+    // sprite position
+    position-star: 0 100%,
+
+    // modal style
+    modal-bg-header: #273137,
+    modal-bg-btnOk: #273137,
+    modal-bg-btnCancel: #273137,
+    modal-color-btnCancel: #9ea4a9,
+    modal-color-btnHover: #698490,
   )
 )

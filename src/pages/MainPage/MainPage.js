@@ -86,11 +86,11 @@ function MainPage ({ theme, dispatch }) {
         >
           {
             theme === 'light' &&
-            <IconFont type="iconDark" className="main-icon-dark" />
+            <IconFont type="iconDark" className="wt-icon main-icon-dark" />
           }
           {
             theme === 'dark' &&
-            <IconFont type="iconLight" className="main-icon-dark" />
+            <IconFont type="iconLight" className="wt-icon main-icon-light" />
           }
         </Button>
         <IconFont type="iconWifi" className="main-icon-wifi" />
@@ -99,7 +99,7 @@ function MainPage ({ theme, dispatch }) {
             <IconFont type="iconDD" className="main-icon-dd" />
           </Button>
         </Dropdown>
-        <IconFont type="iconMenu" className="main-icon-menu" />
+        {/* <IconFont type="iconMenu" className="main-icon-menu" /> */}
       </div>
     </div>
   )

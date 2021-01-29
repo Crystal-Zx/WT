@@ -4,6 +4,7 @@ import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import OrderPanes from './components/OrderPanes/OrderPanes.js'
 import AccountInfo from './components/AccountInfo/AccountInfo.js'
+import Login from '../../components/Login/Login'
 import IconFont from '../../utils/iconfont/iconfont';
 import styles from './MainPage.module.scss';
 
@@ -101,6 +102,7 @@ function MainPage ({ theme, dispatch }) {
         </Dropdown>
         {/* <IconFont type="iconMenu" className="main-icon-menu" /> */}
       </div>
+      <Login />
     </div>
   )
 }

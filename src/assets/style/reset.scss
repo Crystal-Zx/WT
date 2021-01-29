@@ -262,7 +262,8 @@ p {
     color: inherit;
   }
   .ant-modal-header {
-    color: inherit;
+    // color: inherit;
+    color: #fff;
     @include themify {
       background: themed('modal-bg-header');
       border-color: themed('border-color-table');
@@ -322,7 +323,7 @@ p {
   border-color: $sellColor !important;
   color: $sellColor !important;
 }
-.ant-btn {
+.ant-btn, .ant-input-prefix {
   .wt-icon {
     @include themify {
       color: themed('color-icon');
@@ -352,6 +353,33 @@ p {
   .anticon.ant-notification-notice-icon-error {
     @include themify {
       color: themed('color-notiError');
+    }
+  }
+}
+// ---message
+.wt-msg-success {
+  .ant-message-notice-content {  // 提示框容器
+    @include themify {  // 文本
+      color: themed('color-primary');
+      background: themed('bg-color-notiSuccess');
+    }
+    .anticon {  // 图标
+      @include themify {
+        color: themed('color-notiSuccess');
+      }
+    }
+  }
+}
+.wt-msg-error {
+  .ant-message-notice-content {  // 提示框容器
+    @include themify {  // 文本
+      color: themed('color-primary');
+      background: themed('bg-color-notiError');
+    }
+    .anticon {  // 图标
+      @include themify {
+        color: themed('color-notiError') !important;
+      }
     }
   }
 }

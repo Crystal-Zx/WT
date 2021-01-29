@@ -7,6 +7,18 @@ import {
 } from '../../services/mock'
 
 // 全局
+const token = (
+  state = sessionStorage.getItem("wt_token"),
+  action
+) => {
+  const { type, payload } = action
+  switch(type) {
+    case actionTypes.SET_TOKEN : {
+      return payload
+    }
+    default: return state
+  }
+}
 const initSocket = (state = {}, action) => {
   const { type, payload } = action
   // console.log(payload)
@@ -220,12 +232,12 @@ const history = (state = {
 const accountInfo = (state = {
   isFetching: false,
   info: {
-    // profit: 0,
-    // equity: 0,
-    // balance: 0,
-    // freeMargin: 0,
-    // marginLevel: 0,
-    // margin: 0
+    profit: 0,
+    equity: 0,
+    balance: 0,
+    freeMargin: 0,
+    marginLevel: 0,
+    margin: 0
   }
 }, action) => {
   const { type, payload } = action
@@ -255,6 +267,7 @@ const accountInfo = (state = {
 }
 
 export default combineReducers({
+  token,
   initSocket,
   theme,
   symbolList,

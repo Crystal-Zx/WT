@@ -1,5 +1,5 @@
 import {
-  notification
+  notification, message
 } from 'antd'
 // 全局提示
 export const openNotificationWithIcon = params => {
@@ -12,6 +12,14 @@ export const openNotificationWithIcon = params => {
     className: `wt-noti-${type}`,
     message: msg,
     description: desc
+  })
+}
+export const popMessage = params => {
+  const { type, msg } = params
+  message[type]({
+    content: msg,
+    className: `wt-msg-${type}`,
+    duration: 0
   })
 }
 // 工具类

@@ -11,7 +11,8 @@ import {
   _getEcoData,
   _getEcoEvent,
   _getEcoCharts,
-  _getEcoDesc
+  _getEcoDesc,
+  _login
 } from '../../services/index'
 import { 
   getCmdArr
@@ -19,6 +20,11 @@ import {
 import * as actionTypes from './MainActionTypes'
 
 // 全局
+// ---登录
+export const login = createAction(actionTypes.LOGIN, params => {
+  return _login(params).then(response => response)
+})
+export const setToken = createAction(actionTypes.SET_TOKEN, params => params)
 // --- socket
 export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
     // var ws = new socket("ws://47.113.231.12:5885/")
@@ -179,6 +185,9 @@ export const getAccountInfo = createAction(actionTypes.GET_ACCOUNTINFO, () => {
       margin: res.margin
     }
   })
+  // .catch(err => {
+  //   console.log("===getAcI error:", err)
+  // })
 })
 // --- 设置账户信息
 export const setAccountInfo = createAction(actionTypes.SET_ACCOUNTINFO, info => info)

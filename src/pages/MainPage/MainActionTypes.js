@@ -1,5 +1,7 @@
 // actionTypes
 // --- 全局
+export const LOGIN = 'LOGIN'
+export const SET_TOKEN = 'SET_TOKEN'
 export const INIT_SOCKET = 'INIT_SOCKET'
 export const OPEN_ORDER = 'OPEN_ORDER',
              OPEN_ORDER_PENDING = 'OPEN_ORDER_PENDING',

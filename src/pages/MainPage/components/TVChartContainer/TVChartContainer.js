@@ -17,7 +17,6 @@ class TVChartContainer extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    console.log(props)
     this.tvWidget = null
     this.socket = props.socket
     this.datafeeds = new Datafeed(this)

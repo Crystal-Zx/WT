@@ -88,16 +88,34 @@ const filterGroup = (state = "", action) => {
 
 // K线
 const kLineList = (state = [
-  { symbol: 'EURUSD', digits: 5},
-  { symbol: 'GBPUSD', digits: 5}
+  { symbol: 'EURUSD', digits: 5, isActive: false },
+  { symbol: 'GBPUSD', digits: 5, isActive: true }
 ], action) => {
   const { type, payload } = action
   switch(type) {
     case actionTypes.ADD_TO_KLINE: {
-      return [
-        ...state,
-        payload
-      ]
+      const currSymbol = payload.symbol,
+            symbols = state.map(item => item.symbol)
+      if(symbols.includes(currSymbol)) {
+        return state.map(item => {
+          if(item.symbol === currSymbol) {
+            item.isActive = true
+          } else {
+            item.isActive = false
+          }
+          return item
+        })
+      } else {
+        state = state.map(item => {
+          item.isActive = false
+          return item
+        })
+        return [
+          ...state,
+          payload
+        ]
+      }
+
     }
     case actionTypes.DELETE_FROM_KLINE: {
       return state.filter(item => item.symbol !== payload)

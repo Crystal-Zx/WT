@@ -23,10 +23,12 @@ const fetchGet = (url, params, options) => {
   return new Promise((resolve, reject) => {
     http.get(url, params, options)
     .then(
-      res => resolve(res),
+      res => { 
+        // console.log('fetch get res:', res); 
+        resolve(res)},
       err => reject(err)
     ).catch(err => {
-      console.log("fetchPost err:",err)
+      // console.log("fetchPost err:",err)
       reject(err)
     })
   })
@@ -35,6 +37,10 @@ const fetchGet = (url, params, options) => {
 // 登录
 export function _login (params = {}) {
   return fetchPost(apis.login, params)
+}
+// 登录OA
+export function _loginOA (params = {}) {
+  return fetchPost(apis.loginOA, params)
 }
 // 账户信息
 // --- 获取账户信息

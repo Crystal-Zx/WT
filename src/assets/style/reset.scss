@@ -250,7 +250,9 @@ p {
       }
     }
   }
-
+  & > tr.ant-table-placeholder > .ant-table-cell {
+    border: 0;
+  }
 }
 // --- antd modal
 .ant-modal-content {

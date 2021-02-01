@@ -42,6 +42,9 @@
         & > span {
           font-size: 13px;
           font-weight: bold;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .btn-symbol-delete {
           height: unset;

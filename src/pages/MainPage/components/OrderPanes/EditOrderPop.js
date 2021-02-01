@@ -54,7 +54,7 @@ const EditOrderPop = ({ data, dispatch }) => {
       setVisible(false)
     }).catch(err => {
       openNotificationWithIcon({
-        type: 'error', msg: '修改订单失败', desc: err
+        type: 'error', msg: '修改订单失败', desc: err.msg || err
       })
       setLoading(false)
     })

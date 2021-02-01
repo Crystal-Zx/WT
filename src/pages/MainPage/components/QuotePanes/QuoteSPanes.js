@@ -21,6 +21,10 @@ const QuoteSPane = (props) => {
   const onChangeExpand = () => {
     setIsExpandAll(!isExpandAll)
   }
+  // const addToKLine = (e, symbol, digits) => {
+  //   e.stopPropagation()
+
+  // }
 
   return (
     <>
@@ -60,7 +64,11 @@ const areEqual = (prevProps, nextProps) => {
 
 export default connect(
   state => {
-    const { symbolList, filterGroup } = state.MainReducer
+    const { 
+      symbolList,
+      filterGroup
+      // kLineList
+    } = state.MainReducer
     return {
       list: symbolList.list.filter(item => item.group === filterGroup)
     }
@@ -69,7 +77,7 @@ export default connect(
     return {
       addToKLine: (e, symbol, digits) => {
         e.stopPropagation()
-        dispatch(addToKLine({ symbol, digits }))
+        dispatch(addToKLine({ symbol, digits, isActive: true }))
       }
     }
   }

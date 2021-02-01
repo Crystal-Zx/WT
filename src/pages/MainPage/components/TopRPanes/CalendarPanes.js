@@ -30,7 +30,6 @@ const CalendarPanes = ({ dispatch }) => {
       date: moment(timestamp).format('MMDD'),
       timestamp: timestamp
     })).then(res => {
-      // console.log("====getEcoList data", res)
       const data = res.value
       setEcoData({
         list: data[0].map(item => {
@@ -83,6 +82,11 @@ const CalendarPanes = ({ dispatch }) => {
       setVisible(true)
       setEcoDetail(res.value)
     })
+    // .catch(err => {
+    //   console.log("getEcoDetail err:", err)
+    //   setVisible(false)
+    //   setEcoDetail([])
+    // })
   }
   const getDataCol = [
     {

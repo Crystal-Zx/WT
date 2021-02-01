@@ -12,17 +12,24 @@ import {
   _getEcoEvent,
   _getEcoCharts,
   _getEcoDesc,
-  _login
+  _login,
+  _loginOA
 } from '../../services/index'
 import { 
   getCmdArr
 } from '../../utils/utilFunc'
+import user from '../../services/user'
 import * as actionTypes from './MainActionTypes'
 
 // 全局
 // ---登录
 export const login = createAction(actionTypes.LOGIN, params => {
-  return _login(params).then(response => response)
+  return _login(params).then(response => Object.assign({}, response, {
+    account: params.login
+  }))
+})
+export const loginOA = createAction(actionTypes.LOGIN_OA, params => {
+  return _loginOA(params).then(response => response)
 })
 export const setToken = createAction(actionTypes.SET_TOKEN, params => params)
 // --- socket
@@ -40,7 +47,7 @@ export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
       })
       ws.send({
         "cmd": "order",
-        "args": ["MTE5MjI6MTYxMDk1MDIyNzo3ZjI3NzYzYzIxZTFlYzU4NDBkYmYyNjk1ODZmYjRlNA=="]
+        "args": [`${user.getToken()}`]
       })
     })
     return ws
@@ -104,11 +111,12 @@ export const getCalendarData = createAction(actionTypes.GET_CALENDARDATA, params
   return Promise.all([_getEcoData(params), _getEcoEvent(params)])
   
   // let data = []
-  // return _getEcoData(params).then((ecoData) => {
+  // return _getEcoData(params).then(ecoData => {
   //   console.log(ecoData)
   //   data.push(ecoData)
   //   return _getEcoEvent(params)
   // }).then(res => {
+  //   console.log(res)
   //   data.push(res)
   //   return data
   // })

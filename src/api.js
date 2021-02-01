@@ -8,6 +8,7 @@ export default(config => {
 })({
   'getSymbols': '/v1/symbols',
   'login': '/v1/login',
+  'loginOA': 'https://v1.alphazone-data.cn/academy/api/v1/login',
   'getPositions': '/v1/position',
   'getHistories': '/v1/closed',
   'getAccountInfo': '/v1/account_info',

@@ -3,7 +3,7 @@ import { isJSON } from './utils/utilFunc'
 import user from './services/user'
 
 // 默认URL
-axios.defaults.baseURL = 'http://156.226.24.38:61029'
+axios.defaults.baseURL = user.getAxiosBaseUrl()
 // 允许跨域携带cookie
 axios.defaults.withCredentials = false
 // 超时时间
@@ -42,6 +42,10 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     // 这里会最先拿到你的response
+    // 定制
+    const extraUrl = /(jin10)|(alphazone)/ig
+    const isExtraUrlData = extraUrl.test(response.config.baseURL) || extraUrl.test(response.config.url)
+    console.log(isExtraUrlData, response)
     // 只有返回的状态码是2xx，都会进来这里
     if(response.status === 200) {
       const code = response.data.code
@@ -50,12 +54,11 @@ axios.interceptors.response.use(
         return Promise.reject({ code, msg: 'token过期' })  // 会进入axios请求的catch
       } else if(code === 0) {  // 请求正确发起，但返回值错误
         return Promise.reject({ code, msg: response.data.msg })
-      } else if(code === 1) {
-        const { token } = response.data
+      } else if(code === 1 || isExtraUrlData) {
+        const { token } = response.data  // 针对登录接口返回的token
         let data = response.data.data || response.data
         data = isJSON(data) ? JSON.parse(data) : data
         if(data.length >= 0 || Object.keys(data).length > 0) {
-          console.log(token, Object.assign({}, data, { token }))
           return token ? Object.assign({}, data, { token }) : data
         } else {
           return Promise.reject({ code, msg: response.data.msg })

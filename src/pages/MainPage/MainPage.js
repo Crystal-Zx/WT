@@ -13,30 +13,10 @@ import { connect } from 'react-redux'
 import { getCurrDate } from '../../utils/utilFunc'
 import { setTheme } from './MainAction'
 
-const menu = (
-  <Menu>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-        1st menu item
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-        2nd menu item
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-        3rd menu item
-      </a>
-    </Menu.Item>
-  </Menu>
-);
-
-
 function MainPage ({ theme, dispatch }) {
+  const userInfo = JSON.parse(sessionStorage.getItem("wt_userInfo"))
+  const currAcc = (userInfo && userInfo.account) || ''
   const [currDate, setCurrDate] = useState(getCurrDate())
-  // const [theme, setTheme] = useState(defaultTheme)
 
   const init = () => {
     window.document.documentElement.setAttribute("data-theme", theme)
@@ -58,6 +38,12 @@ function MainPage ({ theme, dispatch }) {
       window.document.documentElement.setAttribute("data-theme", 'light')
       dispatch(setTheme('light'))
     }
+  }
+  const onLogout = () => {
+    sessionStorage.clear()
+    setInterval(() => {
+      window.location.reload()
+    }, 0);
   }
   
   useEffect(() => {
@@ -95,8 +81,16 @@ function MainPage ({ theme, dispatch }) {
           }
         </Button>
         <IconFont type="iconWifi" className="main-icon-wifi" />
-        <Dropdown overlay={menu} placement="bottomRight">
-          <Button className="tr-btn-changeAcc">DEMO 11593
+        <Dropdown 
+          overlay={
+            <Menu>
+              <Menu.Item>
+                <a href="javascrip:;" onClick={onLogout}>退出登录</a>
+              </Menu.Item>
+            </Menu>
+          } 
+        placement="bottomRight">
+          <Button className="tr-btn-changeAcc">DEMO {currAcc}
             <IconFont type="iconDD" className="main-icon-dd" />
           </Button>
         </Dropdown>

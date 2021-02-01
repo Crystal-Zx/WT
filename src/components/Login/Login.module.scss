@@ -2,69 +2,102 @@
   padding: 0;
   background-color: #f00;
   :global {
-    .ant-input-affix-wrapper {
-      .ant-input {
-        background-color: transparent !important;
-      }
-      // 取消自动填充的背景色
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover,
-      input:-webkit-autofill:focus,
-      input:-webkit-autofill:active {
-          -webkit-transition-delay: 111111s;
-          -webkit-transition: color 11111s ease-out, background-color 111111s ease-out;
-      } 
-      &,& input {
-        @include themify {
-          color: themed('color-input');
-          background-color: themed('bg-color-search');
-          border-color: themed('border-color-search');
+    .ant-modal-body {
+      padding-top: 10px;
+      // linetabs
+      .ant-tabs-top > .ant-tabs-nav {
+        &::before {
+          @include themify {
+            border-bottom-color: themed('color-default');
+          }
+        }
+        & .ant-tabs-ink-bar {
+          @include themify {
+            background: themed('color-tabActive');
+          }
+        }
+        & .ant-tabs-tab {
+          // tab默认
+          font-weight: normal;
+          @include themify {
+            color: themed('color-default');
+          }
+          // tab选中
+          &.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+            font-weight: inherit;
+            @include themify {
+              color: themed('color-tabActive');
+            }
+          }
+        }
+        & .ant-tabs-tab:hover {
+          
         }
       }
-    }
-    // input 错误提示文本
-    .ant-form-item-explain.ant-form-item-explain-error {
-      @include themify {
-        color: themed('color-red');
-      }
-    }
-    .ant-checkbox-wrapper {
-      & > span {  // “记住密码”文本
-        @include themify {
-          color: themed('color-primary');
+      .ant-input-affix-wrapper {
+        .ant-input {
+          background-color: transparent !important;
+        }
+        // 取消自动填充的背景色
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-transition-delay: 111111s;
+            -webkit-transition: color 11111s ease-out, background-color 111111s ease-out;
+        } 
+        &,& input {
+          @include themify {
+            color: themed('color-input');
+            background-color: themed('bg-color-search');
+            border-color: themed('border-color-search');
+          }
         }
       }
-      // 未选中状态的label
-      .ant-checkbox .ant-checkbox-inner {
+      // input 错误提示文本
+      .ant-form-item-explain.ant-form-item-explain-error {
         @include themify {
-          border-color: themed('border-color-search');
-          background-color: themed('bg-color-search');
+          color: themed('color-red');
         }
       }
-      // 选中状态的label
-      .ant-checkbox-checked .ant-checkbox-inner {
-        @include themify {
-          background-color: themed('bg-color-3');
-          border-color: themed('bg-color-3');
+      .ant-checkbox-wrapper {
+        & > span {  // “记住密码”文本
+          @include themify {
+            color: themed('color-primary');
+          }
+        }
+        // 未选中状态的label
+        .ant-checkbox .ant-checkbox-inner {
+          @include themify {
+            border-color: themed('border-color-search');
+            background-color: themed('bg-color-search');
+          }
+        }
+        // 选中状态的label
+        .ant-checkbox-checked .ant-checkbox-inner {
+          @include themify {
+            background-color: themed('bg-color-3');
+            border-color: themed('bg-color-3');
+          }
+        }
+        .ant-checkbox-checked::after {
+          border: 0;
+        }
+        .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+        .ant-checkbox:hover .ant-checkbox-inner,
+        .ant-checkbox-input:focus + .ant-checkbox-inner {
+          @include themify {
+            border-color: themed('bg-color-3');
+            // background-color: themed('bg-color-search');
+          }
         }
       }
-      .ant-checkbox-checked::after {
-        border: 0;
+      .lg-btn-submit {
+        margin: 0 0 0 auto;
+        padding: 5px 15px;
+        display: block;
+        // margin-top: 24px;
       }
-      .ant-checkbox-wrapper:hover .ant-checkbox-inner,
-      .ant-checkbox:hover .ant-checkbox-inner,
-      .ant-checkbox-input:focus + .ant-checkbox-inner {
-        @include themify {
-          border-color: themed('bg-color-3');
-          // background-color: themed('bg-color-search');
-        }
-      }
-    }
-    .lg-btn-submit {
-      margin: 0 0 0 auto;
-      padding: 5px 15px;
-      display: block;
-      // margin-top: 24px;
     }
   }
 }

@@ -25,7 +25,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
 
   const [symbolList, setSymbolList] = useState([])
   const [activeKey, setActiveKey] = useState('')
-  const [symbol, setSymbol] = useState('')
+  // const [symbol, setSymbol] = useState('')
   const [socket, setSocket] = useState({})
    
   const sbStyle = (sbl) => {
@@ -35,24 +35,28 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
       style = {
         width: '25%'
       }
-    } else if(len > 4 && len < 6) {
+    } else if(len > 4) {  // && len <= 7
       style = {
         width: 'unset',
-        flex: 1
+        flex: 1,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden'
+        // textOverflow: 'ellipse'
       }
-    } else {
-      style = {
-        width: '180px',
-        flexShrink: '0'
-      }
-    }
+    } 
+    // else {
+    //   style = {
+    //     width: '180px',
+    //     flexShrink: '0'
+    //   }
+    // }
     return style
   }
 
   const changeSymbol = (sb) => {
     const { key,symbol } = sb
     setActiveKey(key)
-    setSymbol(symbol)
+    // setSymbol(symbol)
   }
   // 删除当前选中项，则删除后默认选中前一项。当仅剩一项，则不能再次进行删除
   const deleteSymbol = (e,targetKey) => {
@@ -66,7 +70,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
     const newSbl = symbolList.filter(sb => sb.key !== targetKey)
     if(newSbl.length && targetKey === activeKey) {
       setActiveKey(newSbl[lastIndex].key)
-      setSymbol(newSbl[lastIndex].symbol)
+      // setSymbol(newSbl[lastIndex].symbol)
     }
     console.log(newSbl)
     if(newSbl.length === 1) newSbl[0].closable = false
@@ -81,7 +85,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
   const onChangeResolution = (resolution) => {
     try {
       symbolList.forEach((sb) => {
-        if(sb.symbol === symbol) {
+        if(sb.symbol === activeKey) {
           sb.resolution = resolution
           throw new Error("break")
         }
@@ -127,10 +131,13 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
 
   useEffect(() => {
     if(kLineList.length) {
-      const symbolList = initKLineList(kLineList)
+      const symbolList = initKLineList(kLineList),
+            activeSymbol = kLineList.filter(item => item.isActive),
+            activeKey = activeSymbol[0] && activeSymbol[0].symbol
+      console.log("===activeSymbol", kLineList, activeSymbol, activeKey, symbolList[kLineList.length - 1].key)
       setSymbolList(symbolList)
-      setActiveKey(symbolList[kLineList.length - 1].key)
-      setSymbol(symbolList[kLineList.length - 1].symbol)
+      setActiveKey(activeKey || symbolList[kLineList.length - 1].key)
+      // setSymbol(symbolList[kLineList.length - 1].symbol)
     }
   }, [JSON.stringify(kLineList)])
 
@@ -151,8 +158,8 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
         Object.keys(socket).length > 0 && 
         <TVChartContainer
           socket={socket}
-          symbol={symbol}
-          resolution={getResolutionBySymbol(symbol)}
+          symbol={activeKey}
+          resolution={getResolutionBySymbol(activeKey)}
           symbolList={symbolList}  //.filter(item => item.symbol === symbol)
           onChangeResolution={onChangeResolution}
         />

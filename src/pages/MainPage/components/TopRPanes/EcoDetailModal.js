@@ -7,7 +7,8 @@ import { connect } from 'react-redux'
 
 const EcoDetailModal = (props) => {
   const { visible, data, onCancel, theme } = props
-  const ecoCharts = data[0].data.map(item => {
+  // console.log(data)
+  const ecoCharts = data[0] && data[0].data.map(item => {
     if(item.time_period.indexOf("季度") !== -1) {
       item.xx = `${item.pub_time.split("-")[0]}年${item.time_period}`
     }
@@ -152,15 +153,20 @@ const EcoDetailModal = (props) => {
         destroyOnClose={true}
         onCancel={onCancel}
       >
-        <Button
-          type="default"
-          className="ecod-btn-download"
-          onClick={onDownload}
-        >
-          <IconFont type="iconxiazai" className="icon-download" />
-          <span>保存为图片</span>
-        </Button>
-        <DualAxes {...getChartsConfig(theme)} chartRef={ref} />
+        {
+          ecoCharts &&
+          <>
+            <Button
+              type="default"
+              className="ecod-btn-download"
+              onClick={onDownload}
+            >
+              <IconFont type="iconxiazai" className="icon-download" />
+              <span>保存为图片</span>
+            </Button>
+            <DualAxes {...getChartsConfig(theme)} chartRef={ref} />
+          </>
+        }
         <div className="ecod-desc-x">
           <p>
             <span>数据影响：</span>

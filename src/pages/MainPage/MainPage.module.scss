@@ -252,7 +252,21 @@ $bottomH: 4.3vh;
         height: auto;
         margin-top: 1px;
       }
-      .tr-btn-changeAcc {
+      // .tr-btn-changeAcc {
+      //   width: 123px;
+      //   height: 100%;
+      //   display: flex;
+      //   justify-content: center;
+      //   align-items: center;
+      //   font-size: 12px;
+      //   font-weight: bold;
+      //   @include themify {
+      //     color: themed('color-primary');
+      //     background-color: themed('bg-color-2');
+      //     border-color: themed('border-color-table');
+      //   }
+      // }
+      .tr-select-changeAcc {
         width: 123px;
         height: 100%;
         display: flex;
@@ -264,6 +278,23 @@ $bottomH: 4.3vh;
           color: themed('color-primary');
           background-color: themed('bg-color-2');
           border-color: themed('border-color-table');
+        }
+        &.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
+        &.ant-select-single:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input {
+          height: 100%;
+          .ant-select-selection-item {
+            display: inline-flex;
+            align-items: center;
+          }
+        }
+        .ant-select-selector {
+          background-color: unset;
+          @include themify {
+            border-color: themed('border-color-table');
+          }
+        }
+        .ant-select-arrow {
+          top: 46%;
         }
       }
       // .tr-switch-theme.tr-switch-theme {

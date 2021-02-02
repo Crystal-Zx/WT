@@ -8,11 +8,11 @@ const fetchPost = (url, params, options) => {
       res => {
         console.log("fetchPost then res:", res)
         resolve(res)
-      },
-      err => {
-        console.log("fetchPost then err:", err)
-        reject(err)
       }
+      // err => {
+      //   console.log("fetchPost then err:", err)
+      //   reject(err)
+      // }
     ).catch(err => {
       console.log("fetchPost catch err:", err)
       reject(err)
@@ -39,8 +39,12 @@ export function _login (params = {}) {
   return fetchPost(apis.login, params)
 }
 // 登录OA
-export function _loginOA (params = {}) {
-  return fetchPost(apis.loginOA, params)
+// export function _loginOA (params = {}) {
+//   return fetchPost(apis.loginOA, params)
+// }
+// OA 账号密码 换 WT账号信息
+export function _loginOA2 (params = {}) {
+  return fetchPost(apis.loginOA2, params)
 }
 // 账户信息
 // --- 获取账户信息

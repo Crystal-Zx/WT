@@ -112,6 +112,11 @@ p {
 }
 // --- antd radio.group
 .ant-radio-group {
+  .ant-radio-wrapper {
+    @include themify {
+      color: themed('color-default');
+    }
+  }
   .ant-radio-button-wrapper:not(:first-child)::before {
     background-color: unset;
   }
@@ -142,10 +147,29 @@ p {
       border-color: themed('border-active') !important;
     }
   }
-  // .ant-radio-button-wrapper:hover {
-  //   color: $themeBlue !important;
-
-  // }
+  /*
+  // --- 单选框按钮
+  .ant-radio-inner {  // 未选中状态
+    background-color: unset;
+    color: inherit;
+    @include themify {
+      border-color: themed('border-color-search');
+    }
+    &::after {
+      @include themify {
+        background-color: themed('color-tabActive');
+      }
+    }
+  }
+  .ant-radio-checked .ant-radio-inner,
+  .ant-radio-wrapper:hover .ant-radio,
+  .ant-radio:hover .ant-radio-inner,
+  .ant-radio-input:focus + .ant-radio-inner {  // 选中状态
+    @include themify {
+      border-color: themed('color-tabActive');
+    }
+  }
+  */
 }
 // --- antd datepicker
 .ant-picker-dropdown {

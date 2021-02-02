@@ -13,7 +13,8 @@ import {
   _getEcoCharts,
   _getEcoDesc,
   _login,
-  _loginOA
+  _loginOA2,
+  _getFireOffer
 } from '../../services/index'
 import { 
   getCmdArr
@@ -24,21 +25,34 @@ import * as actionTypes from './MainActionTypes'
 // 全局
 // ---登录
 export const login = createAction(actionTypes.LOGIN, params => {
-  return _login(params).then(response => Object.assign({}, response, {
-    account: params.login
-  }))
+  return _login(params)
+  // .then(response => Object.assign({}, response, {
+  //   account: params.login
+  // }))
 })
-export const loginOA = createAction(actionTypes.LOGIN_OA, params => {
-  return _loginOA(params).then(response => response)
+export const loginOA2 = createAction(actionTypes.LOGIN_OA, params => {
+  return _loginOA2(params)
+  // .then(response => {
+  //   console.log(response)
+  //   const { token } = response
+  //   return _loginOA1({token})
+  // })
+  // 返回一个promise实例且状态应为pending，不需要为其添加.then处理函数，否则后续调用这个action将会一直是resolve
+  // .then(response => {
+  //   console.log(response)
+  //   return response
+  // }).catch(err => {
+  //   console.log(err)
+  //   return err
+  // })
 })
-export const setToken = createAction(actionTypes.SET_TOKEN, params => params)
+export const setCurrAcc = createAction(actionTypes.SET_CURRACC, params => params)
 // --- socket
 export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
     // var ws = new socket("ws://47.113.231.12:5885/")
     // var ws = new socket("ws://118.193.38.199")
-    var ws = new socket("ws://156.226.24.38:61029")
+    var ws = new socket(user.getWSUrl())
     ws.doOpen()
-    // console.log("ws", ws)
     ws.on("open", function () {
       // console.log("ws sending...")
       ws.send({

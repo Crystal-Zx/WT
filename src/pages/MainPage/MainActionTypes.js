@@ -2,7 +2,7 @@
 // --- 全局
 export const LOGIN = 'LOGIN'
 export const LOGIN_OA = 'LOGIN_OA'
-export const SET_TOKEN = 'SET_TOKEN'
+export const SET_CURRACC = 'SET_CURRACC'
 export const INIT_SOCKET = 'INIT_SOCKET'
 export const OPEN_ORDER = 'OPEN_ORDER',
              OPEN_ORDER_PENDING = 'OPEN_ORDER_PENDING',

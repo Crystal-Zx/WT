@@ -18,8 +18,7 @@ export const popMessage = params => {
   const { type, msg } = params
   message[type]({
     content: msg,
-    className: `wt-msg-${type}`,
-    duration: 0
+    className: `wt-msg-${type}`
   })
 }
 // 工具类

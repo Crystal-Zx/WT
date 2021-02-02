@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Form, Input, Button } from 'antd'
+import { Modal, Form, Input, Button, Radio } from 'antd'
 import IconFont from '../../utils/iconfont/iconfont'
 import styles from './Login.module.scss'
 import user from '../../services/user'
@@ -12,16 +12,24 @@ const Login = () => {
   const [visible, setVisible] = useState(false)
   const [activeKey, setActiveKey] = useState('0')
 
-  
   const onFinishByOA = (values) => {
     console.log("===onFinishByOA values:", values)
+    setLoading(true)
     const formData = Object.assign({}, values, { device: 'pc' })
     user.login(formData, 'oa').then(res => {
-      console.log(res)
+      console.log("===Login loginOA res:", res)
+      // 存储用户WT账号信息
+      popMessage({ type: 'success', msg: '登录成功！' })
+      setTimeout(() => {  // 加一个延时，否则message来不及显示
+        setLoading(false)
+        setVisible(false)
+        // window.location.reload()
+      }, 1000);
+    }).catch(err => {
+      console.log("===Login loginOA err:", err)
+      popMessage({ type: 'error', msg: err.msg || `${err}` })
+      setLoading(false)
     })
-    // dispatch(loginOA(formData)).then(res => {
-    //   console.log(res.value)
-    // })
   }
   const onFinishByMT4 = (values) => {
     setLoading(true)
@@ -30,7 +38,7 @@ const Login = () => {
       setTimeout(() => {  // 加一个延时，否则message来不及显示
         setLoading(false)
         setVisible(false)
-        window.location.reload()
+        // window.location.reload()
       }, 1000);
     }).catch(err => {
       popMessage({ type: 'error', msg: err.msg || `${err}` })
@@ -112,6 +120,16 @@ const Login = () => {
               // noStyle
             >
               <Checkbox>记住密码</Checkbox>
+            </Form.Item> */}
+            {/* <Form.Item
+              name="type"
+            >
+              <Radio.Group 
+                defaultValue={1}
+              >
+                <Radio value={1}>模拟账户</Radio>
+                <Radio value={2}>实盘账户</Radio>
+              </Radio.Group>
             </Form.Item> */}
             <Form.Item noStyle>
               <Button 

@@ -2,18 +2,18 @@ import { combineReducers } from 'redux'
 import * as actionTypes from './MainActionTypes'
 
 // mock数据
-import {
-  plist, olist
-} from '../../services/mock'
+// import {
+//   plist, olist
+// } from '../../services/mock'
 
 // 全局
-const token = (
-  state = sessionStorage.getItem("wt_token"),
+const currAcc = (
+  state = sessionStorage.getItem("wt_currAcc"),
   action
 ) => {
   const { type, payload } = action
   switch(type) {
-    case actionTypes.SET_TOKEN : {
+    case actionTypes.SET_CURRACC : {
       return payload
     }
     default: return state
@@ -285,7 +285,7 @@ const accountInfo = (state = {
 }
 
 export default combineReducers({
-  token,
+  currAcc,
   initSocket,
   theme,
   symbolList,

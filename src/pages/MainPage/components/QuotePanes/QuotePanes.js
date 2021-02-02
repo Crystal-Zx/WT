@@ -64,7 +64,7 @@ const QuotePanes = (props) => {
         if(item.symbol === data.symbol) {
           data.isUp = item.bid ? data.bid >= item.bid : 1
           data.size = data.contract_size
-          data.spread = toDecimal((data.ask - data.bid) * 100, data.digits < 2 ? data.digits : 2) + "%"
+          data.spread = toDecimal((data.ask - data.bid) / (data.ask === 0 ? 1 : data.ask) * 100, data.digits < 2 ? data.digits : 2) + "%"
           delete data.contract_size
           Object.assign(item, data)
           break
@@ -103,7 +103,7 @@ const QuotePanes = (props) => {
   const sendQuoteMsg = (quoteSymbols) => {
     quoteSymbols = quoteSymbols || getQuoteSymbols()
     const currType = [...new Set(quoteSymbols.concat(orderSymbols))]
-    const args = currType.join(".")
+    const args = currType.join(",")
     // socket.on("open", () => {
       // 获取报价信息
       socket.send({

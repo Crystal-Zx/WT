@@ -43,29 +43,33 @@ axios.interceptors.response.use(
   response => {
     // 这里会最先拿到你的response
     // 定制
-    const extraUrl = /(jin10)|(alphazone)/ig
+    const extraUrl = /(jin10)/ig
     const isExtraUrlData = extraUrl.test(response.config.baseURL) || extraUrl.test(response.config.url)
     console.log(isExtraUrlData, response)
     // 只有返回的状态码是2xx，都会进来这里
     if(response.status === 200) {
-      const code = response.data.code
-      if (code === 204) {  // token过期
-        user.setToken(null)
+      // const code = response.data.code
+      const { code, status} = response.data
+       
+      if (code === 204 || status === 401) {  // token过期
+        user.setCurrAcc({})
         return Promise.reject({ code, msg: 'token过期' })  // 会进入axios请求的catch
-      } else if(code === 0) {  // 请求正确发起，但返回值错误
-        return Promise.reject({ code, msg: response.data.msg })
-      } else if(code === 1 || isExtraUrlData) {
+      } else if(code === 1 || status === 1 || status === undefined || isExtraUrlData) {
         const { token } = response.data  // 针对登录接口返回的token
         let data = response.data.data || response.data
         data = isJSON(data) ? JSON.parse(data) : data
         if(data.length >= 0 || Object.keys(data).length > 0) {
           return token ? Object.assign({}, data, { token }) : data
         } else {
-          return Promise.reject({ code, msg: response.data.msg })
+          return Promise.reject({ code, status, msg: response.data.msg })
         }
+      } else if(code === 0 || status !== 1) {  // 请求正确发起，但返回值错误
+        console.log("请求正确发起，但返回值错误")
+        return Promise.reject({ code, status, msg: response.data.msg })
       }
     } else {
       // 非200请求抱错
+      console.log("非200请求抱错")
       return Promise.reject(response.data.msg || '服务异常')
       // throw Error(response.data.msg || '服务异常')
     }

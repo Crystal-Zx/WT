@@ -1,4 +1,4 @@
-import { Menu, Dropdown, Button } from 'antd';
+import { Menu, Dropdown, Button, Select, Spin } from 'antd';
 
 import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
@@ -12,11 +12,15 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 import { getCurrDate } from '../../utils/utilFunc'
 import { setTheme } from './MainAction'
+import user from '../../services/user'
+
+const { Option } = Select
 
 function MainPage ({ theme, dispatch }) {
-  const userInfo = JSON.parse(sessionStorage.getItem("wt_userInfo"))
-  const currAcc = (userInfo && userInfo.account) || ''
+  // const userInfo = JSON.parse(sessionStorage.getItem("wt_userInfo"))
+  // const currAcc = (userInfo && userInfo.account) || ''
   const [currDate, setCurrDate] = useState(getCurrDate())
+  // const [isLoading, setIsLoading] = useState(false)
 
   const init = () => {
     window.document.documentElement.setAttribute("data-theme", theme)
@@ -45,59 +49,92 @@ function MainPage ({ theme, dispatch }) {
       window.location.reload()
     }, 0);
   }
+  const onChangeAcc = (account) => {
+    // setIsLoading(true)
+    user.setCurrAcc(account)
+  }
   
   useEffect(() => {
     init()
   },[])
 
   return (
-    <div className={styles['main-x']}>
-      <div className="main-top-x">
-        <QuotePanes />
-        <TopRPanes />
-      </div>
-      <div className="main-middle-x card-container">
-        <OrderPanes />
-      </div>
-      <div className="main-bottom-x">
-        <AccountInfo />
-      </div>
-      <div className="main-topright-x">
-        <span className="tr-currtime-x">{currDate}</span>
-        {/* <IconFont type="iconLayout" className="main-icon-layout" /> */}
-        {/* <Switch className="tr-switch-theme" /> */}
-        <Button 
-          type="default" 
-          className="tr-btn-changetheme"
-          onClick={changeTheme}
-        >
-          {
-            theme === 'light' &&
-            <IconFont type="iconDark" className="wt-icon main-icon-dark" />
-          }
-          {
-            theme === 'dark' &&
-            <IconFont type="iconLight" className="wt-icon main-icon-light" />
-          }
-        </Button>
-        <IconFont type="iconWifi" className="main-icon-wifi" />
-        <Dropdown 
-          overlay={
-            <Menu>
-              <Menu.Item>
-                <a href="javascrip:;" onClick={onLogout}>退出登录</a>
-              </Menu.Item>
-            </Menu>
-          } 
-        placement="bottomRight">
-          <Button className="tr-btn-changeAcc">DEMO {currAcc}
-            <IconFont type="iconDD" className="main-icon-dd" />
+    // <Spin spinning={isLoading}>
+      <div className={styles['main-x']}>
+        <div className="main-top-x">
+          <QuotePanes />
+          <TopRPanes />
+        </div>
+        <div className="main-middle-x card-container">
+          <OrderPanes />
+        </div>
+        <div className="main-bottom-x">
+          <AccountInfo />
+        </div>
+        <div className="main-topright-x">
+          <span className="tr-currtime-x">{currDate}</span>
+          {/* <IconFont type="iconLayout" className="main-icon-layout" /> */}
+          {/* <Switch className="tr-switch-theme" /> */}
+          <Button 
+            type="default" 
+            className="tr-btn-changetheme"
+            onClick={changeTheme}
+          >
+            {
+              theme === 'light' &&
+              <IconFont type="iconDark" className="wt-icon main-icon-dark" />
+            }
+            {
+              theme === 'dark' &&
+              <IconFont type="iconLight" className="wt-icon main-icon-light" />
+            }
           </Button>
-        </Dropdown>
-        {/* <IconFont type="iconMenu" className="main-icon-menu" /> */}
+          <IconFont type="iconWifi" className="main-icon-wifi" />
+          <Select 
+            className="tr-select-changeAcc"
+            defaultValue={user.getCurrAcc() && user.getCurrAcc().account}
+            suffixIcon={<IconFont type="iconDD" className="main-icon-dd" />}
+            onChange={onChangeAcc}
+          >
+            {
+              Array.isArray(user.getAccInfo()) && user.getAccInfo().map(item => {
+                return (
+                  <Option value={item.account}>
+                    {Number(item.type) === 1 ? 'DEMO' : 'LIVE'}&nbsp;
+                    {item.account}
+                  </Option>
+                )
+              })
+            }
+          </Select>
+          {/* <Dropdown 
+            overlay={
+              <Menu>
+                {
+                  Array.isArray(user.getAccInfo()) && user.getAccInfo().map(item => {
+                    return (
+                      <Menu.Item data-account={item.account}>{item.account}</Menu.Item>
+                    )
+                  })
+                }
+                <Menu.Item>
+                  <a href="javascrip:;" onClick={onLogout}>退出登录</a>
+                </Menu.Item>
+              </Menu>
+            }
+            placement="bottomRight"
+          >
+            <Button className="tr-btn-changeAcc">
+              {user.getType() === 1 ? 'DEMO' : ''}&nbsp;
+              {user.getCurrAcc() && user.getCurrAcc().account}
+              <IconFont type="iconDD" className="main-icon-dd" />
+            </Button>
+          </Dropdown> */}
+          {/* <IconFont type="iconMenu" className="main-icon-menu" /> */}
+        </div>
+        <Login />
       </div>
-      <Login />
-    </div>
+    // </Spin>
   )
 }
 

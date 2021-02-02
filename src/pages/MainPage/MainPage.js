@@ -20,7 +20,7 @@ function MainPage ({ theme, dispatch }) {
   // const userInfo = JSON.parse(sessionStorage.getItem("wt_userInfo"))
   // const currAcc = (userInfo && userInfo.account) || ''
   const [currDate, setCurrDate] = useState(getCurrDate())
-  // const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const init = () => {
     window.document.documentElement.setAttribute("data-theme", theme)
@@ -58,9 +58,23 @@ function MainPage ({ theme, dispatch }) {
     init()
   },[])
 
+  useEffect(() => {
+    console.log(document.readyState)
+    const readyState = document.readyState
+    if(readyState === "complete") {
+      setIsLoading(false)
+    } else {
+      setIsLoading(true)
+    }
+  },[document.readyState])
+
   return (
-    // <Spin spinning={isLoading}>
-      <div className={styles['main-x']}>
+    <Spin
+      className={styles['main-spin-x']}
+      wrapperClassName={styles['main-spin-x']}
+      spinning={isLoading}
+    >
+      <div className='main-x'>
         <div className="main-top-x">
           <QuotePanes />
           <TopRPanes />
@@ -134,7 +148,7 @@ function MainPage ({ theme, dispatch }) {
         </div>
         <Login />
       </div>
-    // </Spin>
+    </Spin>
   )
 }
 

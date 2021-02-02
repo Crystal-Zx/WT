@@ -30,7 +30,7 @@ const initSocket = (state = {}, action) => {
   }
 }
 const theme = (
-  state = sessionStorage.getItem("wt-theme") || 'light', 
+  state = sessionStorage.getItem("wt_theme") || 'light', 
   action
 ) => {
   const { type, payload } = action

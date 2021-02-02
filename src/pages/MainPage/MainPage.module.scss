@@ -5,6 +5,10 @@ $bottomH: 4.3vh;
 .main-spin-x {
   max-height: unset !important;
   bottom: 0;
+  @include themify {
+    background-color: themed('bg-color-1');
+  }
+  // background-color: #fff;
   :global {
     .main-x {
       position: relative;

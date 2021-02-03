@@ -48,6 +48,9 @@ const Login = () => {
   const onChangeAcc = (acc) => {
     setActiveKey(acc)
   }
+  const onChangeType = (e) => {
+    sessionStorage.setItem("wt_selectType", e.target.value)
+  }
   const getFormJSX = (currKey) => {
     switch(currKey) {
       case '0':
@@ -126,6 +129,7 @@ const Login = () => {
             >
               <Radio.Group 
                 defaultValue={1}
+                onChange={onChangeType}
               >
                 <Radio value={1}>模拟账户</Radio>
                 <Radio value={2}>实盘账户</Radio>

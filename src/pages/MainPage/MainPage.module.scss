@@ -260,20 +260,6 @@ $bottomH: 4.3vh;
             height: auto;
             margin-top: 1px;
           }
-          // .tr-btn-changeAcc {
-          //   width: 123px;
-          //   height: 100%;
-          //   display: flex;
-          //   justify-content: center;
-          //   align-items: center;
-          //   font-size: 12px;
-          //   font-weight: bold;
-          //   @include themify {
-          //     color: themed('color-primary');
-          //     background-color: themed('bg-color-2');
-          //     border-color: themed('border-color-table');
-          //   }
-          // }
           .tr-select-changeAcc {
             width: 123px;
             height: 100%;
@@ -305,24 +291,12 @@ $bottomH: 4.3vh;
               top: 46%;
             }
           }
-          // .tr-switch-theme.tr-switch-theme {
-          //   min-width: 42px;
-          //   height: 24px;
-          //   line-height: 18px;
-          //   border: 3px solid #d1d5da !important;
-          //   background-color: transparent;
-          //   .ant-switch-handle {
-          //     position: absolute;
-          //     top: -5px;
-          //     left: -5px;
-          //     width: 28px;
-          //     height: 28px;
-          //     &::before {
-          //       background-color: #2f363d;
-          //       border-radius: 50%;
-          //     }
-          //   }
-          // }
+          .tr-btn-menu {
+            height: 100%;
+            @include themify {
+              color: themed('color-primary');
+            }
+          }
         }
         /* css style */
         // .color-up {

@@ -52,14 +52,10 @@ function MainPage ({ theme, dispatch }) {
     }, 0);
   }
   const onChangeAcc = (account) => {
-    if(Number(account) !== -1) {
-      user.setCurrAcc(account)
-      setInterval(() => {
-        window.location.reload()
-      }, 0);
-    } else {
-      onLogout()
-    }
+    user.setCurrAcc(account)
+    setInterval(() => {
+      window.location.reload()
+    }, 0);
   }
   
   useEffect(() => {
@@ -122,38 +118,29 @@ function MainPage ({ theme, dispatch }) {
               Array.isArray(user.getAccInfo()) && user.getAccInfo().map(item => {
                 return (
                   <Option key={item.account} value={item.account}>
-                    {Number(item.type) === 1 ? 'DEMO' : 'LIVE'}&nbsp;
+                    {Number(item.type) === 1 ? 'DEMO' : 'REAL'}&nbsp;
                     {item.account}
                   </Option>
                 )
               })
             }
-            <Option key="-1" value="-1">退出登录</Option>
           </Select>
-          {/* <Dropdown 
+          <Dropdown
             overlay={
               <Menu>
-                {
-                  Array.isArray(user.getAccInfo()) && user.getAccInfo().map(item => {
-                    return (
-                      <Menu.Item data-account={item.account}>{item.account}</Menu.Item>
-                    )
-                  })
-                }
                 <Menu.Item>
+                  <IconFont type="iconLogout" />&nbsp;
                   <a href="javascrip:;" onClick={onLogout}>退出登录</a>
                 </Menu.Item>
               </Menu>
             }
             placement="bottomRight"
           >
-            <Button className="tr-btn-changeAcc">
-              {user.getType() === 1 ? 'DEMO' : ''}&nbsp;
-              {user.getCurrAcc() && user.getCurrAcc().account}
-              <IconFont type="iconDD" className="main-icon-dd" />
+            <Button type="default" className="tr-btn-menu">
+              <IconFont type="iconMenu" className="main-icon-menu" />
             </Button>
-          </Dropdown> */}
-          {/* <IconFont type="iconMenu" className="main-icon-menu" /> */}
+          </Dropdown>
+          
         </div>
         <Login />
       </div>

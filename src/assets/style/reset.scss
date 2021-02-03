@@ -244,6 +244,10 @@ p {
     color: themed('color-primary');
     background-color: themed('bg-color-search');
   }
+  .ant-dropdown-menu-item {
+    display: flex;
+    align-items: center;
+  }
   .ant-dropdown-menu-item:not(.ant-dropdown-menu-item-disabled),
   .ant-dropdown-menu-item:not(.ant-dropdown-menu-item-disabled) > a {
     color: inherit;

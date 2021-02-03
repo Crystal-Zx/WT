@@ -36,20 +36,23 @@ function initOpt () {
 const user = {
   option: {
     // token: store.getState().MainReducer.token,
-    accInfo: initOpt().accInfo, //JSON.parse(sessionStorage.getItem("wt_accInfo")),// || [], 
-    currAcc: initOpt().currAcc//cacheCurrAcc && Object.keys(cacheCurrAcc).length ? cacheCurrAcc : (cacheAccInfo ? cacheAccInfo[0] : {}),
-    // type: 1  // 1 -> demo; 2 -> live
+    accInfo: initOpt().accInfo,  //JSON.parse(sessionStorage.getItem("wt_accInfo")),// || [], 
+    currAcc: initOpt().currAcc  //cacheCurrAcc && Object.keys(cacheCurrAcc).length ? cacheCurrAcc : (cacheAccInfo ? cacheAccInfo[0] : {}),
+    // selectType: initOpt().selectType  // 1 -> demo; 2 -> live
   },
   isLogin: function () {
-    return this.option.currAcc && Object.keys(this.option.currAcc).length
+    return this.option.currAcc && Object.keys(this.option.currAcc).includes('token')
   },
   login: function (params, platform) {
     const that = this
     switch (platform) {
       case 'mt4':
+        const { type = 1 } = params
+        delete params.type
         return dispatch(login(params)).then(res => {
+          console.log(res)
           const { login } = params
-          const { token, type = 1 } = res.value
+          const { token } = res.value
           const _currAcc = {
             account: login, token, type
           }
@@ -133,9 +136,12 @@ const user = {
   // 账号相关
   getAxiosBaseUrl: function ()  {
     let type = 1
-    if(this.option.currAcc) {
+    if(sessionStorage.getItem("wt_selectType")) {
+      type = sessionStorage.getItem("wt_selectType")
+    } else if(this.option.currAcc) {
       type = this.option.currAcc.type || type
     }
+    console.log("===getAxiosBaseUrl", type)
     return Number(type) === 2 ? 'https://live.wt.alphazone.com.cn' : 'https://demo.wt.alphazone.com.cn'
   },
   getWSUrl: function () {

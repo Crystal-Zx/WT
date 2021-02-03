@@ -46,12 +46,16 @@ axios.interceptors.response.use(
     // 只有返回的状态码是2xx，都会进来这里
     if(response.status === 200) {
       // const code = response.data.code
-      const { code, status} = response.data
+      const { code, status } = response.data
        
       if (code === 204 || status === 401) {  // token过期
         user.setCurrAcc({})
         return Promise.reject({ code, msg: 'token过期' })  // 会进入axios请求的catch
+      } else if(code === 0 || (status && status !== 1)) {  // 请求正确发起，但返回值错误
+        console.log("请求正确发起，但返回值错误")
+        return Promise.reject({ code, status, msg: response.data.msg })
       } else if(code === 1 || status === 1 || status === undefined || isExtraUrlData) {
+        console.log("请求正常返回")
         const { token } = response.data  // 针对登录接口返回的token
         let data = response.data.data || response.data
         data = isJSON(data) ? JSON.parse(data) : data
@@ -60,10 +64,7 @@ axios.interceptors.response.use(
         } else {
           return Promise.reject({ code, status, msg: response.data.msg })
         }
-      } else if(code === 0 || status !== 1) {  // 请求正确发起，但返回值错误
-        console.log("请求正确发起，但返回值错误")
-        return Promise.reject({ code, status, msg: response.data.msg })
-      }
+      } 
     } else {
       // 非200请求抱错
       console.log("非200请求抱错")

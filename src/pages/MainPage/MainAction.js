@@ -23,13 +23,14 @@ import user from '../../services/user'
 import * as actionTypes from './MainActionTypes'
 
 // 全局
-// ---登录
+// ---WT登录
 export const login = createAction(actionTypes.LOGIN, params => {
   return _login(params)
   // .then(response => Object.assign({}, response, {
   //   account: params.login
   // }))
 })
+// --- OA假登陆：输入账号和密码
 export const loginOA2 = createAction(actionTypes.LOGIN_OA, params => {
   return _loginOA2(params)
   // .then(response => {

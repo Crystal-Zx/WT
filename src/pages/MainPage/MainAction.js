@@ -59,7 +59,7 @@ export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
         "cmd": "symbols",
         "args": [""]
       })
-      ws.send({
+      user.getToken() && ws.send({
         "cmd": "order",
         "args": [`${user.getToken()}`]
       })

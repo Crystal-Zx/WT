@@ -6,7 +6,7 @@ const fetchPost = (url, params, options) => {
     http.post(url, params, options)
     .then(
       res => {
-        console.log("fetchPost then res:", res)
+        // console.log("fetchPost then res:", res)
         resolve(res)
       }
       // err => {
@@ -14,7 +14,7 @@ const fetchPost = (url, params, options) => {
       //   reject(err)
       // }
     ).catch(err => {
-      console.log("fetchPost catch err:", err)
+      // console.log("fetchPost catch err:", err)
       reject(err)
     })
   })

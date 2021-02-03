@@ -15,7 +15,10 @@ p {
 
 // antd loading
 .ant-spin.ant-spin-spinning .ant-spin-dot-item {
-  background-color: $themeBlue;
+  // background-color: $themeBlue;
+  @include themify {
+    background-color: themed('color-icon');
+  }
 }
 // antd inputNumber
 .ant-input-number {
@@ -147,7 +150,6 @@ p {
       border-color: themed('border-active') !important;
     }
   }
-  /*
   // --- 单选框按钮
   .ant-radio-inner {  // 未选中状态
     background-color: unset;
@@ -169,7 +171,6 @@ p {
       border-color: themed('color-tabActive');
     }
   }
-  */
 }
 // --- antd datepicker
 .ant-picker-dropdown {

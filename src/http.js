@@ -16,10 +16,7 @@ axios.defaults.headers = {
 // 请求拦截
 axios.interceptors.request.use(
   config => {
-    // const token = user.getToken()
-    // if(!token) {
-    //   return
-    // }
+    config.baseURL = user.getAxiosBaseUrl()
     // 格式化data参数
     const params = new URLSearchParams()
     for (const key in config.data) {
@@ -45,7 +42,7 @@ axios.interceptors.response.use(
     // 定制
     const extraUrl = /(jin10)/ig
     const isExtraUrlData = extraUrl.test(response.config.baseURL) || extraUrl.test(response.config.url)
-    console.log(isExtraUrlData, response)
+    // console.log(isExtraUrlData, response)
     // 只有返回的状态码是2xx，都会进来这里
     if(response.status === 200) {
       // const code = response.data.code
@@ -80,7 +77,7 @@ axios.interceptors.response.use(
     // 2. 取消请求也会进入这里，CancelToken，可以用axios.isCancel(err)来判断是取消的请求
     // 3. 请求运行有异常也会进入这里，如故意将headers写错：axios.defaults.headers = '123',或者在request中有语法或解析错误也会进入这里
     // 进入这里意味着请求失败，axios会进入catch分支
-    console.log("===axios error", error, axios.isCancel(error))
+    // console.log("===axios error", error, axios.isCancel(error))
     return Promise.reject(error)
   }
 )

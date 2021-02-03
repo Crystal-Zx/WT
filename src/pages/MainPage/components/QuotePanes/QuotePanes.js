@@ -23,7 +23,7 @@ const QuotePanes = (props) => {
   const { list, isFetching } = symbolList
   let cacheList = list
   const [qspTemp, setQspTemp] = useState([])
-  const [activeKey, setActiveKey] = useState()
+  const [activeKey, setActiveKey] = useState('')
   const prevListRef = useRef(null)
   const cacheListRef = useRef(null)  // 在组件整个生命周期内保存该变量的值，以便useEffect中的interval定时器能拿到值，定时存一次store
   

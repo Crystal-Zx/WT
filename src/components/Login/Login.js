@@ -23,7 +23,7 @@ const Login = () => {
       setTimeout(() => {  // 加一个延时，否则message来不及显示
         setLoading(false)
         setVisible(false)
-        // window.location.reload()
+        window.location.reload()
       }, 1000);
     }).catch(err => {
       console.log("===Login loginOA err:", err)
@@ -38,7 +38,7 @@ const Login = () => {
       setTimeout(() => {  // 加一个延时，否则message来不及显示
         setLoading(false)
         setVisible(false)
-        // window.location.reload()
+        window.location.reload()
       }, 1000);
     }).catch(err => {
       popMessage({ type: 'error', msg: err.msg || `${err}` })
@@ -121,7 +121,7 @@ const Login = () => {
             >
               <Checkbox>记住密码</Checkbox>
             </Form.Item> */}
-            {/* <Form.Item
+            <Form.Item
               name="type"
             >
               <Radio.Group 
@@ -130,7 +130,7 @@ const Login = () => {
                 <Radio value={1}>模拟账户</Radio>
                 <Radio value={2}>实盘账户</Radio>
               </Radio.Group>
-            </Form.Item> */}
+            </Form.Item>
             <Form.Item noStyle>
               <Button 
                 type="primary"
@@ -169,7 +169,6 @@ const Login = () => {
         ]}
         activeKey={activeKey}
       />
-      
     </Modal>
   )
 }

@@ -36,7 +36,7 @@ const EcoDetailModal = (props) => {
       "dark": {
         grid: "#889399",
         text: "#889399",
-        line1: "#fff",
+        line1: "#ff8f00",
         line2: "#bfbfbf",
         blur: 0,
         offset: 0,

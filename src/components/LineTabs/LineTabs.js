@@ -5,7 +5,7 @@ const { TabPane } = Tabs
 
 const LineTabs = ({ onChange, initialPanes, activeKey }) => {
   // console.log("====LineTabs render", activeKey)
-  // const activeKey = initialPanes[0].key
+  // activeKey = activeKey || initialPanes[0].key
   return (
     <Tabs 
       type="line"

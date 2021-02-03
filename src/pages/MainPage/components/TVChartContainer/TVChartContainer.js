@@ -116,7 +116,8 @@ class TVChartContainer extends React.PureComponent {
       // console.log(document.querySelector(".TVChartContainer iframe"))
       // const tvcIframe = document.querySelector(".TVChartContainer iframe")
       // const head = tvcIframe.contentWindow.document.body
-
+      // console.log(document.getElementById('tv_chart_container').childNodes[0])
+      // document.getElementById('tv_chart_container').childNodes[0].setAttribute("style", "display: block;width: 100%;height: 100%;")
       createButton(buttons)
       // 设定图表自定义样式
       thats.applyOverrides(that.getOverrides(that.props.theme))

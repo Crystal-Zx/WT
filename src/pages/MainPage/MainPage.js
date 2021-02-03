@@ -36,10 +36,12 @@ function MainPage ({ theme, dispatch }) {
     if(theme === 'light') {
       // setTheme('dark')
       window.document.documentElement.setAttribute("data-theme", 'dark')
+      localStorage.setItem("wt_theme", 'dark')
       dispatch(setTheme('dark'))  // 保持tradingview图表的主题与之一致
     } else {
       // setTheme('light')
       window.document.documentElement.setAttribute("data-theme", 'light')
+      localStorage.setItem("wt_theme", 'light')
       dispatch(setTheme('light'))
     }
   }
@@ -50,8 +52,14 @@ function MainPage ({ theme, dispatch }) {
     }, 0);
   }
   const onChangeAcc = (account) => {
-    // setIsLoading(true)
-    user.setCurrAcc(account)
+    if(Number(account) !== -1) {
+      user.setCurrAcc(account)
+      setInterval(() => {
+        window.location.reload()
+      }, 0);
+    } else {
+      onLogout()
+    }
   }
   
   useEffect(() => {
@@ -59,7 +67,6 @@ function MainPage ({ theme, dispatch }) {
   },[])
 
   useEffect(() => {
-    console.log(document.readyState)
     const readyState = document.readyState
     if(readyState === "complete") {
       setIsLoading(false)
@@ -73,6 +80,7 @@ function MainPage ({ theme, dispatch }) {
       className={styles['main-spin-x']}
       wrapperClassName={styles['main-spin-x']}
       spinning={isLoading}
+      size="large"
     >
       <div className='main-x'>
         <div className="main-top-x">
@@ -113,13 +121,14 @@ function MainPage ({ theme, dispatch }) {
             {
               Array.isArray(user.getAccInfo()) && user.getAccInfo().map(item => {
                 return (
-                  <Option value={item.account}>
+                  <Option key={item.account} value={item.account}>
                     {Number(item.type) === 1 ? 'DEMO' : 'LIVE'}&nbsp;
                     {item.account}
                   </Option>
                 )
               })
             }
+            <Option key="-1" value="-1">退出登录</Option>
           </Select>
           {/* <Dropdown 
             overlay={

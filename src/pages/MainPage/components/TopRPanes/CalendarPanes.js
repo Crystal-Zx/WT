@@ -1,4 +1,4 @@
-import { Space, DatePicker, Select, Radio, Table, Modal } from 'antd'
+import { Space, DatePicker, Select, Radio, Table, Rate } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
@@ -128,13 +128,14 @@ const CalendarPanes = ({ dispatch }) => {
       width: '13%',
       align: 'center',
       render: star => (
-        <div className="cp-icon-stars">
-          <i 
-            className="cp-icon-stars active"
-            style={{ width: star / 5 * 100 + "%" }}
-          >
-          </i>
-        </div>
+        // <div className="cp-icon-stars">
+        //   <i 
+        //     className="cp-icon-stars active"
+        //     style={{ width: star / 5 * 100 + "%" }}
+        //   >
+        //   </i>
+        // </div>
+        <Rate disabled defaultValue={star} />
       )
     },
     {

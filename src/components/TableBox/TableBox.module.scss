@@ -109,14 +109,14 @@ $tableRow: #f7f7f7;
                 font-size: 13px;
               }
               &.qtr-btn-sell {
-                @include themify {
-                  background-color: themed('color-red');
-                }
+                // @include themify {
+                //   background-color: themed('color-red');
+                // }
               }
               &.qtr-btn-buy {
-                @include themify {
-                  background-color: themed('color-green');
-                }
+                // @include themify {
+                //   background-color: themed('color-green');
+                // }
                 .qtr-price {
                   left: unset;
                   right: 10px;
@@ -206,11 +206,21 @@ $tableRow: #f7f7f7;
       .iconDown {
         transform: rotate(180deg);
       }
+      .qtr-btn {
+        @include themify {
+          background-color: themed('color-green');
+        }
+      }
     }
     .quote-down {
       .iconDown,.ant-table-cell:nth-child(n+2) {
         @include themify {
           color: themed('color-red');
+        }
+      }
+      .qtr-btn {
+        @include themify {
+          background-color: themed('color-red');
         }
       }
     }

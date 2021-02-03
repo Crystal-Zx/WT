@@ -49,19 +49,23 @@
         width: 0 !important;
       }
       .cp-table-li {
-        .cp-icon-stars {
-          position: relative;
-          width: 70px;
-          height: calc(70px / (1135 / 200));
-          margin: 0 auto;
-          background: url(../../../../assets/image/home_sprite_1.png) 0 0 / 70px auto no-repeat;
-          &.cp-icon-stars.active {
-            position: absolute;
-            top: 0;left: 0;
-            color: $themeBlue;
-            // background-position: 0 100%;
-            @include themify {
-              background-position: themed('position-star');
+        .ant-rate {
+          font-size: 14px;
+          .ant-rate-star:not(:last-child) {
+            margin-right: 0;
+          }
+          .ant-rate-star-zero {
+            .ant-rate-star-first, .ant-rate-star-second {
+              @include themify {
+                color: themed('bg-color-trHover');
+              }
+            }
+          }
+          .ant-rate-star-full {
+            .ant-rate-star-first, .ant-rate-star-second {
+              @include themify {
+                color: themed('bg-color-hl');
+              }
             }
           }
         }
@@ -104,45 +108,50 @@
           width: 40px;
           margin-right: 5px;
         }
+        
         .cp-btn-ecoDetail {
           @include themify {
             color: themed('color-icon');
           }
-          // &:hover
         }
       }
     }
     .ecod-modal-x {
-      .ant-modal-body {
-        position: relative;
-        .ecod-btn-download {
-          position: absolute;
-          top: 14px;
-          right: 24px;
-          border: 0;
-          font-size: 12px;
-          color: inherit;
-          z-index: 1;
-          outline: none;
-          .icon-download {
-            position: relative;
-            top: 1px;
+      .ant-modal-content {
+        .ant-modal-close {
+          color: #fff;
+        }
+        .ant-modal-body {
+          position: relative;
+          .ecod-btn-download {
+            position: absolute;
+            top: 14px;
+            right: 24px;
+            border: 0;
+            font-size: 12px;
+            color: inherit;
+            z-index: 1;
+            outline: none;
+            .icon-download {
+              position: relative;
+              top: 1px;
+              font-size: 14px;
+            }
+          }
+          .ecod-desc-x {
+            margin-top: 2em;
             font-size: 14px;
+            line-height: 1.8em;
+            // color: $fontColor;
+            p + p {
+              margin-top: .5em;
+            }
+            p > span:first-child {
+              font-weight: bold;
+            }
           }
         }
-        .ecod-desc-x {
-          margin-top: 2em;
-          font-size: 14px;
-          line-height: 1.8em;
-          // color: $fontColor;
-          p + p {
-            margin-top: .5em;
-          }
-          p > span:first-child {
-            font-weight: bold;
-          }
-        }
-      }
+      } 
     }
     .mt-0 {
       margin-top: 0 !important;

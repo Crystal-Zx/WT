@@ -13,8 +13,7 @@ import {
   _getEcoCharts,
   _getEcoDesc,
   _login,
-  _loginOA2,
-  _getFireOffer
+  _loginOA2
 } from '../../services/index'
 import { 
   getCmdArr
@@ -50,12 +49,9 @@ export const loginOA2 = createAction(actionTypes.LOGIN_OA, params => {
 export const setCurrAcc = createAction(actionTypes.SET_CURRACC, params => params)
 // --- socket
 export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
-    // var ws = new socket("ws://47.113.231.12:5885/")
-    // var ws = new socket("ws://118.193.38.199")
     var ws = new socket(user.getWSUrl())
     ws.doOpen()
     ws.on("open", function () {
-      // console.log("ws sending...")
       ws.send({
         "cmd": "symbols",
         "args": [""]

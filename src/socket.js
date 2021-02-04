@@ -18,6 +18,8 @@ class socket {
     socketArg.onmessage = evt => this.onMessage(evt.data)
     // socketArg.onerror = err => this.onError(err)
     this.socket = socketArg
+    // 监听窗口关闭事件，当窗口关闭时，主动关闭ws连接，防止连接还没断开就关闭窗口，导致server端抛出异常
+    window.onbeforeunload = () => { this.socket = null }
   }
   onOpen() {
     this.connState = 2
@@ -29,7 +31,8 @@ class socket {
   checkOpen() {
     return this.connState === 2
   }
-  onClose() {
+  onClose(e) {
+    console.log("socket onClose, the reason is:", e)
     this.connState = 0
     if (this.connState) {
       this.onReceiver({

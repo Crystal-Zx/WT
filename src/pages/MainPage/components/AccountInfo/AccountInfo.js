@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Avatar, Button } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Button, Image } from 'antd';
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { toDecimal } from '../../../../utils/utilFunc'
 
@@ -17,9 +16,13 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
   return (
     <>
       <div className="user-x">
-        <span className="account-type">DEMO</span>
+        {/* <span className="account-type">DEMO</span>
         <Avatar icon={<UserOutlined />} size={24} />
-        <span className="account">11593</span>
+        <span className="account">11593</span> */}
+        <Image 
+          width={'90%'} 
+          src="/img/logo_fff.png"
+        />
       </div>
       <div className="account-info-x">
         <div className="ai-li">

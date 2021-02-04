@@ -5,9 +5,9 @@ import EditOrderPop from './EditOrderPop'
 import { getCmdArr, toDecimal } from '../../../../utils/utilFunc'
 
 const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }) => {
-  // console.log("====OrderSPanes render", data)
   
   let { list, isFetching } = data
+  // console.log("====OrderSPanes render", list)
   
   // 表头平仓
   // --- 获取对应平仓/删除项的订单号
@@ -212,7 +212,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         dataIndex: 'closeOrder',
         key: 'closeOrder',
         className: 'op-cell-closeOrder',
-        align: 'center',
+        align: 'right',
         render: (closeOrder,item) => {
           return (
             ((!isFoldRow(item.key) && item.ticket.length <= 1) || isFoldRow(item.key))
@@ -344,13 +344,19 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
       columns={type < 2 ? getColumns() : getHistoryCol()}
       pagination={false}
       expandable={{
-        // rowExpandable: (record) => {
-        //   console.log(record)
-        //   return false
+        // rowExpandable: record => {
+        //   console.log("====rowExpandable", record)
+        //   let bool = false
+        //   if(type < 2 && record.children.length > 1) {
+        //     bool = true
+        //   }
+        //   console.log("====bool:", bool)
+        //   return bool
         // }
-        // expandRowByClick:true,
-        // expandIconAsCell:false,
-        // expandIconColumnIndex:-1,  // 自定义展开按钮的列顺序，-1 时不展示
+        // expandedRowRender: record => <p style={{ margin: 0 }}>"123"</p>
+        expandRowByClick: true,
+        expandIconAsCell: false,
+        expandIconColumnIndex: -1,  // 自定义展开按钮的列顺序，-1 时不展示
       }}
       // onRow={record => {
       //   console.log("===onRow click:", record)

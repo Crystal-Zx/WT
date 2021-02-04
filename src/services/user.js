@@ -141,7 +141,6 @@ const user = {
     } else if(this.option.currAcc) {
       type = this.option.currAcc.type || type
     }
-    console.log("===getAxiosBaseUrl", type)
     return Number(type) === 2 ? 'https://live.wt.alphazone.com.cn' : 'https://demo.wt.alphazone.com.cn'
   },
   getWSUrl: function () {

@@ -102,8 +102,9 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     const ospData = listArr[activeKey].list  // 引用类型，修改ospData就是在修改listArr[activeKey].list
     for(let oItem of ospData) {
       for(let qItem of quoteList) {
+        if(!qItem.trans_price_ask) continue  // 没有返回该值时不更新该订单即时价和盈利数据
         // 加上bid的判断是保证当前货币已有报价数据，否则就保持原数据不变
-        if(qItem.symbol === oItem.symbol && qItem.bid) {  
+        if(qItem.symbol === oItem.symbol && qItem.bid) {
           let flag
           // 当quoteList中尚未接入报价数据时需保持原有即时价格
           if(isBuy(oItem.cmdForCh)) {  // 多单 buy
@@ -261,7 +262,6 @@ export default connect(
         oSymbols = order.list.map(item => item.symbol)
     const symbolsArr = [...new Set(pSymbols.concat(oSymbols))]
     
-    // console.log("===quoteList", symbolList.list && symbolList.list.filter(item => symbolsArr.includes(item.symbol)))
     return {
       socket: initSocket,
       accountInfo,

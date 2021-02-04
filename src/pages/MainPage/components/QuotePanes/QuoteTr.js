@@ -24,8 +24,9 @@ const QuoteTr = ({ dispatch, data }) => {
       })
     }).catch(err => {
       console.log("err", err)
+      !!cmd ? setIsFetching1(false) : setIsFetching0(false)
       openNotificationWithIcon({
-        type: 'error', msg: '创建订单失败', desc: err
+        type: 'error', msg: '创建订单失败', desc: err.msg || `${err}`
       })
     })
   }

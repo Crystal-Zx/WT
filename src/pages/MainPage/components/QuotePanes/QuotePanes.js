@@ -17,7 +17,7 @@ import styles from './QuotePanes.module.scss';
 
 const QuotePanes = (props) => {
   // console.log("====QuotePanes render", props)
-  const { 
+  const {
     dispatch, symbolList, filterGroup, socket, orderSymbols
   } = props
   const { list, isFetching } = symbolList
@@ -64,7 +64,7 @@ const QuotePanes = (props) => {
         if(item.symbol === data.symbol) {
           data.isUp = item.bid ? data.bid >= item.bid : 1
           data.size = data.contract_size
-          data.spread = toDecimal((data.ask - data.bid) / (data.ask === 0 ? 1 : data.ask) * 100, data.digits < 2 ? data.digits : 2) + "%"
+          data.spread = toDecimal((data.ask - data.bid) / (Number(data.ask )=== 0 ? 1 : data.ask) * 100, data.digits < 2 ? data.digits : 2) + "%"
           delete data.contract_size
           Object.assign(item, data)
           break
@@ -104,13 +104,16 @@ const QuotePanes = (props) => {
     quoteSymbols = quoteSymbols || getQuoteSymbols()
     const currType = [...new Set(quoteSymbols.concat(orderSymbols))]
     const args = currType.join(",")
-    // socket.on("open", () => {
-      // 获取报价信息
-      socket.send({
-        "cmd": "quote",
-        "args": [`${args}`]
-      })
-    // })
+    // 待ws连接建立成功后，获取报价信息
+    const t = setInterval(() => {
+      if(socket && socket.connState === 2) {
+        socket.send({
+          "cmd": "quote",
+          "args": [`${args}`]
+        })
+        clearInterval(t)
+      }
+    }, 100);
   }
   // 切换QSP页面
   const onChangeType = (sType) => {
@@ -127,9 +130,6 @@ const QuotePanes = (props) => {
     })
   }
   
-  // useEffect(() => {
-  //   prevListRef.current = list
-  // })
   useEffect(() => { // 仅didmounted时执行一次
     dispatch(initSocket())
     const t = setInterval(() => {
@@ -225,8 +225,8 @@ export default connect(
       filterGroup,
       positionOrder
     } = state.MainReducer
-    const orderSymbols = getOrderSymbols(positionOrder)
-    // console.log("===orderSymbols",orderSymbols)
+    const orderSymbols = getOrderSymbols(positionOrder) 
+
     return {
       socket: initSocket,
       symbolList,

@@ -105,6 +105,7 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
         if(!qItem.trans_price_ask) continue  // 没有返回该值时不更新该订单即时价和盈利数据
         // 加上bid的判断是保证当前货币已有报价数据，否则就保持原数据不变
         if(qItem.symbol === oItem.symbol && qItem.bid) {
+          oItem.digits = qItem.digits
           let flag
           // 当quoteList中尚未接入报价数据时需保持原有即时价格
           if(isBuy(oItem.cmdForCh)) {  // 多单 buy
@@ -219,7 +220,6 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     }
   }, [JSON.stringify(quoteList)])
 
-
   return (
     <CardTabs
       className={styles['order-x']}
@@ -261,7 +261,7 @@ export default connect(
     let pSymbols = position.list.map(item => item.symbol),
         oSymbols = order.list.map(item => item.symbol)
     const symbolsArr = [...new Set(pSymbols.concat(oSymbols))]
-    
+
     return {
       socket: initSocket,
       accountInfo,

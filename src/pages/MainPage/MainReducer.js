@@ -7,18 +7,18 @@ import * as actionTypes from './MainActionTypes'
 // } from '../../services/mock'
 
 // 全局
-const currAcc = (
-  state = sessionStorage.getItem("wt_currAcc"),
-  action
-) => {
-  const { type, payload } = action
-  switch(type) {
-    case actionTypes.SET_CURRACC : {
-      return payload
-    }
-    default: return state
-  }
-}
+// const currAcc = (
+//   state = sessionStorage.getItem("wt_currAcc"),
+//   action
+// ) => {
+//   const { type, payload } = action
+//   switch(type) {
+//     case actionTypes.SET_CURRACC : {
+//       return payload
+//     }
+//     default: return state
+//   }
+// }
 const initSocket = (state = {}, action) => {
   const { type, payload } = action
   // console.log(payload)
@@ -87,7 +87,7 @@ const filterGroup = (state = "", action) => {
 }
 
 // K线
-const kLineList = (state = [
+const kLineList = (state = JSON.parse(localStorage.getItem("wt_kline")) || [
   { symbol: 'EURUSD', digits: 5, isActive: false },
   { symbol: 'GBPUSD', digits: 5, isActive: true }
 ], action) => {
@@ -97,7 +97,7 @@ const kLineList = (state = [
       const currSymbol = payload.symbol,
             symbols = state.map(item => item.symbol)
       if(symbols.includes(currSymbol)) {
-        return state.map(item => {
+        const _state = state.map(item => {
           if(item.symbol === currSymbol) {
             item.isActive = true
           } else {
@@ -105,20 +105,26 @@ const kLineList = (state = [
           }
           return item
         })
+        localStorage.setItem("wt_kline", JSON.stringify(_state))
+        return _state
       } else {
         state = state.map(item => {
           item.isActive = false
           return item
         })
-        return [
+        const _state = [
           ...state,
           payload
         ]
+        localStorage.setItem("wt_kline", JSON.stringify(_state))
+        return _state
       }
 
     }
     case actionTypes.DELETE_FROM_KLINE: {
-      return state.filter(item => item.symbol !== payload)
+      const _state = state.filter(item => item.symbol !== payload)
+      localStorage.setItem("wt_kline", JSON.stringify(_state))
+      return _state
     }
     default: return state
   }
@@ -285,7 +291,7 @@ const accountInfo = (state = {
 }
 
 export default combineReducers({
-  currAcc,
+  // currAcc,
   initSocket,
   theme,
   symbolList,

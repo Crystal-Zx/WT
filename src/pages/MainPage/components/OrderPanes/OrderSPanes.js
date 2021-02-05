@@ -115,10 +115,16 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         width: '13.12%',
         align: 'left',
         render: (open_price, item) => {
+          // 数据里未提供小数位数，暂时如此计算
+          const op = open_price + "",
+                cp = item.close_price + ""
+          const opDigits = op.length - op.indexOf(".") - 1,
+                cpDigits = cp.length - cp.indexOf(".") - 1
+          const digits = Math.min(opDigits, cpDigits)
           return (
             <>
-              <span className="op-openprice">{open_price}</span>
-              <span>{item.close_price}</span>
+              <span className="op-openprice">{toDecimal(open_price, digits)}</span>
+              <span>{toDecimal(item.close_price, digits)}</span>
             </>
           ) 
         }
@@ -170,18 +176,19 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         dataIndex: 'storage',
         key: 'storage',
         width: '7.94%',
-        align: 'left'
+        align: 'center'
       },
       {
         title: '盈利',
         dataIndex: 'profit',
         key: 'profit',
         width: '7.95%',
-        align: 'left',
+        align: 'center',
         render: profit => {
           const className = profit > 0 ? 'color-up' : 'color-down'
           return <span className={className}>
-            {profit > 0 ? '$ ' + profit : '-$ ' + Math.abs(profit)}
+            {profit}
+            {/* {profit > 0 ? '$ ' + profit : '-$ ' + Math.abs(profit)} */}
           </span>
         }
       },
@@ -295,7 +302,11 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
       title: '盈利',
       dataIndex: 'profit',
       key: 'profit',
-      align: 'center'
+      align: 'center',
+      render: profit => {
+        const className = profit > 0 ? 'color-up' : 'color-down'
+        return <span className={className}>{toDecimal(profit, 2)}</span>
+      }
     }
   ]
   // 将扁平化数据格式化为页面渲染所需格式

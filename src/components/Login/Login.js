@@ -13,11 +13,11 @@ const Login = () => {
   const [activeKey, setActiveKey] = useState('0')
 
   const onFinishByOA = (values) => {
-    console.log("===onFinishByOA values:", values)
+    // console.log("===onFinishByOA values:", values)
     setLoading(true)
     const formData = Object.assign({}, values, { device: 'pc' })
     user.login(formData, 'oa').then(res => {
-      console.log("===Login loginOA res:", res)
+      // console.log("===Login loginOA res:", res)
       // 存储用户WT账号信息
       popMessage({ type: 'success', msg: '登录成功！' })
       setTimeout(() => {  // 加一个延时，否则message来不及显示
@@ -26,7 +26,7 @@ const Login = () => {
         window.location.reload()
       }, 1000);
     }).catch(err => {
-      console.log("===Login loginOA err:", err)
+      // console.log("===Login loginOA err:", err)
       popMessage({ type: 'error', msg: err.msg || `${err}` })
       setLoading(false)
     })
@@ -74,7 +74,7 @@ const Login = () => {
               name="password"
               rules={[{ required: true, message: '请输入密码'}]}
             >
-              <Input 
+              <Input.Password 
                 prefix={<IconFont type="iconLock" className="wt-icon" />}
                 placeholder="请输入密码"
               />
@@ -112,7 +112,7 @@ const Login = () => {
               name="password"
               rules={[{ required: true, message: '请输入密码'}]}
             >
-              <Input 
+              <Input.Password 
                 prefix={<IconFont type="iconLock" className="wt-icon" />}
                 placeholder="请输入密码"
               />

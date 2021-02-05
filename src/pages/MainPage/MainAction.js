@@ -46,7 +46,7 @@ export const loginOA2 = createAction(actionTypes.LOGIN_OA, params => {
   //   return err
   // })
 })
-export const setCurrAcc = createAction(actionTypes.SET_CURRACC, params => params)
+// export const setCurrAcc = createAction(actionTypes.SET_CURRACC, params => params)
 // --- socket
 export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
     var ws = new socket(user.getWSUrl())
@@ -81,9 +81,17 @@ export const setSymbolGroup = createAction(actionTypes.SET_SYMBOL_GROUP, payload
 
 // K线板块
 // --- 添加指定货币对的K线
-export const addToKLine = createAction(actionTypes.ADD_TO_KLINE, symbol => symbol)
+export const addToKLine = createAction(actionTypes.ADD_TO_KLINE, symbol => {
+  // const _kline = JSON.parse(localStorage.getItem("wt_kline")) || []
+  // localStorage.setItem("wt_kline", JSON.stringify(_kline.concat([symbol])))
+  return symbol
+})
 // --- 删除指定货币对的K线
-export const deleteFromKLine = createAction(actionTypes.DELETE_FROM_KLINE, symbol => symbol)
+// symbol: symbolName
+export const deleteFromKLine = createAction(actionTypes.DELETE_FROM_KLINE, symbol => {
+  console.log(symbol)
+  return symbol
+})
 
 // 新闻版块
 export const getNewsData = createAction(actionTypes.GET_NEWSDATA, params => {

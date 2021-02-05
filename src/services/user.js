@@ -1,8 +1,7 @@
 import { store } from '../store/store'
 import { 
   login,
-  loginOA2,
-  setCurrAcc
+  loginOA2
 } from '../pages/MainPage/MainAction'
 
 const { dispatch } = store

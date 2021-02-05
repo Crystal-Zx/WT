@@ -39,6 +39,9 @@ class socket {
         Event: 'close'
       })
     }
+    if(e.code === 1006) {
+      this.doOpen()
+    }
   }
   send(data) {
     this.socket.send(JSON.stringify(data))

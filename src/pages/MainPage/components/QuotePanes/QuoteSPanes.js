@@ -21,10 +21,6 @@ const QuoteSPane = (props) => {
   const onChangeExpand = () => {
     setIsExpandAll(!isExpandAll)
   }
-  // const addToKLine = (e, symbol, digits) => {
-  //   e.stopPropagation()
-
-  // }
 
   return (
     <>

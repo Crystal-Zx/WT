@@ -50,6 +50,14 @@
             border-color: themed('border-color-search');
           }
         }
+        .ant-input-suffix {
+          @include themify {
+            color: themed('color-icon');
+          }
+          .ant-input-password-icon {
+            color: inherit;
+          }
+        }
       }
       // input 错误提示文本
       .ant-form-item-explain.ant-form-item-explain-error {

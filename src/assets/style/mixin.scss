@@ -1,49 +1,12 @@
 @charset 'utf-8';
 @import './themes.scss';
 
-// @mixin bg-color() {
-//   background-color: $bg-color-light;
-//   [data-theme='light'] & {
-//     background-color: $bg-color-light;
-//   }
-//   [data-theme='dark'] & {
-//     background-color: $bg-color-dark;
-//   }
-// }
-// @mixin bg-panel-color() {
-//   background-color: $bg-panel-light;
-//   [data-theme='light'] & {
-//     background-color: $bg-panel-light;
-//   }
-//   [data-theme='dark'] & {
-//     background-color: $bg-panel-dark;
-//   }
-// }
-
-// @mixin font-color() {
-//   color: $font-pmColor-light;
-//   [data-theme='light'] & {
-//     color: $font-pmColor-light;
-//   }
-//   [data-theme='dark'] & {
-//     color: $font-dfColor-light;
-//   }
-// }
-
 @mixin themify {
   @each $theme-name, $theme-map in $themes {
     $theme-map: $theme-map !global;
     [data-theme=#{$theme-name}] & {
       @content;
     }
-    // [data-theme=#{$theme-name}] & {
-    //   $theme-map: $theme-map !global;
-    //   @each $key, $value in $map {
-    //     $theme-map: map-merge($theme-map, ($key: $value)) !global;
-    //   }
-    //   @content;
-    //   $theme-map: null !global;
-    // }
   }
 }
 

@@ -70,9 +70,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
     const newSbl = symbolList.filter(sb => sb.key !== targetKey)
     if(newSbl.length && targetKey === activeKey) {
       setActiveKey(newSbl[lastIndex].key)
-      // setSymbol(newSbl[lastIndex].symbol)
     }
-    console.log(newSbl)
     if(newSbl.length === 1) newSbl[0].closable = false
     setSymbolList(newSbl)
     deleteFromKLine(targetKey)
@@ -134,7 +132,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
       const symbolList = initKLineList(kLineList),
             activeSymbol = kLineList.filter(item => item.isActive),
             activeKey = activeSymbol[0] && activeSymbol[0].symbol
-      console.log("===activeSymbol", kLineList, activeSymbol, activeKey, symbolList[kLineList.length - 1].key)
+            
       setSymbolList(symbolList)
       setActiveKey(activeKey || symbolList[kLineList.length - 1].key)
       // setSymbol(symbolList[kLineList.length - 1].symbol)

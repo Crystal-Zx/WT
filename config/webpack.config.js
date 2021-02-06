@@ -513,7 +513,6 @@ module.exports = function (webpackEnv) {
                     loader: 'sass-resources-loader',
                     options: {
                       resources: [
-                        path.resolve(__dirname, '../src/assets/style/variables.scss'),
                         path.resolve(__dirname, '../src/assets/style/mixin.scss'),
                         path.resolve(__dirname, '../src/assets/style/reset.scss')
                       ]
@@ -546,8 +545,8 @@ module.exports = function (webpackEnv) {
                   loader: "sass-resources-loader",
                   options: {
                     resources: [
-                      path.resolve(__dirname, '../src/assets/style/variables.scss'),
                       path.resolve(__dirname, '../src/assets/style/mixin.scss'),
+                      path.resolve(__dirname, '../src/assets/style/reset.scss')
                     ]
                   }
                 }

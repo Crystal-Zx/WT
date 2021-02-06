@@ -192,31 +192,10 @@ const positionOrder = (state = {
           list: Number(payload.activeKey) ? modifyList : state.order.list
         }
       })
+    case actionTypes.GET_POSITIONS_REJECTED:
     case actionTypes.MODIFY_ORDER_REJECTED:
-      return Object.assign({}, state, {
-        position: {
-          ...state.position,
-          isFetching: false
-        },
-        order: {
-          ...state.order,
-          isFetching: false
-        }
-      })
-    // case actionTypes.GET_POSITIONS_REJECTED: // mock
-    //   return Object.assign({}, state, {
-    //     position: {
-    //       isFetching: false,
-    //       list: plist
-    //     },
-    //     order: {
-    //       isFetching: false,
-    //       list: olist
-    //     }
-    //   })
     case actionTypes.CLOSE_ORDER_REJECTED:
       return Object.assign({}, state, {
-        ...state,
         position: {
           ...state.position,
           isFetching: false
@@ -226,7 +205,6 @@ const positionOrder = (state = {
           isFetching: false
         }
       })
-    case actionTypes.GET_POSITIONS_REJECTED:
     default:
       return state
   }

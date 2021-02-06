@@ -351,8 +351,10 @@ p {
   }
 }
 .wt-input-error {
-  border-color: $sellColor !important;
-  color: $sellColor !important;
+  @include themify {
+    color: themed('color-red') !important;
+    border-color: currentColor !important;
+  }
 }
 .ant-btn, .ant-input-prefix {
   .wt-icon {

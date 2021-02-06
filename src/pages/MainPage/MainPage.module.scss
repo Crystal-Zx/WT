@@ -37,7 +37,9 @@ $bottomH: 4.3vh;
           color: $themeGolden !important;
         }
         .main-icon-wifi {
-          color: $buyColor;
+          @include themify {
+            color: themed('color-green');
+          }
         }
         .main-icon-dd {
           margin-top: 2px;
@@ -90,7 +92,9 @@ $bottomH: 4.3vh;
               }
             }
             .ant-tabs-nav::before {
-              border-color: $lightGray;
+              @include themify {
+                border-color: themed('color-default');
+              }
             }
             .ant-tabs-content-holder {
               width: 100%;

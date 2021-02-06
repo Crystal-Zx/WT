@@ -1,5 +1,4 @@
-import './assets/style/reset.scss'
-import './assets/style/variables.scss'
+// import './assets/style/reset.scss'
 import MainPage from './pages/MainPage/MainPage';
 import SettingsPage from './pages/SettingsPage/SettingsPage';
 

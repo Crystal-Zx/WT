@@ -42,10 +42,8 @@ axios.interceptors.response.use(
     // 定制
     const extraUrl = /(jin10)/ig
     const isExtraUrlData = extraUrl.test(response.config.baseURL) || extraUrl.test(response.config.url)
-    // console.log(isExtraUrlData, response)
     // 只有返回的状态码是2xx，都会进来这里
     if(response.status === 200) {
-      // const code = response.data.code
       const { code, status } = response.data
        
       if (code === 204 || status === 401) {  // token过期
@@ -69,7 +67,6 @@ axios.interceptors.response.use(
       // 非200请求抱错
       console.log("非200请求抱错")
       return Promise.reject(response.data.msg || '服务异常')
-      // throw Error(response.data.msg || '服务异常')
     }
   },
   error => {

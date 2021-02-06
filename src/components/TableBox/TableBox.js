@@ -105,7 +105,6 @@ function TableBox (props) {
         expandedRowClassName: (record, index) => 'quote-expand-tr ' + (record.isUp ? 'quote-up' : 'quote-down'),
         expandedRowRender: record => <QuoteTr data={record} />,
         onExpandedRowsChange: (expandedRows) => {
-          console.log(expandedRows)
           setExpandedRows(expandedRows)
         }
       }}

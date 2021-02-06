@@ -73,20 +73,9 @@ const CalendarPanes = ({ dispatch }) => {
   }
   const showEcoDetail = (id) => {
     dispatch(getEcoDetail({id})).then(res => {
-      console.log("====getEcoDetail data", res)
-      // for(let item of res.value[0].data) {
-      //   if(item.full_time_period) {
-      //     item.time_period = item.full_time_period
-      //   }
-      // }
       setVisible(true)
       setEcoDetail(res.value)
     })
-    // .catch(err => {
-    //   console.log("getEcoDetail err:", err)
-    //   setVisible(false)
-    //   setEcoDetail([])
-    // })
   }
   const getDataCol = [
     {
@@ -262,12 +251,7 @@ const CalendarPanes = ({ dispatch }) => {
 
   useEffect(() => {
     currStamp && getEcoList(currStamp)
-    console.log(moment(currStamp - 86400).format("YYYY-MM-DD"))
   }, [])
-
-  // useEffect(() => {
-  //   console.log("====ecoDetail changed:", ecoDetail)
-  // }, [JSON.stringify(ecoDetail)])
 
   return (
     <div className={styles['calendar-x']}>

@@ -91,7 +91,7 @@ const QuoteTr = ({ isSuspension, dispatch, data }) => {
 export default connect(
   state => {
     const { isSuspension } = state.MainReducer
-    console.log(state.MainReducer, isSuspension)
+    
     return {
       isSuspension
     }

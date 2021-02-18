@@ -29,13 +29,19 @@ const QuotePanes = (props) => {
   
   // 获取报价QSP页面
   const getQuoteSPanes = (types) => {
-    return types.map((sType) => {
+    const temp = types.map((sType) => {
       return {
         title: sType,
         content: <QuoteSPane />,
         key: sType
       }
     })
+    // temp.unshift({
+    //   title: '自选',
+    //   content: <QuoteSPane />,
+    //   key: '自选'
+    // })
+    return temp
   }
   // 获取报价列表数据
   const onMessage = (data) => {
@@ -103,6 +109,7 @@ const QuotePanes = (props) => {
   const sendQuoteMsg = (quoteSymbols) => {
     quoteSymbols = quoteSymbols || getQuoteSymbols()
     const currType = [...new Set(quoteSymbols.concat(orderSymbols))]
+    if(currType.length <= 0) return
     const args = currType.join(",")
     // 待ws连接建立成功后，获取报价信息
     const t = setInterval(() => {
@@ -124,7 +131,7 @@ const QuotePanes = (props) => {
     const quoteSymbols = qspList.map(item => item.symbol)
     sendQuoteMsg(quoteSymbols)
     const args = quoteSymbols.join(".")
-    socket.send({
+    quoteSymbols.length > 0 && socket.send({
       "cmd": "mini",
       "args": [`${args}`]
     })

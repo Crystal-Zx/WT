@@ -41,6 +41,17 @@ const theme = (
     default: return state
   }
 }
+const isSuspension = (
+  state = false,
+  action
+) => {
+  const { type, payload } = action
+  switch (type) {
+    case actionTypes.IS_SUSPENSION_FULFILLED:
+      return payload
+    default: return state
+  }
+}
 
 // 报价
 // --- 货币对列表
@@ -272,6 +283,7 @@ export default combineReducers({
   // currAcc,
   initSocket,
   theme,
+  isSuspension,
   symbolList,
   filterGroup,
   kLineList,

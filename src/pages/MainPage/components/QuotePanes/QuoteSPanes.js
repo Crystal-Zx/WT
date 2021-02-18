@@ -9,7 +9,6 @@ import { addToKLine } from '../../MainAction'
 const { Search } = Input
 
 const QuoteSPane = (props) => {
-  // console.log("====QSP render", props)
   const { list, addToKLine } = props
   const [searchVal, setSearchVal] = useState("")
   const [isExpandAll, setIsExpandAll] = useState(false)
@@ -65,8 +64,14 @@ export default connect(
       filterGroup
       // kLineList
     } = state.MainReducer
+    let list
+    if(filterGroup === '自选') {
+      list = JSON.parse(localStorage.getItem('wt_symbolList')) || []
+    } else {
+      list = symbolList.list.filter(item => item.group === filterGroup)
+    }
     return {
-      list: symbolList.list.filter(item => item.group === filterGroup)
+      list
     }
   },
   dispatch => {

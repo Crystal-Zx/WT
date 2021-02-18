@@ -6,6 +6,7 @@ export default function CardTabs ({
   initialPanes, 
   onChange, 
   activeKey = initialPanes[0].key,
+  defaultActiveKey = initialPanes[0].key,
   isFetching = false, 
   className, 
   type = "card", 
@@ -22,6 +23,7 @@ export default function CardTabs ({
       hideAdd={true}
       onChange={onChange}
       activeKey={activeKey}
+      defaultActiveKey={defaultActiveKey}
       tabBarGutter={tabBarGutter}
       tabPosition={tabPosition}
     >

@@ -11,7 +11,7 @@ import styles from './MainPage.module.scss';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 import { getCurrDate } from '../../utils/utilFunc'
-import { setTheme } from './MainAction'
+import { setTheme, isSuspension } from './MainAction'
 import user from '../../services/user'
 
 const { Option } = Select
@@ -23,6 +23,9 @@ function MainPage ({ theme, dispatch }) {
   const [isLoading, setIsLoading] = useState(false)
 
   const init = () => {
+    // 设置当前是否停盘
+    dispatch(isSuspension())
+    // 设置主题
     window.document.documentElement.setAttribute("data-theme", theme)
     // 开启右上角时钟计时
     const t = setInterval(() => {
@@ -140,7 +143,6 @@ function MainPage ({ theme, dispatch }) {
               <IconFont type="iconMenu" className="main-icon-menu" />
             </Button>
           </Dropdown>
-          
         </div>
         <Login />
       </div>

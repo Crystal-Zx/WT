@@ -46,6 +46,10 @@ export function _login (params = {}) {
 export function _loginOA2 (params = {}) {
   return fetchPost(apis.loginOA2, params)
 }
+// 获取系统时间
+export function _getDate () {
+  return fetchGet(apis.getDate)
+}
 // 账户信息
 // --- 获取账户信息
 export function _getAccountInfo (params = {}) {

@@ -10,6 +10,7 @@ export default(config => {
   'login': '/v1/login',
   'loginOA1': 'http://120.25.248.39:1239/alpha/api/v2/getFireOffer',
   'loginOA2': 'http://120.25.248.39:1239/guest/api/v2/getFireOfferTwo',
+  'getDate': 'https://v1.alphazone-data.cn/academy/api/v1/getdate',
   'getPositions': '/v1/position',
   'getHistories': '/v1/closed',
   'getAccountInfo': '/v1/account_info',

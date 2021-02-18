@@ -4,7 +4,7 @@ import { Button, InputNumber, Spin } from 'antd'
 import { openNotificationWithIcon, toDecimal } from '../../../../utils/utilFunc'
 import { openOrder } from '../../MainAction'
 
-const QuoteTr = ({ dispatch, data }) => {
+const QuoteTr = ({ isSuspension, dispatch, data }) => {
   const [volume, setVolume] = useState(0.01)
   const [isFetching0, setIsFetching0] = useState(false)
   const [isFetching1, setIsFetching1] = useState(false)
@@ -14,21 +14,26 @@ const QuoteTr = ({ dispatch, data }) => {
   }
   const toTransaction = (cmd) => {
     !!cmd ? setIsFetching1(true) : setIsFetching0(true)
-    dispatch(openOrder({
-      lots: volume, cmd, open_price: 0.00, tp: 0.00, sl: 0.00, symbol: data.symbol, comment: ''
-    })).then(res => {
-      console.log(res)
+    if(!isSuspension) {  // 是否处于停盘期间
+      dispatch(openOrder({
+        lots: volume, cmd, open_price: 0.00, tp: 0.00, sl: 0.00, symbol: data.symbol, comment: ''
+      })).then(res => {
+        !!cmd ? setIsFetching1(false) : setIsFetching0(false)
+        openNotificationWithIcon({
+          type: 'success', msg: '创建订单成功'
+        })
+      }).catch(err => {
+        !!cmd ? setIsFetching1(false) : setIsFetching0(false)
+        openNotificationWithIcon({
+          type: 'error', msg: '创建订单失败', desc: err.msg || `${err}`
+        })
+      })
+    } else {
       !!cmd ? setIsFetching1(false) : setIsFetching0(false)
       openNotificationWithIcon({
-        type: 'success', msg: '创建订单成功'
+        type: 'error', msg: '停盘期间无法交易'
       })
-    }).catch(err => {
-      console.log("err", err)
-      !!cmd ? setIsFetching1(false) : setIsFetching0(false)
-      openNotificationWithIcon({
-        type: 'error', msg: '创建订单失败', desc: err.msg || `${err}`
-      })
-    })
+    }
   }
 
   return (
@@ -83,4 +88,12 @@ const QuoteTr = ({ dispatch, data }) => {
   )
 }
 
-export default connect()(QuoteTr)
+export default connect(
+  state => {
+    const { isSuspension } = state.MainReducer
+    console.log(state.MainReducer, isSuspension)
+    return {
+      isSuspension
+    }
+  }
+)(QuoteTr)

@@ -1,4 +1,5 @@
 import { Tabs,Spin } from 'antd'
+import propTypes from 'prop-types'
 
 const { TabPane } = Tabs
 
@@ -8,14 +9,11 @@ export default function CardTabs ({
   activeKey = initialPanes[0].key,
   defaultActiveKey = initialPanes[0].key,
   isFetching = false, 
-  className, 
+  className,
   type = "card", 
-  tabPosition = "top", 
+  tabPosition = "top",
   tabBarGutter = 0}
-) {
-  
-  // console.log("====CardTabs render")
-  
+) {  
   return (
     <Tabs
       className={className}
@@ -45,4 +43,16 @@ export default function CardTabs ({
       }
     </Tabs>
   )
+}
+
+CardTabs.propTypes = {
+  initialPanes: propTypes.array.isRequired,
+  onChange: propTypes.func,
+  activeKey: propTypes.string,
+  defaultActiveKey: propTypes.string,
+  isFetching: propTypes.bool,
+  className: propTypes.string,
+  type: propTypes.string,
+  tabPosition: propTypes.string,
+  tabBarGutter: propTypes.number
 }

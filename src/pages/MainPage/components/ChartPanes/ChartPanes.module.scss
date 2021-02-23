@@ -2,6 +2,13 @@
   font-size: 12px;
 }
 
+.tvc-x {
+  height: 100%;
+  @include themify {
+    background-color: themed('bg-color-2');
+  }
+}
+
 .symbol-x {
   width: 100%;
   overflow-x: auto;

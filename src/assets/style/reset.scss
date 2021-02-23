@@ -416,6 +416,47 @@ p {
     }
   }
 }
+// 下单按钮
+.wt-trans-x {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .wt-trans-btn {
+    position: relative;
+    width: 48%;
+    height: 47px;
+    display: inline-block;
+    border-radius: 2px;
+    color: #fff;
+    @include themify {
+      background-color: themed('color-red');
+    }
+    .wt-trans-price {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+    }
+    .wt-trans-cmd {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    &.buy {
+      @include themify {
+        background-color: themed('color-green');
+      }
+      .wt-trans-price {
+        left: unset;
+        right: 10px;
+      }
+      .wt-trans-cmd {
+        right: unset;
+        left: 10px;
+      }
+    }
+  }
+}
 
 // common css style
 .dp-flex {

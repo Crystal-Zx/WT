@@ -4,7 +4,6 @@ import {
   widget
 } from '../../../../charting_library.min'
 import Datafeed from './datafees'
-import throttle from 'lodash/throttle'
 import { connect } from 'react-redux';
 
 function getLanguageFromURL() {
@@ -29,6 +28,7 @@ class TVChartContainer extends React.PureComponent {
     this.isLoading = true
     this.isHistory = {}
     this.paramary = {}
+    this.onShowTradeModal = props.onShowTradeModal
 
     this.init = this.init.bind(this)
     this.initMessage = this.initMessage.bind(this)
@@ -81,7 +81,7 @@ class TVChartContainer extends React.PureComponent {
         timezone: 'Asia/Shanghai',
         autosize: true,
         // custom_css_url: '../../../../../public/tv.module.scss',  // 本地css样式，放在public下（1.14+支持）
-        locale: getLanguageFromURL() || 'en', // 图表的本地化处理
+        locale: getLanguageFromURL() || 'zh', // 图表的本地化处理
         toolbar_bg: '#fff0',
         loading_screen: {
           backgroundColor: '#fff0'
@@ -146,13 +146,18 @@ class TVChartContainer extends React.PureComponent {
         resolution: '1D',
         chartType: 1
       },
+      {
+        title: 'SL/TP'
+      }
       // {title:'W1',resolution:'1W',chartType:1},
       // {title:'MN',resolution:'1M',chartType:1},
     ];
 
     // 创建按钮(这里是时间维度)，并对选中的按钮加上样式
     function createButton(buttons) {
-      for (var i = 0; i < buttons.length; i++) {
+      const resolutionBtns = buttons.slice(0, 4)
+      // 创建时间维度按钮组
+      for (var i = 0; i < resolutionBtns.length; i++) {
         (function (button) {
           let defaultClass =
             thats.createButton()
@@ -174,8 +179,15 @@ class TVChartContainer extends React.PureComponent {
                 that.props.onChangeResolution(button.resolution)
               })
             }).parent().addClass('rsl-group' + (button.resolution == that.paramary.resolution ? ' active' : ''))
-        })(buttons[i])
+        })(resolutionBtns[i])
       }
+      // 创建弹窗下单弹窗按钮
+      const stBtn = buttons.slice(4,5)[0]
+      console.log(stBtn)
+      thats.createButton().text(stBtn.title)
+      .on('click', function (e) {
+        that.onShowTradeModal()
+      })
     }
   }
 
@@ -481,6 +493,8 @@ class TVChartContainer extends React.PureComponent {
         bg: "#fff",
         grid: "#dadde0",
         cross: "#23283D",
+        upBorder: "#18734c",
+        downBorder: "#a61f2b",
         border: "#dadde0",
         text: "#363636",
         areatop: "rgba(0, 178, 118, 0.1)",
@@ -494,6 +508,8 @@ class TVChartContainer extends React.PureComponent {
         bg: "#152126",
         grid: "#1f292f",   // 网格线
         cross: "#43545e",  // 鼠标悬浮的十字线
+        upBorder: "#2ec886",
+        downBorder: "#ff3a4c",
         border: "#f00",
         text: "#fff",
         areatop: "rgba(36, 160, 107, .1)",
@@ -522,10 +538,10 @@ class TVChartContainer extends React.PureComponent {
       "mainSeriesProperties.candleStyle.drawWick": !0,  // 烛心：即蜡烛柱中间竖着的那根线
       "mainSeriesProperties.candleStyle.drawBorder": !0,
       "mainSeriesProperties.candleStyle.borderColor": t.border,
-      "mainSeriesProperties.candleStyle.borderUpColor": t.up,
-      "mainSeriesProperties.candleStyle.borderDownColor": t.down,
-      "mainSeriesProperties.candleStyle.wickUpColor": t.up,
-      "mainSeriesProperties.candleStyle.wickDownColor": t.down,
+      "mainSeriesProperties.candleStyle.borderUpColor": t.upBorder,
+      "mainSeriesProperties.candleStyle.borderDownColor": t.downBorder,
+      "mainSeriesProperties.candleStyle.wickUpColor": t.upBorder,
+      "mainSeriesProperties.candleStyle.wickDownColor": t.downBorder,
       "mainSeriesProperties.candleStyle.barColorsOnPrevClose": !1,
       // 空心K线蜡烛图
       "mainSeriesProperties.hollowCandleStyle.upColor": t.up,

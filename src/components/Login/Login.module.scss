@@ -1,4 +1,5 @@
-.wt-login-x {
+.wt-login-x,
+.wt-tm-x {  /* TradeModal */
   padding: 0;
   background-color: #f00;
   :global {
@@ -102,6 +103,55 @@
         padding: 5px 15px;
         display: block;
         // margin-top: 24px;
+      }
+    }
+  }
+}
+
+.wt-tm-x {
+  :global {
+    .tm-header-title {
+      font-size: 18px;
+      vertical-align: baseline;
+      .tm-header-desc {
+        margin-left: .5em;
+        font-size: 75%;
+        @include themify {
+          color: themed('color-default');
+        }
+      }
+    }
+    .tm-desc-ul {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      .tm-desc-li {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 12px;
+        & + .tm-desc-li {
+          margin-left: 30%;
+        }
+        :nth-child(2) {
+          @include themify {
+            color: themed('color-default');
+          }
+        }
+      }
+    }
+    .ant-form {
+      .ant-form-item {
+        margin-bottom: .5em;
+        // 除下单按钮组外表单值项
+        &:not(:last-child) .ant-form-item-control-input-content {
+          text-align: right;
+        }
+        // 下单按钮组表单值项
+        &:last-child .ant-form-item-control-input-content {
+          display: flex;
+          justify-content: space-between;
+        }
       }
     }
   }

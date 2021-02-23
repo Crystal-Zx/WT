@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import IconFont from '../../../../utils/iconfont/iconfont'
-import { Button } from 'antd'
+import { Button, Modal } from 'antd'
 import TVChartContainer from '../TVChartContainer/TVChartContainer.js'
 
 import styles from './ChartPanes.module.scss'
 
 import { connect } from 'react-redux'
 import { deleteFromKLine } from '../../MainAction'
+import TradeModal from '../../../../components/TradeModal/TradeModal'
 
 const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
-  // console.log("====ChartPanes render")
+  
+  // console.log("====ChartPanes render", isShowModal)
   
   const initKLineList = (kLineList) => {
     return kLineList.map((item, index) => {
@@ -27,6 +29,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
   const [activeKey, setActiveKey] = useState('')
   // const [symbol, setSymbol] = useState('')
   const [socket, setSocket] = useState({})
+  const [isShowModal, setIsShowModal] = useState(false)
    
   const sbStyle = (sbl) => {
     const len = sbl.length
@@ -152,16 +155,24 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
         tabPosition="bottom"
         tabBarGutter={2}
       /> */}
-      {
-        Object.keys(socket).length > 0 && 
-        <TVChartContainer
-          socket={socket}
+      <div className={styles["tvc-x"]}>
+        {
+          Object.keys(socket).length > 0 && 
+          <TVChartContainer
+            socket={socket}
+            symbol={activeKey}
+            resolution={getResolutionBySymbol(activeKey)}
+            symbolList={symbolList}  //.filter(item => item.symbol === symbol)
+            onChangeResolution={onChangeResolution}
+            onShowTradeModal={() => setIsShowModal(true)}
+          />
+        }
+        <TradeModal 
+          visible={isShowModal}
           symbol={activeKey}
-          resolution={getResolutionBySymbol(activeKey)}
-          symbolList={symbolList}  //.filter(item => item.symbol === symbol)
-          onChangeResolution={onChangeResolution}
+          onHideTradeModal={() => setIsShowModal(false)}
         />
-      }
+      </div>
       <div className={styles["symbol-x"]}>
         <div className="symbol-ul">
           {

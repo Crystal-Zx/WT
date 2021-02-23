@@ -18,12 +18,12 @@ import styles from './QuotePanes.module.scss';
 const QuotePanes = (props) => {
   // console.log("====QuotePanes render", props)
   const {
-    dispatch, symbolList, filterGroup, socket, orderSymbols
+    dispatch, symbolList, filterGroup, socket, orderSymbols, klineSymbols
   } = props
   const { list, isFetching } = symbolList
   let cacheList = list
   const [qspTemp, setQspTemp] = useState([])
-  const [activeKey, setActiveKey] = useState('')
+  // const [activeKey, setActiveKey] = useState('')
   const prevListRef = useRef(null)
   const cacheListRef = useRef(null)  // 在组件整个生命周期内保存该变量的值，以便useEffect中的interval定时器能拿到值，定时存一次store
   
@@ -41,6 +41,7 @@ const QuotePanes = (props) => {
     //   content: <QuoteSPane />,
     //   key: '自选'
     // })
+    // console.log(temp)
     return temp
   }
   // 获取报价列表数据
@@ -108,8 +109,9 @@ const QuotePanes = (props) => {
   }
   const sendQuoteMsg = (quoteSymbols) => {
     quoteSymbols = quoteSymbols || getQuoteSymbols()
-    const currType = [...new Set(quoteSymbols.concat(orderSymbols))]
+    const currType = [...new Set(quoteSymbols.concat(orderSymbols, klineSymbols))]
     if(currType.length <= 0) return
+    
     const args = currType.join(",")
     // 待ws连接建立成功后，获取报价信息
     const t = setInterval(() => {
@@ -124,7 +126,7 @@ const QuotePanes = (props) => {
   }
   // 切换QSP页面
   const onChangeType = (sType) => {
-    setActiveKey(sType)
+    // setActiveKey(sType)
     // 获取需监听quote信息的货币对列表
     // --- 报价板块
     const qspList = cacheList.filter(item => item.group === sType)
@@ -171,10 +173,10 @@ const QuotePanes = (props) => {
   }, [JSON.stringify(socket)])
 
   useEffect(() => {
-    if(orderSymbols.length) {
+    if(orderSymbols.length || klineSymbols.length) {
       sendQuoteMsg()
     }
-  }, [JSON.stringify(orderSymbols)])
+  }, [JSON.stringify(orderSymbols), JSON.stringify(klineSymbols)])
 
   useEffect(() => {
     filterGroup && onChangeType(filterGroup)
@@ -189,8 +191,9 @@ const QuotePanes = (props) => {
             content: (
               <LineTabs
                 initialPanes={qspTemp}
-                activeKey={activeKey}
+                defaultActiveKey={qspTemp.length > 1 ? qspTemp[1].key : '自选'}
                 onChange={sType => dispatch(setSymbolGroup(sType))}
+                // dispatch(setSymbolGroup(sType))}
               ></LineTabs>
             ),
             key: '1'
@@ -208,6 +211,9 @@ const getOrderSymbols = (data) => {
         arrO = order.list.map(item => item.symbol)
 
   return [...new Set(arrP.concat(arrO))]
+}
+const getKlineSymbols = (data) => {
+  return data.map(item => item.symbol) || []
 }
 
 // const areEqual = (prevProps, nextProps) => {
@@ -230,15 +236,18 @@ export default connect(
       initSocket,
       symbolList,
       filterGroup,
-      positionOrder
+      positionOrder,
+      kLineList
     } = state.MainReducer
     const orderSymbols = getOrderSymbols(positionOrder) 
+    const klineSymbols = getKlineSymbols(kLineList)
 
     return {
       socket: initSocket,
       symbolList,
       filterGroup,
-      orderSymbols
+      orderSymbols,
+      klineSymbols
     }
   }
 )(QuotePanes)

@@ -3,14 +3,14 @@ import propTypes from 'prop-types'
 
 const { TabPane } = Tabs
 
-const LineTabs = ({ onChange, initialPanes, activeKey }) => {
-  // console.log("====LineTabs render", activeKey)
+const LineTabs = ({ onChange, initialPanes, defaultActiveKey }) => {
+  // console.log("====LineTabs render", initialPanes, defaultActiveKey)
   // activeKey = activeKey || initialPanes[0].key
   return (
     <Tabs 
       type="line"
       className="ant-tabs-line"
-      defaultActiveKey={activeKey}
+      defaultActiveKey={defaultActiveKey}
       onChange={onChange}
     >
       { 
@@ -19,7 +19,8 @@ const LineTabs = ({ onChange, initialPanes, activeKey }) => {
             tab={pane.title}
             key={pane.key}
           >
-            {activeKey === pane.key && pane.content}
+            {/* {activeKey === pane.key && pane.content} */}
+            {pane.content}
           </TabPane>
         ))
       }
@@ -30,7 +31,7 @@ const LineTabs = ({ onChange, initialPanes, activeKey }) => {
 LineTabs.propTypes = {
   onChange: propTypes.func.isRequired,
   initialPanes: propTypes.array.isRequired,
-  activeKey: propTypes.string.isRequired
+  defaultActiveKey: propTypes.string
 }
 
 export default LineTabs

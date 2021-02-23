@@ -116,16 +116,7 @@ const CalendarPanes = ({ dispatch }) => {
       key: 'star',
       width: '13%',
       align: 'center',
-      render: star => (
-        // <div className="cp-icon-stars">
-        //   <i 
-        //     className="cp-icon-stars active"
-        //     style={{ width: star / 5 * 100 + "%" }}
-        //   >
-        //   </i>
-        // </div>
-        <Rate disabled defaultValue={star} />
-      )
+      render: star => <Rate disabled defaultValue={star} />
     },
     {
       title: '今值',
@@ -159,6 +150,7 @@ const CalendarPanes = ({ dispatch }) => {
       dataIndex: 'detail',
       key: 'detail',
       align: 'center',
+      width: '8%',
       render: (detail,item) => {
         return <a 
           className="cp-btn-ecoDetail"
@@ -222,15 +214,7 @@ const CalendarPanes = ({ dispatch }) => {
       key: 'star',
       width: '13%',
       align: 'center',
-      render: star => (
-        <div className="cp-icon-stars">
-          <i 
-            className="cp-icon-stars active"
-            style={{ width: star / 5 * 100 + "%" }}
-          >
-          </i>
-        </div>
-      )
+      render: star => <Rate disabled defaultValue={star} />
     }
   ]
   const onChangeDate = (_moment) => {

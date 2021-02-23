@@ -50,21 +50,21 @@ export const loginOA2 = createAction(actionTypes.LOGIN_OA, params => {
 // --- 修改当前是否停盘
 export const isSuspension = createAction(actionTypes.IS_SUSPENSION, () => {
   return _getDate().then(res => {
-    console.log(res)
-    // const { value } = res
+    const value = res
     // mock data
-    const value = { Unix: 1613233200, datetime: '2021-02-14 00:20:00', weekday: 0 }
+    // const value = { Unix: 1613233200, datetime: '2021-02-14 00:20:00', weekday: 0 }
     const oneDayTime = 24 * 60 * 60 * 1000,  // ms
           datetime = value.datetime.replace(/-/g, '/'),
           curdate1 = new Date(datetime.substr(0, 10) + ' 00:06:00').getTime(),
           curdate2 = new Date(datetime.substr(0, 10) + ' 00:05:00').getTime(),
           MondayTime = curdate1 - (value.weekday - 1) * oneDayTime,
           SaturdayTime = curdate2 + (6 - value.weekday) * oneDayTime;
+          
     if (value.Unix * 1000 > MondayTime && value.Unix * 1000 < SaturdayTime) {
-      console.log("交易时间")
+      // console.log("交易时间")
       return false
     } else {
-      console.log("非交易时间")
+      // console.log("非交易时间")
       return true
     }
   })
@@ -112,7 +112,7 @@ export const addToKLine = createAction(actionTypes.ADD_TO_KLINE, symbol => {
 // --- 删除指定货币对的K线
 // symbol: symbolName
 export const deleteFromKLine = createAction(actionTypes.DELETE_FROM_KLINE, symbol => {
-  console.log(symbol)
+  // console.log(symbol)
   return symbol
 })
 

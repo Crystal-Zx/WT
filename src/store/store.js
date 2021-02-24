@@ -8,7 +8,7 @@ const logger = createLogger()
 
 export const store = createStore(reducers,
   applyMiddleware(
-    logger,
+    // logger,
     thunkMiddleware,
     promiseMiddleware
   )

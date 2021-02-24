@@ -20,6 +20,7 @@ class TVChartContainer extends React.PureComponent {
     this.socket = props.socket
     this.datafeeds = new Datafeed(this)
     this.widgets = null
+    this.isSuspension = props.isSuspension
     this.symbol = props.symbol || 'EURUSD'
     this.interval = props.resolution || '1'
     this.cacheData = {}
@@ -186,7 +187,9 @@ class TVChartContainer extends React.PureComponent {
       console.log(stBtn)
       thats.createButton().text(stBtn.title)
       .on('click', function (e) {
-        that.onShowTradeModal()
+        if(!that.isSuspension) {
+          that.onShowTradeModal()
+        }
       })
     }
   }
@@ -630,6 +633,7 @@ class TVChartContainer extends React.PureComponent {
 export default connect(
   state => ({
     socket: state.MainReducer.initSocket,
-    theme: state.MainReducer.theme
+    theme: state.MainReducer.theme,
+    isSuspension: state.MainReducer.isSuspension
   })
 )(TVChartContainer)

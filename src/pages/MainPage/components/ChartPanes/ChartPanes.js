@@ -9,9 +9,9 @@ import { connect } from 'react-redux'
 import { deleteFromKLine } from '../../MainAction'
 import TradeModal from '../../../../components/TradeModal/TradeModal'
 
-const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
+const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => {
   
-  // console.log("====ChartPanes render", isShowModal)
+  console.log("====ChartPanes render")
   
   const initKLineList = (kLineList) => {
     return kLineList.map((item, index) => {
@@ -25,7 +25,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
     })
   }
 
-  const [symbolList, setSymbolList] = useState([])
+  const [symbolList, setSymbolList] = useState([])  // K线部分货币对列表
   const [activeKey, setActiveKey] = useState('')
   // const [symbol, setSymbol] = useState('')
   const [socket, setSocket] = useState({})
@@ -167,11 +167,15 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine }) => {
             onShowTradeModal={() => setIsShowModal(true)}
           />
         }
-        <TradeModal 
-          visible={isShowModal}
-          symbol={activeKey}
-          onHideTradeModal={() => setIsShowModal(false)}
-        />
+        {
+          _symbolList && _symbolList.length &&
+          <TradeModal 
+            visible={isShowModal}
+            symbol={activeKey}
+            onHideTradeModal={() => setIsShowModal(false)}
+            symbolInfo={_symbolList.filter(item => item.symbol === activeKey)[0]}
+          />
+        }
       </div>
       <div className={styles["symbol-x"]}>
         <div className="symbol-ul">
@@ -207,12 +211,14 @@ export default connect(
   state => {
     const {
       kLineList,
-      initSocket
+      initSocket,
+      symbolList
     } = state.MainReducer
     
     return {
       kLineList,
-      initSocket
+      initSocket,
+      _symbolList: symbolList.list
     }
   },
   dispatch => {

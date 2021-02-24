@@ -290,7 +290,12 @@ p {
     background-color: themed('bg-color-2');
   }
   .ant-modal-close {
-    color: inherit;
+    color: #fff;
+    &:hover {
+      @include themify {
+        color: themed('color-default');
+      }
+    }
   }
   .ant-modal-header {
     // color: inherit;
@@ -432,6 +437,11 @@ p {
     @include themify {
       background-color: themed('color-red');
     }
+    &:hover {
+      @include themify {
+        background-color: themed('color-redActive');
+      }
+    }
     .wt-trans-price {
       position: absolute;
       bottom: 10px;
@@ -446,6 +456,11 @@ p {
       @include themify {
         background-color: themed('color-green');
       }
+      &:hover {
+        @include themify {
+          background-color: themed('color-greenActive');
+        }
+      }
       .wt-trans-price {
         left: unset;
         right: 10px;
@@ -454,6 +469,17 @@ p {
         right: unset;
         left: 10px;
       }
+    }
+  }
+  &.order {
+    .wt-trans-btn {
+      .wt-trans-cmd {
+        position: static;
+      }
+      // &[data-cmd="2"]::after {  // buylimit 限价买入，需在当前价格之下
+      //   content: "限价买入";
+      
+      // }
     }
   }
 }

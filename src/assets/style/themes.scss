@@ -4,6 +4,7 @@ $themeBlue: #3f535a;
 $themeGolden: #ff8f00;
 $themeActive: #4f5966;
 
+
 $themes: (
   light: (
     // font color
@@ -19,6 +20,8 @@ $themes: (
     color-green: #00b276,    
     color-notiSuccess: #00b276,
     color-notiError: #fc3131,
+    color-redActive: #e53833,
+    color-greenActive: #22a36c,
 
     // bg color
     bg-color-1: #e2e6e9,
@@ -63,6 +66,8 @@ $themes: (
     color-green: #24a06b,
     color-notiSuccess: #fff,
     color-notiError: #fff,
+    color-redActive: #b02733,
+    color-greenActive: #228f61,
 
     // bg color
     bg-color-1: #000,

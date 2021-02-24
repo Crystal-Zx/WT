@@ -15,6 +15,7 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
   // const [size, setSize] = useState(0)
   // const [volume, setVolume] = useState(defaultVolume)
   const [loadings, setLoadings] = useState([])
+  const [isTouch, setIsTouch] = useState(false)
   const [orderForm] = Form.useForm()
 
   // const handleValuesChange = (changedValues, allValues) => {  // 均为对象形式
@@ -26,7 +27,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
   // }
   const handleOrderChange = (changedValues, allValues) => {  // 均为对象形式
     console.log(changedValues, allValues)
+    // 若当前更新值为挂单--->价格
     if(changedValues.price) {
+      // 设置该字段已被用户操作过，不再自动进行更新
+      setIsTouch(true)
       orderForm.setFieldsValue({ price: changedValues.price })
     }
   }
@@ -228,14 +232,17 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
     }
   }
   
-  // 当前货币对发生变化及
+  // 货币对变化时：即重新打开另一下单弹窗
   useEffect(() => {
-    console.log("该字段是否被用户操作过", !orderForm.isFieldsTouched(['price']))
-    if(!orderForm.isFieldsTouched(['price'])) {  // 该字段未被用户操作过
-      console.log("更新价格")
+    setIsTouch(false)
+  },[symbolInfo.symbol])
+  // 当前货币对价格发生变化且用户尚未操作过该输入框时自动更新挂单价格
+  useEffect(() => {
+    if(!isTouch) {  // 该字段未被用户操作过
+      // console.log("更新价格")
       orderForm.setFieldsValue({ 'price': symbolInfo.ask})
     }
-  }, [symbolInfo.symbol, symbolInfo.ask]) 
+  }, [symbolInfo.ask])
 
   return (
     <>

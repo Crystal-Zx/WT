@@ -1,6 +1,17 @@
 import {
   notification, message
 } from 'antd'
+
+// 浏览器相关
+/**
+ * @param {string} name 需要获取的qs的键名
+ */
+export const getQueryString = (name) => { 
+  const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i"),
+        r = window.location.search.substr(1).match(reg); 
+  if (r!=null) return (r[2]); return null;
+}
+
 // 全局提示
 export const openNotificationWithIcon = params => {
   const {

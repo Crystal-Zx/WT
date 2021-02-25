@@ -1,8 +1,10 @@
 import { store } from '../store/store'
 import { 
   login,
+  loginOA1,
   loginOA2
 } from '../pages/MainPage/MainAction'
+import { getQueryString } from '../utils/utilFunc'
 
 const { dispatch } = store
 
@@ -64,7 +66,28 @@ const user = {
           sessionStorage.setItem("wt_accInfo", JSON.stringify(that.option.accInfo))
           sessionStorage.setItem("wt_userInfo", JSON.stringify(res.value))
         })
-      case 'oa':
+      case 'oa1':
+        /**
+         * res.value 返回值格式：
+         * [{
+         *    account: "11456",
+         *    token: "...",
+         *    type: 1 (1 -> demo；2 -> live)
+         * }]
+         */
+        return dispatch(loginOA1(params)).then(res => {
+          that.setCurrAcc(res.value[0])
+          // 改变本地值
+          that.option.accInfo = res.value
+          // 存入session以保证刷新页面不影响功能
+          sessionStorage.setItem("wt_accInfo", JSON.stringify(res.value))
+
+          return Promise.resolve()
+        }).catch(err => {
+          console.log(err)
+          return Promise.reject(err)
+        })
+      case 'oa2':
         /**
          * res.value 返回值格式：
          * [{
@@ -92,7 +115,6 @@ const user = {
       default:
         break;
     }
-    
   },
   getType: function () {
     return this.option.currAcc.type

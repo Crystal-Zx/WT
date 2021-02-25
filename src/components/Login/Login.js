@@ -3,7 +3,7 @@ import { Modal, Form, Input, Button, Radio } from 'antd'
 import IconFont from '../../utils/iconfont/iconfont'
 import styles from './Login.module.scss'
 import user from '../../services/user'
-import { popMessage } from '../../utils/utilFunc'
+import { getQueryString, popMessage } from '../../utils/utilFunc'
 import LineTabs from '../LineTabs/LineTabs'
 
 const Login = () => {
@@ -16,7 +16,7 @@ const Login = () => {
     // console.log("===onFinishByOA values:", values)
     setLoading(true)
     const formData = Object.assign({}, values, { device: 'pc' })
-    user.login(formData, 'oa').then(res => {
+    user.login(formData, 'oa2').then(res => {
       // console.log("===Login loginOA res:", res)
       // 存储用户WT账号信息
       popMessage({ type: 'success', msg: '登录成功！' })
@@ -151,7 +151,19 @@ const Login = () => {
     }
   }
   useEffect(() => {
-    setVisible(!user.isLogin())
+    if(!user.isLogin()) {
+      const token = getQueryString('t')
+      if(token) {
+        user.login({ token }, "oa1").then(() => {
+          window.location.reload()
+          window.location.search = ""
+        }).catch(() => {
+          setVisible(!user.isLogin())
+        })
+      } else {
+        setVisible(!user.isLogin())
+      }
+    }
   }, [user.isLogin()])
 
   return (

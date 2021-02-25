@@ -35,13 +35,14 @@ const fetchGet = (url, params, options) => {
 }
 
 // 登录
+// MT4账号密码登录
 export function _login (params = {}) {
   return fetchPost(apis.login, params)
 }
-// 登录OA
-// export function _loginOA (params = {}) {
-//   return fetchPost(apis.loginOA, params)
-// }
+// OA token登录
+export function _loginOA1 (params = {}) {
+  return fetchPost(apis.loginOA1, params)
+}
 // OA 账号密码 换 WT账号信息
 export function _loginOA2 (params = {}) {
   return fetchPost(apis.loginOA2, params)

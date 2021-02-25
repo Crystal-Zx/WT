@@ -9,7 +9,7 @@ import { openOrder } from '../../pages/MainPage/MainAction'
 
 const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
 
-  console.log("====TradeModal symbol:", symbolInfo)
+  // console.log("====TradeModal symbol:", symbolInfo)
 
   const defaultVolume = 0.01
   

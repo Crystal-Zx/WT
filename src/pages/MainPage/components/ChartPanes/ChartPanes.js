@@ -11,7 +11,7 @@ import TradeModal from '../../../../components/TradeModal/TradeModal'
 
 const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => {
   
-  console.log("====ChartPanes render")
+  // console.log("====ChartPanes render")
   
   const initKLineList = (kLineList) => {
     return kLineList.map((item, index) => {

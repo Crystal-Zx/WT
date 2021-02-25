@@ -13,6 +13,7 @@ import {
   _getEcoCharts,
   _getEcoDesc,
   _login,
+  _loginOA1,
   _loginOA2,
   _getDate
 } from '../../services/index'
@@ -30,22 +31,13 @@ export const login = createAction(actionTypes.LOGIN, params => {
   //   account: params.login
   // }))
 })
-// --- OA假登陆：输入账号和密码
-export const loginOA2 = createAction(actionTypes.LOGIN_OA, params => {
+// --- OA假登陆1：输入OA合法的token
+export const loginOA1 = createAction(actionTypes.LOGIN_OA1, params => {
+  return _loginOA1(params)
+})
+// --- OA假登陆2：输入账号和密码
+export const loginOA2 = createAction(actionTypes.LOGIN_OA2, params => {
   return _loginOA2(params)
-  // .then(response => {
-  //   console.log(response)
-  //   const { token } = response
-  //   return _loginOA1({token})
-  // })
-  // 返回一个promise实例且状态应为pending，不需要为其添加.then处理函数，否则后续调用这个action将会一直是resolve
-  // .then(response => {
-  //   console.log(response)
-  //   return response
-  // }).catch(err => {
-  //   console.log(err)
-  //   return err
-  // })
 })
 // --- 修改当前是否停盘
 export const isSuspension = createAction(actionTypes.IS_SUSPENSION, () => {

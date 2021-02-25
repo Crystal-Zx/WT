@@ -1,7 +1,8 @@
 // actionTypes
 // --- 全局
 export const LOGIN = 'LOGIN'
-export const LOGIN_OA = 'LOGIN_OA'
+export const LOGIN_OA1 = 'LOGIN_OA1'
+export const LOGIN_OA2 = 'LOGIN_OA2'
 export const IS_SUSPENSION = 'IS_SUSPENSION',
              IS_SUSPENSION_PENDING = 'IS_SUSPENSION_PENDING',
              IS_SUSPENSION_FULFILLED = 'IS_SUSPENSION_FULFILLED',

@@ -36,9 +36,11 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
   }
   // 改变按钮loading状态
   const changeLoading = (index, bool) => {
-    const _loadings = [...loadings]
-    _loadings[index] = bool
-    setLoadings(_loadings)
+    setLoadings((prevLoadings) => {
+      const _loadings = [...prevLoadings]
+      _loadings[index] = bool
+      return _loadings
+    })
   }
   // 交易
   const toTransaction = (index, cmd) => {

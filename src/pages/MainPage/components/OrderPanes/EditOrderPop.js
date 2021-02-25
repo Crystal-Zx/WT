@@ -15,7 +15,7 @@ const EditOrderPop = ({ data, dispatch }) => {
   const tpRef = useRef(null)
   const slRef = useRef(null)
 
-  const digits = (data.close_price + "").split(".")[1].length
+  const digits = (data.close_price + "").indexOf(".") !== -1 ? (data.close_price + "").split(".")[1].length : 0
   
 
   const showModal = (e) => {

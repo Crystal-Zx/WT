@@ -148,7 +148,7 @@ class TVChartContainer extends React.PureComponent {
         chartType: 1
       },
       {
-        title: 'SL/TP'
+        title: '+ 新订单'
       }
       // {title:'W1',resolution:'1W',chartType:1},
       // {title:'MN',resolution:'1M',chartType:1},

@@ -169,6 +169,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => 
         }
         {
           _symbolList && _symbolList.length &&
+          _symbolList.filter(item => item.symbol === activeKey).length &&
           <TradeModal 
             visible={isShowModal}
             symbol={activeKey}

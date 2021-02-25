@@ -59,9 +59,9 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
           <span>&nbsp;USD</span>
         </div>
       </div>
-      <Button type="default" className="btn-more">
+      {/* <Button type="default" className="btn-more">
         <IconFont type="iconQues" className="wt-icon main-icon-ques" />
-      </Button>
+      </Button> */}
     </>
   )
 }

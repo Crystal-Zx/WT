@@ -29,11 +29,11 @@ function TableBox (props) {
               addToKLine(e,row.symbol, row.bid.split(".")[1].length)
             }
           />
-          <IconFont 
+          {/* <IconFont 
             type="iconFavorite"
             className="icon-favorite"
             onClick={addToFavorite}
-          />
+          /> */}
         </div>
       )
     }

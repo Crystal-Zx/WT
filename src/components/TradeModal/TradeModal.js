@@ -9,43 +9,47 @@ import { openOrder } from '../../pages/MainPage/MainAction'
 
 const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
 
-  // console.log("====TradeModal symbol:", symbolInfo)
+  console.log("====TradeModal symbol:", symbolInfo)
 
   const defaultVolume = 0.01
-  // const [size, setSize] = useState(0)
-  // const [volume, setVolume] = useState(defaultVolume)
+  
   const [loadings, setLoadings] = useState([])
   const [isTouch, setIsTouch] = useState(false)
   const [orderForm] = Form.useForm()
+  const [positionForm] = Form.useForm()
+  // 仅用于触发下单按钮重绘
+  const [price, setPrice] = useState(orderForm.getFieldValue('price'))
+  // 表单初始值
+  const pInitialValues = { volume: 0.01, tp: 0.00, sl: 0.00 }
+  const oInitialValues = {
+    price: orderForm.getFieldValue('price'), volume: 0.01, tp: 0.00, sl: 0.00
+  }
 
-  // const handleValuesChange = (changedValues, allValues) => {  // 均为对象形式
-  //   // console.log(changedValues, allValues)
-  //   if(changedValues.volume) {
-  //     setVolume(changedValues.volume)
-  //     setSize(changedValues.volume * symbolInfo.size)
-  //   }
-  // }
   const handleOrderChange = (changedValues, allValues) => {  // 均为对象形式
-    console.log(changedValues, allValues)
     // 若当前更新值为挂单--->价格
     if(changedValues.price) {
       // 设置该字段已被用户操作过，不再自动进行更新
       setIsTouch(true)
       orderForm.setFieldsValue({ price: changedValues.price })
+      setPrice(changedValues.price)
     }
   }
+  // 改变按钮loading状态
   const changeLoading = (index, bool) => {
     const _loadings = [...loadings]
     _loadings[index] = bool
     setLoadings(_loadings)
   }
+  // 交易
   const toTransaction = (index, cmd) => {
     changeLoading(index, true)
-    console.log("====toTransaction", orderForm.getFieldsValue(), cmd, symbolInfo.ask)
-    const { volume, price, tp, sl } = orderForm.getFieldsValue()
+    const values = cmd < 2 ? positionForm.getFieldsValue() : orderForm.getFieldsValue()
+    const { volume, price = 0, tp, sl } = values
+    console.log(volume, price, tp, sl)
     dispatch(openOrder({
       lots: volume, cmd, open_price: price, tp, sl, symbol: symbolInfo.symbol, comment: ''
     })).then(res => {
+      onHideTradeModal()
       changeLoading(index, false)
       openNotificationWithIcon({
         type: 'success', msg: '创建订单成功'
@@ -56,11 +60,8 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
         type: 'error', msg: '创建订单失败', desc: err.msg || `${err}`
       })
     })
-
-    // setTimeout(() => {
-    //   changeLoading(index, false)
-    // }, 500);
   }
+  // 获取下单表单JSX
   const getTradeJSX = (key) => {
     switch (key) {
       case '0':  // 即时交易
@@ -77,7 +78,8 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
               </p>
             </div>
             <Form
-              // onValuesChange={handleValuesChange}
+              form={positionForm}
+              initialValues={pInitialValues}
             >
               <Form.Item
                 name="volume"
@@ -87,7 +89,7 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
                 <InputNumber
                   min={0.01}
                   step={0.01}
-                  defaultValue={defaultVolume}
+                  // defaultValue={defaultVolume}
                 />
               </Form.Item>
               <Form.Item
@@ -116,6 +118,8 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
                 <Button 
                   type="default"
                   className="wt-trans-btn sell"
+                  loading={loadings[0]}
+                  onClick={() => toTransaction(0, 1)}
                 >
                   <span className="wt-trans-price">{toDecimal(symbolInfo.bid, symbolInfo.digits) || '---'}</span>
                   <span className="wt-trans-cmd">Sell</span>
@@ -123,6 +127,8 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
                 <Button 
                   type="default"
                   className="wt-trans-btn buy"
+                  loading={loadings[1]}
+                  onClick={() => toTransaction(1, 0)}
                 >
                   <span className="wt-trans-price">{toDecimal(symbolInfo.ask, symbolInfo.digits) || '---'}</span>
                   <span className="wt-trans-cmd">Buy</span>
@@ -146,9 +152,7 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
             </div>
             <Form
               form={orderForm}
-              initialValues={{
-                price: orderForm.getFieldValue('price'), volume: 0.01, tp: 0.00, sl: 0.00
-              }}
+              initialValues={oInitialValues}
               onValuesChange={handleOrderChange}
             >
               <Form.Item
@@ -201,26 +205,25 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
                 <Button 
                   type="default"
                   className="wt-trans-btn sell"
-                  loading={loadings[0]}
-                  onClick={() => toTransaction(0, 
-                    orderForm.getFieldValue('price') <= symbolInfo.bid ? '5' :  '3'
+                  loading={loadings[2]}
+                  onClick={() => toTransaction(2, 
+                    price <= symbolInfo.bid ? '5' :  '3'
                   )}
                 >
                   <span className="wt-trans-cmd">
-                    { orderForm.getFieldValue('price') <= symbolInfo.bid ? '卖出止损' :  '限价卖出'}
+                    { price <= symbolInfo.bid ? '卖出止损' :  '限价卖出'}
                   </span>
                 </Button>
                 <Button 
                   type="default"
                   className="wt-trans-btn buy"
-                  loading={loadings[1]}
-                  onClick={() => toTransaction(1, 
-                    orderForm.getFieldValue('price') > symbolInfo.bid ? '4' :  '2'
+                  loading={loadings[3]}
+                  onClick={() => toTransaction(3, 
+                    price > symbolInfo.bid ? '4' :  '2'
                   )}
                 >
                   <span className="wt-trans-cmd">
-                    {symbolInfo.ask} {symbolInfo.bid}
-                    { orderForm.getFieldValue('price') > symbolInfo.bid ? '买入止损' : '限价买入' }
+                    { price > symbolInfo.bid ? '买入止损' : '限价买入' }
                   </span>
                 </Button>
               </Form.Item>
@@ -231,16 +234,19 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
         break;
     }
   }
-  
-  // 货币对变化时：即重新打开另一下单弹窗
-  useEffect(() => {
+  // 关闭当前弹窗： 需要重置初始值
+  const onCancel = () => {
+    positionForm.resetFields()
+    orderForm.resetFields()
     setIsTouch(false)
-  },[symbolInfo.symbol])
+    onHideTradeModal()
+  }
+  
   // 当前货币对价格发生变化且用户尚未操作过该输入框时自动更新挂单价格
   useEffect(() => {
     if(!isTouch) {  // 该字段未被用户操作过
-      // console.log("更新价格")
-      orderForm.setFieldsValue({ 'price': symbolInfo.ask})
+      orderForm.setFieldsValue({ 'price': symbolInfo.ask })
+      setPrice(symbolInfo.ask)
     }
   }, [symbolInfo.ask])
 
@@ -260,7 +266,7 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
           visible={visible}
           footer={null}
           destroyOnClose={true}
-          onCancel={onHideTradeModal}
+          onCancel={onCancel}
         >
           <LineTabs 
             initialPanes={[
@@ -274,13 +280,4 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
   )
 }
 
-export default connect(
-  // state => {
-  //   const { symbolList } = state.MainReducer
-    
-  //   return {
-  //     _symbolList: symbolList.list
-  //   }
-  // }
-)(TradeModal)
-// export default TradeModal
+export default connect()(TradeModal)

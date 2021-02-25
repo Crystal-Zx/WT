@@ -110,7 +110,7 @@ function MainPage ({ theme, dispatch }) {
               <IconFont type="iconLight" className="wt-icon main-icon-light" />
             }
           </Button>
-          <IconFont type="iconWifi" className="main-icon-wifi" />
+          {/* <IconFont type="iconWifi" className="main-icon-wifi" /> */}
           <Select 
             className="tr-select-changeAcc"
             defaultValue={user.getCurrAcc() && user.getCurrAcc().account}

@@ -50,10 +50,10 @@ axios.interceptors.response.use(
         user.setCurrAcc({})
         return Promise.reject({ code, msg: 'token过期' })  // 会进入axios请求的catch
       } else if(code === 0 || (status && status !== 1)) {  // 请求正确发起，但返回值错误
-        console.log("请求正确发起，但返回值错误")
+        // console.log("请求正确发起，但返回值错误")
         return Promise.reject({ code, status, msg: response.data.msg })
       } else if(code === 1 || status === 1 || status === undefined || isExtraUrlData) {
-        console.log("请求正常返回")
+        // console.log("请求正常返回")
         const { token } = response.data  // 针对登录接口返回的token
         let data = response.data.data || response.data
         data = isJSON(data) ? JSON.parse(data) : data
@@ -65,7 +65,7 @@ axios.interceptors.response.use(
       } 
     } else {
       // 非200请求抱错
-      console.log("非200请求抱错")
+      // console.log("非200请求抱错")
       return Promise.reject(response.data.msg || '服务异常')
     }
   },

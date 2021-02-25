@@ -29,7 +29,7 @@ const LineTabs = ({ onChange, initialPanes, defaultActiveKey }) => {
 }
 
 LineTabs.propTypes = {
-  onChange: propTypes.func.isRequired,
+  onChange: propTypes.func,
   initialPanes: propTypes.array.isRequired,
   defaultActiveKey: propTypes.string
 }

@@ -80,9 +80,7 @@ export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
   }
 )
 export const openOrder = createAction(actionTypes.OPEN_ORDER, params => {
-  return _openOrder(params).then(response => {
-    console.log(response)
-  })
+  return _openOrder(params)
 })
 // --- 主题设置（本不必存store，在此是为了统一tradingview的主题）
 export const setTheme = createAction(actionTypes.SET_THEME, params => params)
@@ -104,56 +102,17 @@ export const addToKLine = createAction(actionTypes.ADD_TO_KLINE, symbol => {
 // --- 删除指定货币对的K线
 // symbol: symbolName
 export const deleteFromKLine = createAction(actionTypes.DELETE_FROM_KLINE, symbol => {
-  // console.log(symbol)
   return symbol
 })
 
 // 新闻版块
 export const getNewsData = createAction(actionTypes.GET_NEWSDATA, params => {
   const { t } = params
-  // const url = `https://www.jin10.com/flash_newest.js?t=${t}`
-  // return new Promise((resolve, reject) => {
-  //   window.getNewsData = ((res) => {
-  //     console.log(res)
-  //     resolve(res)
-  //     document.getElementsByTagName('head')[0].removeChild(jsonp)
-  //   })()
-  //   const jsonp = document.createElement("script")
-  //   jsonp.type = "text/javascript"
-  //   jsonp.src = url
-  //   document.getElementsByTagName("head")[0].appendChild(jsonp)
-  // })  
-  // return axios({
-  //   url: 'https://www.jin10.com/flash_newest.js?t=1609839179540',
-  //   method: 'get',
-  //   headers: {
-  //     'Access-Control-Allow-Origin': '*',
-  //     'Access-Control-Allow-Headers': '*',
-  //     'Access-Control-Allow-Methods': '*'
-  //   },
-  //   data: t
-  //   // dataType: 'jsonp'
-  // }).then(res => {
-  //   console.log(res)
-  // })
-  return _getNewsData({t}).then(response => {
-    console.log(response)
-  })
+  return _getNewsData({t})
 })
 // --- 财经日历
 export const getCalendarData = createAction(actionTypes.GET_CALENDARDATA, params => {
   return Promise.all([_getEcoData(params), _getEcoEvent(params)])
-  
-  // let data = []
-  // return _getEcoData(params).then(ecoData => {
-  //   console.log(ecoData)
-  //   data.push(ecoData)
-  //   return _getEcoEvent(params)
-  // }).then(res => {
-  //   console.log(res)
-  //   data.push(res)
-  //   return data
-  // })
 })
 // ---- 财经日历 详情
 export const getEcoDetail = createAction(actionTypes.GET_ECODETAIL, params => {
@@ -184,7 +143,6 @@ export const getPositions = createAction(actionTypes.GET_POSITIONS, () => {
 })
 // 获取指定时间段的历史订单（默认为全部）
 export const getHistories = createAction(actionTypes.GET_HISTORIES, params => {
-  console.log(params)
   return _getHistories(params).then(response => {
     try {
       for(var p of response) {
@@ -227,9 +185,6 @@ export const getAccountInfo = createAction(actionTypes.GET_ACCOUNTINFO, () => {
       margin: res.margin
     }
   })
-  // .catch(err => {
-  //   console.log("===getAcI error:", err)
-  // })
 })
 // --- 设置账户信息
 export const setAccountInfo = createAction(actionTypes.SET_ACCOUNTINFO, info => info)

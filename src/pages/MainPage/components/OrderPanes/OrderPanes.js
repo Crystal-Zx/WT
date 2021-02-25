@@ -1,4 +1,4 @@
-import { Modal, InputNumber, notification } from 'antd'
+import { Modal, InputNumber } from 'antd'
 import CardTabs from '../../../../components/CardTabs/CardTabs'
 import OrderSPanes from './OrderSPanes'
 import styles from './OrderPanes.module.scss'
@@ -17,7 +17,7 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   // console.log("====OrderPanes", quoteList)
   const { confirm } = Modal
-  const { info, isFetching } = accountInfo
+  const { info } = accountInfo
   const [activeKey, setActiveKey] = useState("0")
   const volumeRef = useRef(null)
 
@@ -47,57 +47,15 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     }
   }
   const onChange = activeKey => {
-    // console.log("====onChange", activeKey)
     setActiveKey(activeKey)  // 不要依赖于setActiveKey去重新获取列表值
     if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
       activeKey < 2 && _getPositions(activeKey)
       activeKey >= 2 && _getHistories()
     } else {// if(activeKey === "2") {
       const totalProfit = listArr[activeKey].list.reduce((prev, item) => prev + Number(item.profit), 0)
-      // console.log("====totalProfit", totalProfit)
       dispatch(setAccountInfo({ profit: totalProfit }))
     }
   }
-  // const onOrderChange = (data) => {
-  //   console.log(data)
-  //   _getPositions(activeKey)
-  // }
-  // const onMessage = (data, activeKey) => {
-  //   const ospData = listArr[activeKey].list
-  //   if(data.type === 'quote' && Number(activeKey) !== 2) {  // 理论上说应该没必要再判断一次data.type，不过保险起见
-  //     data = data.data
-  //     // console.log("====onmsg data:", data)
-  //     for(let item of ospData) {
-  //       if(item.symbol !== data.symbol) continue
-  //       let flag
-  //       if(isBuy(item.cmdForCh)) {  // 多单 buy
-  //         item.close_price = data.bid
-  //         flag = 1
-  //       } else {  // 空单 sell
-  //         item.close_price = data.ask
-  //         flag = -1
-  //       }
-  //       if(!Number(activeKey)) {
-  //         item.profit = ((item.close_price - item.open_price) * item.volume * data.size * data.trans_price_ask * flag).toFixed(2)
-  //       }
-  //       item.close_price = toDecimal(item.close_price, data.digits)
-  //     }
-  //     listArr[activeKey].list = ospData
-  //     // 更新store中用户账户信息数据
-  //     if(Object.keys(info).length) {
-  //       // 浮动盈亏，即盈利
-  //       info.profit = ospData.reduce((prev, item) => prev + Number(item.profit),0)
-  //       // 净值
-  //       info.equity = info.balance + info.profit
-  //       // 可用保证金
-  //       info.freeMargin = info.equity - info.margin
-  //       // 保证金比例
-  //       info.marginLevel = info.equity - info.freeMargin ? Math.floor(info.equity / (info.equity - info.freeMargin) * 10000) / 100 : 0
-  //       // setAccountInfo(info)
-  //       dispatch(setAccountInfo(info))
-  //     }
-  //   }
-  // }
   const onQuoteChange = () => {
     const ospData = listArr[activeKey].list  // 引用类型，修改ospData就是在修改listArr[activeKey].list
     for(let oItem of ospData) {
@@ -139,11 +97,9 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   const onCloseOrder = (tickets) => {
     const ticketsStr = Array.isArray(tickets) ? tickets.join(",") : tickets
     const lots = volumeRef.current ? volumeRef.current.input.value : 0.00
-    // console.log(ticketsStr, lots)
     return dispatch(closeOrder({
       lots, ticket: ticketsStr, activeKey
     })).then(res => {
-      // console.log("====onOk then:",res)
       const { ticket } = res.value
       openNotificationWithIcon({
         type: 'success', msg: `${Number(activeKey) === 0 ? '平仓' : '删除挂单'}成功`, desc: `被操作的订单编号为：${ticket.join(",")}`
@@ -151,7 +107,6 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
       // 重新获取持仓/挂单列表
       _getPositions(activeKey)
     }).catch(err => {
-      // console.log("====onOk catch:",err)
       openNotificationWithIcon({
         type: 'error', msg: `${Number(activeKey) === 0 ? '平仓' : '删除挂单'}失败`, desc: err
       })
@@ -187,7 +142,6 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     })
   }
   const onShowConfirmForAll = (tickets) => {
-    // console.log(tickets, typeof tickets)
     confirm({
       title: `确定${Number(activeKey) === 0 ? '平仓' : '删除'}下列订单号的订单？`,
       icon: <IconFont type="iconWarning" />,

@@ -1,6 +1,5 @@
 import CardTabs from '../../../../components/CardTabs/CardTabs.js'
 import ChartPanes from '../ChartPanes/ChartPanes.js'
-import NewsPanes from './NewsPanes.js'
 import CalendarPanes from './CalendarPanes'
 
 import { useState } from 'react'

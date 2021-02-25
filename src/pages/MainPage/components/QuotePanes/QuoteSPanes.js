@@ -13,10 +13,10 @@ const QuoteSPane = (props) => {
   const [searchVal, setSearchVal] = useState("")
   const [isExpandAll, setIsExpandAll] = useState(false)
 
-  const addToFavorite = (e) => {
-    console.log("addToFavorite",e)
-    e.stopPropagation()
-  }
+  // const addToFavorite = (e) => {
+  //   console.log("addToFavorite",e)
+  //   e.stopPropagation()
+  // }
   const onChangeExpand = () => {
     setIsExpandAll(!isExpandAll)
   }
@@ -41,7 +41,7 @@ const QuoteSPane = (props) => {
         data={
           searchVal ? list.filter(item => item.key.toUpperCase().indexOf(searchVal.toUpperCase()) !== -1) : list
         }
-        addToFavorite={addToFavorite}
+        // addToFavorite={addToFavorite}
         addToKLine={addToKLine}
         isExpandAll={isExpandAll}
       ></TableBox>

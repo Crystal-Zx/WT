@@ -184,7 +184,6 @@ class TVChartContainer extends React.PureComponent {
       }
       // 创建弹窗下单弹窗按钮
       const stBtn = buttons.slice(4,5)[0]
-      console.log(stBtn)
       thats.createButton().text(stBtn.title)
       .on('click', function (e) {
         if(!that.isSuspension) {

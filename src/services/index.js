@@ -14,7 +14,7 @@ const fetchPost = (url, params, options) => {
       //   reject(err)
       // }
     ).catch(err => {
-      // console.log("fetchPost catch err:", err)
+      console.log("fetchPost catch err:", err)
       reject(err)
     })
   })
@@ -28,7 +28,7 @@ const fetchGet = (url, params, options) => {
         resolve(res)},
       err => reject(err)
     ).catch(err => {
-      // console.log("fetchPost err:",err)
+      console.log("fetchPost err:",err)
       reject(err)
     })
   })

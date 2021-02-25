@@ -109,7 +109,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         align: 'left'
       },
       {
-        title: `${type == 0 ? "开仓" : "挂单"}价/即时价`,
+        title: `${Number(type) === 0 ? "开仓" : "挂单"}价/即时价`,
         dataIndex: 'open_price',
         key: 'openPrice',
         width: '13.12%',
@@ -198,7 +198,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
             return (
               <Dropdown overlay={lastColMenu} placement="bottomRight">
                 <Button type="primary">
-                  <span>{type == 0 ? "平仓" : "取消"}</span>
+                  <span>{Number(type) === 0 ? "平仓" : "取消"}</span>
                   <IconFont type="iconDD" className="iconDD" />
                 </Button>
               </Dropdown>
@@ -355,42 +355,24 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
       columns={type < 2 ? getColumns() : getHistoryCol()}
       pagination={false}
       expandable={{
-        // rowExpandable: record => {
-        //   console.log("====rowExpandable", record)
-        //   let bool = false
-        //   if(type < 2 && record.children.length > 1) {
-        //     bool = true
-        //   }
-        //   console.log("====bool:", bool)
-        //   return bool
-        // }
-        // expandedRowRender: record => <p style={{ margin: 0 }}>"123"</p>
         expandRowByClick: true,
         expandIconAsCell: false,
         expandIconColumnIndex: -1,  // 自定义展开按钮的列顺序，-1 时不展示
       }}
-      // onRow={record => {
-      //   console.log("===onRow click:", record)
-      //   return {
-      //     onClick: (e) => {
-      //       e.stopPropagation()
-      //     }
-      //   }
-      // }}
       scroll={{ y: 'calc(100% - 40px)'}}
     />
   )
 }
 
-const areEqual = (prevProps, nextProps) => {
-  const prevData = prevProps.data,
-        nextData = nextProps.data
-  // console.log("====OSP areEqual", prevData.list, nextData.list,JSON.stringify(prevData.list) === JSON.stringify(nextData.list))
-  if(JSON.stringify(prevData.list) === JSON.stringify(nextData.list) && prevData.isFetching === nextData.isFetching) {
-    return true
-  } else {
-    return false
-  }
-}
+// const areEqual = (prevProps, nextProps) => {
+//   const prevData = prevProps.data,
+//         nextData = nextProps.data
+//   // console.log("====OSP areEqual", prevData.list, nextData.list,JSON.stringify(prevData.list) === JSON.stringify(nextData.list))
+//   if(JSON.stringify(prevData.list) === JSON.stringify(nextData.list) && prevData.isFetching === nextData.isFetching) {
+//     return true
+//   } else {
+//     return false
+//   }
+// }
 
 export default OrderSPanes

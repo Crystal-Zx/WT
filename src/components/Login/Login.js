@@ -7,7 +7,7 @@ import { getQueryString, popMessage } from '../../utils/utilFunc'
 import LineTabs from '../LineTabs/LineTabs'
 
 const Login = () => {
-  
+  const isLogin = user.isLogin()
   const [loading, setLoading] = useState(false)
   const [visible, setVisible] = useState(false)
   const [activeKey, setActiveKey] = useState('0')
@@ -17,7 +17,6 @@ const Login = () => {
     setLoading(true)
     const formData = Object.assign({}, values, { device: 'pc' })
     user.login(formData, 'oa2').then(res => {
-      // console.log("===Login loginOA res:", res)
       // 存储用户WT账号信息
       popMessage({ type: 'success', msg: '登录成功！' })
       setTimeout(() => {  // 加一个延时，否则message来不及显示
@@ -26,8 +25,7 @@ const Login = () => {
         window.location.reload()
       }, 1000);
     }).catch(err => {
-      // console.log("===Login loginOA err:", err)
-      popMessage({ type: 'error', msg: err.msg || `${err}` })
+      popMessage({ type: 'error', msg: '用户名或密码错误' })//err.msg || `${err}` })
       setLoading(false)
     })
   }
@@ -151,20 +149,20 @@ const Login = () => {
     }
   }
   useEffect(() => {
-    if(!user.isLogin()) {
+    if(!isLogin) {
       const token = getQueryString('t')
       if(token) {
         user.login({ token }, "oa1").then(() => {
           window.location.reload()
           window.location.search = ""
         }).catch(() => {
-          setVisible(!user.isLogin())
+          setVisible(!isLogin)
         })
       } else {
-        setVisible(!user.isLogin())
+        setVisible(!isLogin)
       }
     }
-  }, [user.isLogin()])
+  }, [isLogin])
 
   return (
     <Modal

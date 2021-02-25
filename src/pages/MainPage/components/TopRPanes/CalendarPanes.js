@@ -1,4 +1,4 @@
-import { Space, DatePicker, Select, Radio, Table, Rate } from 'antd'
+import { Space, DatePicker, Select, Radio, Table, Rate, Button } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
@@ -152,11 +152,15 @@ const CalendarPanes = ({ dispatch }) => {
       align: 'center',
       width: '8%',
       render: (detail,item) => {
-        return <a 
+        // return <a 
+        //   className="cp-btn-ecoDetail"
+        //   href={"javascript:;"}
+        //   onClick={() => showEcoDetail(item.id)}
+        // >详情</a>
+        return <Button
           className="cp-btn-ecoDetail"
-          href="javascript:;" 
           onClick={() => showEcoDetail(item.id)}
-        >详情</a>
+        >详情</Button>
       }
     }
   ]
@@ -199,6 +203,7 @@ const CalendarPanes = ({ dispatch }) => {
             {
               item.people &&
               <img 
+                alt=""
                 className="cp-img-people"
                 src={`https://cdn.jin10.com/images/flag/tx/${item.people}.png`} 
               />

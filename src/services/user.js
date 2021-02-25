@@ -4,7 +4,6 @@ import {
   loginOA1,
   loginOA2
 } from '../pages/MainPage/MainAction'
-import { getQueryString } from '../utils/utilFunc'
 
 const { dispatch } = store
 
@@ -51,7 +50,6 @@ const user = {
         const { type = 1 } = params
         delete params.type
         return dispatch(login(params)).then(res => {
-          console.log(res)
           const { login } = params
           const { token } = res.value
           const _currAcc = {
@@ -97,6 +95,7 @@ const user = {
          * }]
          */
         return dispatch(loginOA2(params)).then(res => {
+          console.log(res)
           that.setCurrAcc(res.value[0])
           // 改变本地值
           // that.option.currAcc = res.value[0]

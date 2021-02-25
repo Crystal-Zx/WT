@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Button, Image } from 'antd';
-import IconFont from '../../../../utils/iconfont/iconfont'
+import { Image } from 'antd';
 import { toDecimal } from '../../../../utils/utilFunc'
 
 import { getAccountInfo } from '../../MainAction'
@@ -59,9 +58,6 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
           <span>&nbsp;USD</span>
         </div>
       </div>
-      {/* <Button type="default" className="btn-more">
-        <IconFont type="iconQues" className="wt-icon main-icon-ques" />
-      </Button> */}
     </>
   )
 }

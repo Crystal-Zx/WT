@@ -6,7 +6,7 @@ import styles from './TableBox.module.scss'
 import { useState,useEffect } from 'react'
 
 function TableBox (props) {
-  const { data, addToFavorite, addToKLine, isExpandAll } = props
+  const { data, addToKLine, isExpandAll } = props  // isLogin
   const changeExpandedRowKeys = () => {
     const _expandedRows = isExpandAll ? data.map(item => item.key) : []
     return _expandedRows

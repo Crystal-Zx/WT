@@ -110,6 +110,9 @@
         }
         
         .cp-btn-ecoDetail {
+          background-color: unset;
+          border: 0;
+          box-shadow: unset;
           @include themify {
             color: themed('color-icon');
           }

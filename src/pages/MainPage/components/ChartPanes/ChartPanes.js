@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import IconFont from '../../../../utils/iconfont/iconfont'
-import { Button, Modal } from 'antd'
+import { Button } from 'antd'
 import TVChartContainer from '../TVChartContainer/TVChartContainer.js'
 
 import styles from './ChartPanes.module.scss'
@@ -57,7 +57,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => 
   }
 
   const changeSymbol = (sb) => {
-    const { key,symbol } = sb
+    const { key } = sb
     setActiveKey(key)
     // setSymbol(symbol)
   }

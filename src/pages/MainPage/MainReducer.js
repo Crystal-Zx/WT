@@ -188,7 +188,7 @@ const positionOrder = (state = {
     case actionTypes.MODIFY_ORDER_FULFILLED: 
       const modifyList = !Number(payload.activeKey) ? state.position.list : state.order.list
       for(var item of modifyList) {
-        if(item.ticket == payload.ticket) {
+        if(item.ticket === payload.ticket) {
           item.tp = payload.tp
           item.sl = payload.sl
         }

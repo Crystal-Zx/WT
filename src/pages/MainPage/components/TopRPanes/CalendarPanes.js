@@ -35,6 +35,7 @@ const CalendarPanes = ({ dispatch }) => {
         list: data[0].map(item => {
           return ({
             ...item,
+            key: item.id,
             date: moment(item.pub_time).format("HH:mm"),
             title: `${item.country}${item.time_period}${item.name}`
           })
@@ -45,6 +46,7 @@ const CalendarPanes = ({ dispatch }) => {
         list: data[1].map(item => {
           return ({
             ...item,
+            key: item.id,
             date: moment(item.event_time).format("HH:mm"),
             title: item.event_content
           })

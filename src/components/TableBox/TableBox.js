@@ -7,10 +7,6 @@ import { useState,useEffect } from 'react'
 
 function TableBox (props) {
   const { data, addToKLine, isExpandAll } = props  // isLogin
-  const changeExpandedRowKeys = () => {
-    const _expandedRows = isExpandAll ? data.map(item => item.key) : []
-    return _expandedRows
-  }
   const renderContent = (val, row, index, type) => {
     const obj = {
       children: val || '---',
@@ -79,6 +75,10 @@ function TableBox (props) {
   ]
 
   useEffect(() => {
+    const changeExpandedRowKeys = () => {
+      const _expandedRows = isExpandAll ? data.map(item => item.key) : []
+      return _expandedRows
+    }
     setExpandedRows(changeExpandedRowKeys())
   }, [isExpandAll])
   

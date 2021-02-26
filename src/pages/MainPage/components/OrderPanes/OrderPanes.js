@@ -23,10 +23,9 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
 
   const _getPositions = (activeKey) => {
     return dispatch(getPositions()).then(res => {
-      // console.log("=====456", res)
       const { position,order } = res.value
       dispatch(setAccountInfo({
-        profit: activeKey == 0 ? 
+        profit: Number(activeKey) === 0 ? 
           position.reduce((prev, item) => prev + Number(item.profit), 0) :
           order.reduce((prev, item) => prev + Number(item.profit), 0)
       }))
@@ -38,13 +37,6 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
         profit: res.value.reduce((prev, item) => prev + Number(item.profit), 0)
       }))
     })
-  }
-  const init = () => {
-    // console.log("====init", activeKey)
-    if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
-      activeKey < 2 && _getPositions(activeKey)
-      activeKey >= 2 && _getHistories()
-    }
   }
   const onChange = activeKey => {
     setActiveKey(activeKey)  // 不要依赖于setActiveKey去重新获取列表值
@@ -160,7 +152,10 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   }
 
   useEffect(() => {
-    init()
+    if(!listArr[activeKey].list.length && !listArr[activeKey].isFetching) {
+      activeKey < 2 && _getPositions(activeKey)
+      activeKey >= 2 && _getHistories()
+    }
   }, [])
 
   useEffect(() => {

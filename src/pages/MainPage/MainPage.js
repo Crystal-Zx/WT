@@ -17,24 +17,10 @@ import user from '../../services/user'
 const { Option } = Select
 
 function MainPage ({ theme, dispatch }) {
-  // const userInfo = JSON.parse(sessionStorage.getItem("wt_userInfo"))
-  // const currAcc = (userInfo && userInfo.account) || ''
+  
   const [currDate, setCurrDate] = useState(getCurrDate())
   const [isLoading, setIsLoading] = useState(false)
 
-  const init = () => {
-    // 设置当前是否停盘
-    dispatch(isSuspension())
-    // 设置主题
-    window.document.documentElement.setAttribute("data-theme", theme)
-    // 开启右上角时钟计时
-    const t = setInterval(() => {
-      setCurrDate(getCurrDate())
-    }, 1000);
-    return () => {
-      clearInterval(t)
-    }
-  }
   const changeTheme = () => {
     if(theme === 'light') {
       // setTheme('dark')
@@ -62,7 +48,17 @@ function MainPage ({ theme, dispatch }) {
   }
   
   useEffect(() => {
-    init()
+    // 设置当前是否停盘
+    dispatch(isSuspension())
+    // 设置主题
+    window.document.documentElement.setAttribute("data-theme", theme)
+    // 开启右上角时钟计时
+    const t = setInterval(() => {
+      setCurrDate(getCurrDate())
+    }, 1000);
+    return () => {
+      clearInterval(t)
+    }
   },[])
 
   useEffect(() => {

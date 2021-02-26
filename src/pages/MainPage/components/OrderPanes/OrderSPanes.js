@@ -310,11 +310,11 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
     }
   ]
   // 将扁平化数据格式化为页面渲染所需格式
-  const handleList = (response) => {
-    if(response.length) {
+  const handleList = (list) => {
+    if(list.length) {
       const cmdArr = getCmdArr()
       let data = [], dataObj = {}
-      for(var p of response) {
+      for(var p of list) {
         p.key = p.ticket
         p.cmdForCh = cmdArr[p.cmd]
         p.profit = Number(toDecimal(p.profit, 2))
@@ -347,10 +347,19 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
       return data
     }
   }
+  // 处理历史订单
+  const handleHisList = (list) => {
+    return list.map(item => {
+      return ({
+        ...item,
+        key: item.ticket
+      })
+    })
+  }
   
   return (
     <Table
-      dataSource={type < 2 ? handleList(list) : list}
+      dataSource={type < 2 ? handleList(list) : handleHisList(list)}
       loading={isFetching}
       columns={type < 2 ? getColumns() : getHistoryCol()}
       pagination={false}

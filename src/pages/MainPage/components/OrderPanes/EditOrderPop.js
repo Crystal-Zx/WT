@@ -10,8 +10,6 @@ const EditOrderPop = ({ data, dispatch }) => {
   // console.log("====EOP:", data)
   const [loading, setLoading] = useState(false)
   const [visible, setVisible] = useState(false)
-  // const [isTpError, setIsTpError] = useState(false)
-  // const [isSlError, setIsSlError] = useState(false)
   const tpRef = useRef(null)
   const slRef = useRef(null)
 
@@ -19,7 +17,6 @@ const EditOrderPop = ({ data, dispatch }) => {
   
 
   const showModal = (e) => {
-    console.log("====showModal",e)
     e.stopPropagation()
     setVisible(true)
   }

@@ -16,6 +16,12 @@ axios.defaults.headers = {
 // 请求拦截
 axios.interceptors.request.use(
   config => {
+    // if(user.getToken()) {
+    //   config.headers = {
+    //     ...config.headers,
+    //     'Accept': user.getToken()
+    //   }
+    // }
     config.baseURL = user.getAxiosBaseUrl()
     // 格式化data参数
     const params = new URLSearchParams()

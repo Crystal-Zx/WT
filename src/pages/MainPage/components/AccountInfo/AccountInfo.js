@@ -20,7 +20,7 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
         <span className="account">11593</span> */}
         <Image 
           width={'90%'} 
-          src="/img/logo_fff.png"
+          src="./img/logo_fff.png"
         />
       </div>
       <div className="account-info-x">

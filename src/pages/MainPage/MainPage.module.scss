@@ -55,6 +55,11 @@ $bottomH: 4.3vh;
         .ant-tabs {
           .ant-tabs-nav {
             margin-bottom: -1px;
+            .ant-tabs-nav-more {
+              @include themify {
+                color: themed('color-default');
+              }
+            }
           }
           /* line 类型 */
           &.ant-tabs-line {  /* 自定义类名 并不是antd自带的 */

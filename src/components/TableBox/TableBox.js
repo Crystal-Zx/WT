@@ -4,9 +4,13 @@ import IconFont from '../../utils/iconfont/iconfont'
 import QuoteTr from '../../pages/MainPage/components/QuotePanes/QuoteTr'
 import styles from './TableBox.module.scss'
 import { useState,useEffect } from 'react'
+import SymbolInfoModal from '../SymbolInfoModal/SymbolInfoModal'
 
 function TableBox (props) {
   const { data, addToKLine, isExpandAll } = props  // isLogin
+  const [expandedRows, setExpandedRows] = useState()
+  const [visible, setVisible] = useState(false)
+
   const renderContent = (val, row, index, type) => {
     const obj = {
       children: val || '---',
@@ -15,22 +19,39 @@ function TableBox (props) {
     if(expandedRows && expandedRows.includes(row.symbol)) {
       obj.props.colSpan = type === 'ask' ? 3 : 0
       obj.children = (
-        <div style={
-          {display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}
-        }>
-          <IconFont 
-            type="iconKLine"
-            className="icon-kline"
-            onClick={(e) => 
-              addToKLine(e,row.symbol, row.bid.split(".")[1].length)
-            }
-          />
-          {/* <IconFont 
-            type="iconFavorite"
-            className="icon-favorite"
-            onClick={addToFavorite}
-          /> */}
-        </div>
+        <>
+          <div className="qsp-symbol-operate" >
+            <IconFont 
+              type="iconInfo"
+              className="icon-info"
+              onClick={(e) => {
+                e.stopPropagation()
+                setVisible(true)
+              }}
+            />
+            <IconFont 
+              type="iconKLine"
+              className="icon-kline"
+              onClick={(e) => 
+                addToKLine(e,row.symbol, row.bid.split(".")[1].length)
+              }
+            />
+            {/* <IconFont 
+              type="iconFavorite"
+              className="icon-favorite"
+              onClick={addToFavorite}
+            /> */}
+          </div>
+          {/* {
+            visible &&  */}
+            <SymbolInfoModal
+              symbol={row.symbol}
+              visible={visible}
+              onCancel={() => { setVisible(false) }}
+            />
+
+          {/* } */}
+        </>
       )
     }
     return obj
@@ -82,41 +103,42 @@ function TableBox (props) {
     setExpandedRows(changeExpandedRowKeys())
   }, [isExpandAll])
   
-  const [expandedRows, setExpandedRows] = useState()
 
   return (
-    <Table
-      className={styles['table-x']}
-      columns={getColumns()}
-      dataSource={data}
-      pagination={false}
-      sticky={true}
-      rowClassName={(record, index) => {
-        let className = ''
-        className += record.isUp ? 'quote-up ' : 'quote-down '
-        className += index % 2 ? '' : 'dark-row'
-        return className
-      }}
-      expandable={{
-        expandRowByClick: true,
-        expandIconAsCell: false,
-        expandIconColumnIndex: -1,
-        expandedRowKeys: expandedRows,  // 展开的行
-        expandedRowClassName: (record, index) => 'quote-expand-tr ' + (record.isUp ? 'quote-up' : 'quote-down'),
-        expandedRowRender: record => <QuoteTr data={record} />,
-        onExpandedRowsChange: (expandedRows) => {
-          setExpandedRows(expandedRows)
-        }
-      }}
-      onRow={record => {
-        return {
-          onDoubleClick: event => {
-            // console.log(record, event, addToKLine)
-            addToKLine(event, record.symbol, record.digits)
+    <>
+      <Table
+        className={styles['table-x']}
+        columns={getColumns()}
+        dataSource={data}
+        pagination={false}
+        sticky={true}
+        rowClassName={(record, index) => {
+          let className = ''
+          className += record.isUp ? 'quote-up ' : 'quote-down '
+          className += index % 2 ? '' : 'dark-row'
+          return className
+        }}
+        expandable={{
+          expandRowByClick: true,
+          expandIconAsCell: false,
+          expandIconColumnIndex: -1,
+          expandedRowKeys: expandedRows,  // 展开的行
+          expandedRowClassName: (record, index) => 'quote-expand-tr ' + (record.isUp ? 'quote-up' : 'quote-down'),
+          expandedRowRender: record => <QuoteTr data={record} />,
+          onExpandedRowsChange: (expandedRows) => {
+            setExpandedRows(expandedRows)
           }
-        }
-      }}
-    />
+        }}
+        onRow={record => {
+          return {
+            onDoubleClick: event => {
+              // console.log(record, event, addToKLine)
+              addToKLine(event, record.symbol, record.digits)
+            }
+          }
+        }}
+      />
+    </>
   )
 }
 

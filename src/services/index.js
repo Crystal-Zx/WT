@@ -62,6 +62,10 @@ export function _getAccountInfo (params = {}) {
 export function _getSymbols (params = {}) {
   return fetchPost(apis.getSymbols, params)
 }
+// --- 获取货币对信息
+export function _getSymbolInfo (params = {}) {
+  return fetchPost(apis.getSymbolInfo, params)
+}
 // 订单板块
 // --- 获取持仓单
 export function _getPositions (params = {}) {

@@ -91,6 +91,7 @@ export const getSymbols = createAction(actionTypes.GET_SYMBOLS, payload => paylo
 export const setSymbols = createAction(actionTypes.SET_SYMBOLS, payload => payload)
 // 选择显示哪一类报价列表
 export const setSymbolGroup = createAction(actionTypes.SET_SYMBOL_GROUP, payload => payload)
+export const getSymbolInfo = createAction(actionTypes.GET_SYMBOLINFO, payload => payload)
 
 // K线板块
 // --- 添加指定货币对的K线

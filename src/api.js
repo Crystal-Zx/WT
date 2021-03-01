@@ -17,5 +17,6 @@ export default(config => {
   'modifyOrder': '/v1/order/modify',
   'closeOrder': '/v1/order/close',
   'openOrder': '/v1/order/open',
-  'getNewsData': 'https://www.jin10.com/flash_newest.js'
+  'getNewsData': 'https://www.jin10.com/flash_newest.js',
+  'getSymbolInfo': '/v1/symbol_info'
 })

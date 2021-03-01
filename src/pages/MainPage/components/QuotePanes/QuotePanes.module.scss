@@ -5,17 +5,26 @@ $gap: 6px;
   width: 25%;
   margin-right: $gap;
   :global {
-    .icon-kline,.icon-favorite {
-      margin-right: 25px;
-      font-size: 14px;
-      cursor: pointer;
-      @include themify {
-        color: themed('color-primary');
+    .qsp-symbol-operate {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      & > * {
+        font-size: 14px;
+        cursor: pointer;
+        @include themify {
+          color: themed('color-primary');
+        }
+        & + * {
+          margin-left: 15px;
+        }
+        &:last-child {
+          margin-right: 10px;
+        }
       }
-    }
-    .icon-kline {
-      margin-right: 20px;
-      font-size: 20px;
+      .icon-kline {
+        font-size: 20px;
+      }
     }
     .ant-tabs-content {
       height: 100%;

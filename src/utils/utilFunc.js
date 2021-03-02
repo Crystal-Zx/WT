@@ -103,3 +103,7 @@ export const currDateInfo = () => {
     minutes: d.getMinutes()
   })
 }
+// 获取两位数的时分秒值
+export const getForTwoDigits = (num) => {
+  return ("00" + num).slice(-2)
+}

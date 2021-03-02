@@ -4143,3 +4143,390 @@ export const newsData_mock = [{
     "remark": null
   }
 ];
+
+export const mock_symbolInfo = {
+  "contract_size": 1000.0,
+  "currency": "CNY",
+  "description": "sc2012",
+  "digits": 2,
+  "exemode": 2,
+  "gtc_pendings": 1,
+  "margin_currency": "CNY",
+  "margin_divider": 12.5,
+  "margin_hedged": 500.0,
+  "point": 0.01,
+  "sessions": [{
+      "quote": [{
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        },
+        {
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        },
+        {
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        }
+      ],
+      "trade": [{
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        },
+        {
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        },
+        {
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        }
+      ]
+    },
+    {
+      "quote": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ],
+      "trade": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ]
+    },
+    {
+      "quote": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ],
+      "trade": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ]
+    },
+    {
+      "quote": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ],
+      "trade": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ]
+    },
+    {
+      "quote": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ],
+      "trade": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ]
+    },
+    {
+      "quote": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ],
+      "trade": [{
+          "close": 330,
+          "close_hour": 5,
+          "close_min": 30,
+          "open": 180,
+          "open_hour": 3,
+          "open_min": 0
+        },
+        {
+          "close": 540,
+          "close_hour": 9,
+          "close_min": 0,
+          "open": 450,
+          "open_hour": 7,
+          "open_min": 30
+        },
+        {
+          "close": 1230,
+          "close_hour": 20,
+          "close_min": 30,
+          "open": 900,
+          "open_hour": 15,
+          "open_min": 0
+        }
+      ]
+    },
+    {
+      "quote": [{
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        },
+        {
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        },
+        {
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        }
+      ],
+      "trade": [{
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        },
+        {
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        },
+        {
+          "close": 0,
+          "close_hour": 0,
+          "close_min": 0,
+          "open": 0,
+          "open_hour": 0,
+          "open_min": 0
+        }
+      ]
+    }
+  ],
+  "stops_level": 0,
+  "swap_long": 0.0,
+  "swap_rollover3days": 3,
+  "swap_short": 0.0,
+  "swap_type": 0,
+  "symbol": "原油主连",
+  "tick_size": 0.1,
+  "tick_value": 500.0,
+  "type": 9
+}

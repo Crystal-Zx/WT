@@ -183,7 +183,9 @@ const QuotePanes = (props) => {
   }, [filterGroup])
   
   return (
-    <div className={styles['quote-panes-x']}> 
+    <div 
+      className={styles['quote-panes-x']}
+    > 
       <CardTabs
         initialPanes={[
           {

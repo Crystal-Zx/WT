@@ -10,8 +10,10 @@ function TableBox (props) {
   const { data, addToKLine, isExpandAll } = props  // isLogin
   const [expandedRows, setExpandedRows] = useState()
   const [visible, setVisible] = useState(false)
+  const [symbol, setSymbol] = useState(null)
 
   const renderContent = (val, row, index, type) => {
+    // console.log("====renderContent", val, row, index)
     const obj = {
       children: val || '---',
       props: {}
@@ -20,15 +22,24 @@ function TableBox (props) {
       obj.props.colSpan = type === 'ask' ? 3 : 0
       obj.children = (
         <>
-          <div className="qsp-symbol-operate" >
-            <IconFont 
-              type="iconInfo"
-              className="icon-info"
-              onClick={(e) => {
-                e.stopPropagation()
-                setVisible(true)
-              }}
-            />
+          <div className="qsp-symbol-operate">
+            <>
+              <IconFont 
+                type="iconInfo"
+                className="icon-info"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSymbol(row.symbol)
+                  setVisible(true)
+                  // getSIMJSX(row.symbol)
+                }}
+              />
+              {/* <SymbolInfoModal
+                symbol={row.symbol}
+                visible={visible}
+                onCancel={() => setVisible(false) }
+              /> */}
+            </>
             <IconFont 
               type="iconKLine"
               className="icon-kline"
@@ -42,15 +53,6 @@ function TableBox (props) {
               onClick={addToFavorite}
             /> */}
           </div>
-          {/* {
-            visible &&  */}
-            <SymbolInfoModal
-              symbol={row.symbol}
-              visible={visible}
-              onCancel={() => { setVisible(false) }}
-            />
-
-          {/* } */}
         </>
       )
     }
@@ -119,18 +121,30 @@ function TableBox (props) {
           return className
         }}
         expandable={{
-          expandRowByClick: true,
+          expandRowByClick: false,
           expandIconAsCell: false,
           expandIconColumnIndex: -1,
           expandedRowKeys: expandedRows,  // 展开的行
           expandedRowClassName: (record, index) => 'quote-expand-tr ' + (record.isUp ? 'quote-up' : 'quote-down'),
           expandedRowRender: record => <QuoteTr data={record} />,
-          onExpandedRowsChange: (expandedRows) => {
-            setExpandedRows(expandedRows)
-          }
+          // onExpandedRowsChange: (expandedRows) => {
+          //   console.log(expandedRows)
+          //   setExpandedRows(expandedRows)
+          // }
         }}
         onRow={record => {
           return {
+            onClick: event => {
+              console.log(event, record, expandedRows, [...new Set(expandedRows)])
+              const isExpanded = expandedRows.includes(record.symbol)
+              if(isExpanded) {
+                setSymbol(null)
+                setExpandedRows(expandedRows.filter(item => item !== record.symbol))
+              } else {
+                expandedRows.push(record.symbol)
+                setExpandedRows([...new Set(expandedRows)])
+              }
+            },
             onDoubleClick: event => {
               // console.log(record, event, addToKLine)
               addToKLine(event, record.symbol, record.digits)
@@ -138,6 +152,13 @@ function TableBox (props) {
           }
         }}
       />
+      { visible && symbol &&
+        <SymbolInfoModal
+          symbol={symbol}
+          visible={visible}
+          onCancel={() => setVisible(false) }
+        />
+      }
     </>
   )
 }

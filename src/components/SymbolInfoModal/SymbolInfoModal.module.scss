@@ -1,0 +1,47 @@
+.wt-sim-x {
+  :global {
+    .ant-modal-body {
+      display: flex;
+      flex-direction: column;
+      // align-items: flex-start;
+      .sim-desc-x {
+        // width: 100%;
+        // display: flex;
+
+        .ant-descriptions-row + .ant-descriptions-row {
+          // margin-top: 1em;
+          border-collapse: separate;
+          border-spacing: 0 5px;
+        }
+        .ant-descriptions-item {
+          padding-bottom: 5px;
+          .ant-descriptions-item-label {
+            @include themify {
+              color: themed('color-default');
+            }
+          }
+          .ant-descriptions-item-content {
+            @include themify {
+              color: themed('color-primary');
+            }
+          }
+        }
+      }
+      .sim-desc-x.right {
+        flex: 1;
+        .sim-sessions-x {
+          .ant-descriptions-item-content {
+            display: flex;
+            flex-direction: column;
+            .sim-ssn-li {
+              display: flex;
+              .sim-ssn-key {
+                margin-right: 2em;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

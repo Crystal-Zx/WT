@@ -40,7 +40,7 @@ axios.interceptors.request.use(
     return Promise.reject(err)
   }
 )
-// 相应拦截
+// 响应拦截
 // axios拦截器
 axios.interceptors.response.use(
   response => {

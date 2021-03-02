@@ -15,7 +15,8 @@ import {
   _login,
   _loginOA1,
   _loginOA2,
-  _getDate
+  _getDate,
+  _getSymbolInfo
 } from '../../services/index'
 import { 
   getCmdArr
@@ -91,7 +92,10 @@ export const getSymbols = createAction(actionTypes.GET_SYMBOLS, payload => paylo
 export const setSymbols = createAction(actionTypes.SET_SYMBOLS, payload => payload)
 // 选择显示哪一类报价列表
 export const setSymbolGroup = createAction(actionTypes.SET_SYMBOL_GROUP, payload => payload)
-export const getSymbolInfo = createAction(actionTypes.GET_SYMBOLINFO, payload => payload)
+export const getSymbolInfo = createAction(actionTypes.GET_SYMBOLINFO, payload => {
+  // console.log(payload)
+  return _getSymbolInfo(payload)
+})
 
 // K线板块
 // --- 添加指定货币对的K线

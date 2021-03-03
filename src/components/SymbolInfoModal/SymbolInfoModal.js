@@ -12,16 +12,12 @@ import { mock_symbolInfo } from '../../services/mock'
 const SymbolInfoModal = ({ _getSymbolInfo, symbol, visible, onCancel }) => {
 
   const weekForCh = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-  const [info, setInfo] = useState(mock_symbolInfo)
-  console.log("===SymbolInfoModal render~~", info)
-  // const [visible, setVisible] = useState(false)
+  const [info, setInfo] = useState({})
+
   useEffect(() => {
-    // _getSymbolInfo(symbol)
-    // !Object.keys(info).length && setInfo(_getSymbolInfo(symbol))
-    console.log("===SymbolInfoModal init")
-    return () => {
-      console.log("===SymbolInfoModal destory")
-    }
+    !Object.keys(info).length && _getSymbolInfo(symbol).then(res => {
+      setInfo(res.value)
+    })
   }, [])
 
   return (
@@ -36,88 +32,89 @@ const SymbolInfoModal = ({ _getSymbolInfo, symbol, visible, onCancel }) => {
         destroyOnClose={true}
         onCancel={e => { e.stopPropagation(); onCancel() }}
       >
-        <Descriptions 
-          className="sim-desc-x left"
-          layout="vertical"
-          column={3}
-        >
-          <Descriptions.Item label="描述" span={3}>
-            {info.description}
-          </Descriptions.Item>
-          <Descriptions.Item label="1点的大小">
-            { (Math.pow(10,-1 * info.digits)).toFixed(info.digits) }
-          </Descriptions.Item>
-          <Descriptions.Item label="1点的名义价值">
-            {info.contract_size}&nbsp;{info.currency}
-          </Descriptions.Item>
-          <Descriptions.Item label="报价值">
-            {toDecimal(info.tick_value, 2)}
-          </Descriptions.Item>
-          <Descriptions.Item label="报价量">
-            {toDecimal(info.tick_size, 2)}
-          </Descriptions.Item>
-          <Descriptions.Item label="1点的名义价值">
-            {info.contract_size}&nbsp;{info.currency}
-          </Descriptions.Item>
-          <Descriptions.Item label="最小头寸规模">0.001</Descriptions.Item>
-          <Descriptions.Item label="最大头寸规模">1.0</Descriptions.Item>
-          <Descriptions.Item label="每日掉期点">
-            <p>
-              <span>买多：{info.swap_long}</span>
-              &nbsp;&nbsp;&nbsp;
-              <span>卖空：{info.swap_short}</span> 
-            </p>
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions
-          className="sim-desc-x right"
-          layout="vertical"
-          column={1}
-        >
-          <Descriptions.Item className="sim-sessions-x" label="市场小时">
-            {
-              info.sessions.map((item, index) => {
-                return (
-                  <div className="sim-ssn-li">
-                    <p className="sim-ssn-key">{weekForCh[index]}</p>
-                    <p className="sim-ssn-value">
-                      {
-                        item.trade.map(item => {
-                          if(!Number(item.open_hour) && !Number(item.close_hour)) {
-                            return
+        {
+          Object.keys(info).length ? 
+          <>
+            <Descriptions 
+              className="sim-desc-x left"
+              layout="vertical"
+              column={3}
+            >
+              <Descriptions.Item label="描述" span={3}>
+                {info.description}
+              </Descriptions.Item>
+              <Descriptions.Item label="1点的大小">
+                {(Math.pow(10,-1 * info.digits)).toFixed(info.digits)}
+              </Descriptions.Item>
+              <Descriptions.Item label="1点的名义价值">
+                {info.contract_size}&nbsp;{info.currency}
+              </Descriptions.Item>
+              <Descriptions.Item label="报价值">
+                {toDecimal(info.tick_value, 2)}
+              </Descriptions.Item>
+              <Descriptions.Item label="报价量">
+                {toDecimal(info.tick_size, 2)}
+              </Descriptions.Item>
+              <Descriptions.Item label="1点的名义价值">
+                {info.contract_size}&nbsp;{info.currency}
+              </Descriptions.Item>
+              <Descriptions.Item label="最小头寸规模">0.001</Descriptions.Item>
+              <Descriptions.Item label="最大头寸规模">1.0</Descriptions.Item>
+              <Descriptions.Item label="每日掉期点">
+                <p>
+                  <span>买多：{info.swap_long}</span>
+                  &nbsp;&nbsp;&nbsp;
+                  <span>卖空：{info.swap_short}</span> 
+                </p>
+              </Descriptions.Item>
+            </Descriptions>
+            <Descriptions
+              className="sim-desc-x right"
+              layout="vertical"
+              column={1}
+            >
+              <Descriptions.Item className="sim-sessions-x" label="市场小时">
+                {
+                  info.sessions.map((item, index) => {
+                    return (
+                      <div className="sim-ssn-li">
+                        <p className="sim-ssn-key">{weekForCh[index]}</p>
+                        <p className="sim-ssn-value">
+                          {
+                            item.trade.map(item => {
+                              if(!Number(item.open_hour) && !Number(item.close_hour)) {
+                                return
+                              }
+                              return (
+                                <span>
+                                  {getForTwoDigits(item.open_hour)}:{getForTwoDigits(item.open_min)}
+                                  &nbsp;-&nbsp;
+                                  {getForTwoDigits(item.close_hour)}:{getForTwoDigits(item.close_min)}；
+                                </span>
+                              )
+                            })
                           }
-                          return (
-                            <span>
-                              {getForTwoDigits(item.open_hour)}:{getForTwoDigits(item.open_min)}
-                              &nbsp;-&nbsp;
-                              {getForTwoDigits(item.close_hour)}:{getForTwoDigits(item.close_min)}；
-                            </span>
-                          )
-                        })
-                      }
-                    </p>
-                  </div>
-                )
-              })
-            }
-          </Descriptions.Item>
-        </Descriptions>
+                        </p>
+                      </div>
+                    )
+                  })
+                }
+              </Descriptions.Item>
+            </Descriptions>
+          </>
+          :
+          <Spin />
+        }
       </Modal>
     </>
   )
 }
 
-// const areEqual = (prev, next) => {
-//   console.log(prev, next)
-
-//   return false
-// }
-
 export default connect(null, 
   dispatch => {
     return {
       _getSymbolInfo: function (symbol) {
-        dispatch(getSymbolInfo({ name: symbol }))
+        return dispatch(getSymbolInfo({ name: symbol }))
       }
     }
   }

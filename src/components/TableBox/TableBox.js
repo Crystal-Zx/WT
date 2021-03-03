@@ -13,7 +13,6 @@ function TableBox (props) {
   const [symbol, setSymbol] = useState(null)
 
   const renderContent = (val, row, index, type) => {
-    // console.log("====renderContent", val, row, index)
     const obj = {
       children: val || '---',
       props: {}
@@ -135,7 +134,6 @@ function TableBox (props) {
         onRow={record => {
           return {
             onClick: event => {
-              console.log(event, record, expandedRows, [...new Set(expandedRows)])
               const isExpanded = expandedRows.includes(record.symbol)
               if(isExpanded) {
                 setSymbol(null)
@@ -146,7 +144,6 @@ function TableBox (props) {
               }
             },
             onDoubleClick: event => {
-              // console.log(record, event, addToKLine)
               addToKLine(event, record.symbol, record.digits)
             }
           }

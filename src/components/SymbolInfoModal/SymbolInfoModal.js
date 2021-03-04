@@ -6,7 +6,6 @@ import { Modal, Descriptions, Spin } from 'antd'
 import styles from './SymbolInfoModal.module.scss'
 
 import { getForTwoDigits, toDecimal } from '../../utils/utilFunc'
-import { mock_symbolInfo } from '../../services/mock'
 
 
 const SymbolInfoModal = ({ _getSymbolInfo, symbol, visible, onCancel }) => {

@@ -327,6 +327,25 @@ p {
     color: themed('color-primary');
   }
 }
+// --- antd tab dropdown
+.ant-tabs-dropdown {
+  .ant-tabs-dropdown-menu {
+    @include themify {
+      color: themed('color-primary');
+      background-color: themed('bg-color-search');
+    }
+    .ant-tabs-dropdown-menu-item:not(.ant-tabs-dropdown-menu-item-disabled),
+    .ant-tabs-dropdown-menu-item:not(.ant-tabs-dropdown-menu-item-disabled) > a {
+      color: inherit;
+    }
+    .ant-tabs-dropdown-menu-item:hover {
+      @include themify {
+        background-color: themed('bg-color-trHover');
+      }
+    }
+  }
+  
+}
 
 
 // wt common

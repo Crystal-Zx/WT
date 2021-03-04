@@ -12,8 +12,9 @@ export default function CardTabs ({
   className,
   type = "card", 
   tabPosition = "top",
-  tabBarGutter = 0}
-) {  
+  tabBarGutter = 0,
+  isLoadAgain = true
+}) {  
   return (
     <Tabs
       className={className}
@@ -34,7 +35,7 @@ export default function CardTabs ({
           >
             { isFetching && <Spin /> }
             {
-              ( !isFetching && activeKey === pane.key )
+              ( !isFetching && (isLoadAgain ? activeKey === pane.key : true) )
               &&
               pane.content
             }

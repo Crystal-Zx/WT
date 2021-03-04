@@ -334,6 +334,7 @@ class TVChartContainer extends React.PureComponent {
     let that = this
     // 计算当前resolution
     let _type = data.data.ticks ? data.data.id : data.data.type
+    if(!_type) return  // 非K线数据则直接返回
     data.resolution = that.getResolutionByCh(_type.split(".")[1])
     // 引入新数据的原因，是我想要加入缓存，这样在大数据量的时候，切换时间维度可以大大的优化请求时间
     let newdata = []

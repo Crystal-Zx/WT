@@ -25,6 +25,7 @@ export default function TopRPanes () {
         activeKey={activeKey}
         initialPanes={topRPanes}
         onChange={onChange}
+        isLoadAgain={false}
       ></CardTabs>
     </div>
   )

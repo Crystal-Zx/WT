@@ -77,30 +77,31 @@ const QuotePanes = (props) => {
           break
         }
       }
-    } else if(data.type === "mini") {
-      data = data.data
-      // console.log("===onMsg mini data:", data)
-      const symbols = data.map(item => item.symbol)
-      cacheList = cacheList.map(item => {
-        if(symbols.includes(item.symbol)) {
-          const _data = data.filter(_item => _item.symbol === item.symbol)[0]
-          if(_data.ticks && _data.ticks.length) {
-            const high = Math.max(..._data.ticks),
-                  low = Math.min(..._data.ticks)
-            return {
-              ...item,
-              high,
-              low,
-              per: Math.floor((high - low) / low * 10000) / 100 + '%',
-            }
-          } else {
-            return item
-          }
-        } else {
-          return item
-        }
-      })
-    }
+    } 
+    // else if(data.type === "mini") {
+    //   data = data.data
+    //   // console.log("===onMsg mini data:", data)
+    //   const symbols = data.map(item => item.symbol)
+    //   cacheList = cacheList.map(item => {
+    //     if(symbols.includes(item.symbol)) {
+    //       const _data = data.filter(_item => _item.symbol === item.symbol)[0]
+    //       if(_data.ticks && _data.ticks.length) {
+    //         const high = Math.max(..._data.ticks),
+    //               low = Math.min(..._data.ticks)
+    //         return {
+    //           ...item,
+    //           high,
+    //           low,
+    //           per: Math.floor((high - low) / low * 10000) / 100 + '%',
+    //         }
+    //       } else {
+    //         return item
+    //       }
+    //     } else {
+    //       return item
+    //     }
+    //   })
+    // }
     cacheListRef.current = cacheList.concat([])
   }
   const getQuoteSymbols = () => {
@@ -132,11 +133,11 @@ const QuotePanes = (props) => {
     const qspList = cacheList.filter(item => item.group === sType)
     const quoteSymbols = qspList.map(item => item.symbol)
     sendQuoteMsg(quoteSymbols)
-    const args = quoteSymbols.join(".")
-    quoteSymbols.length > 0 && socket.send({
-      "cmd": "mini",
-      "args": [`${args}`]
-    })
+    // const args = quoteSymbols.join(".")
+    // quoteSymbols.length > 0 && socket.send({
+    //   "cmd": "mini",
+    //   "args": [`${args}`]
+    // })
   }
   
   useEffect(() => { // 仅didmounted时执行一次

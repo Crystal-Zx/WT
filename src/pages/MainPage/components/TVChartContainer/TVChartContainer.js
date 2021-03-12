@@ -5,6 +5,7 @@ import {
 } from '../../../../charting_library.min'
 import Datafeed from './datafees'
 import { connect } from 'react-redux';
+import { throttle } from 'lodash';
 
 function getLanguageFromURL() {
   const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -19,7 +20,6 @@ class TVChartContainer extends React.PureComponent {
     this.tvWidget = null
     this.socket = props.socket
     this.datafeeds = new Datafeed(this)
-    this.widgets = null
     this.isSuspension = props.isSuspension
     this.symbol = props.symbol || 'EURUSD'
     this.interval = props.resolution || '1'
@@ -32,7 +32,7 @@ class TVChartContainer extends React.PureComponent {
     this.onShowTradeModal = props.onShowTradeModal
 
     this.init = this.init.bind(this)
-    this.initMessage = this.initMessage.bind(this)
+    this.initMessage = throttle(this.initMessage.bind(this), 1000)  // 节流，防止请求条件不符合时的不断请求
     this.sendMessage = this.sendMessage.bind(this)
     this.getklinelist = this.getklinelist.bind(this)
     this.initLimit = this.initLimit.bind(this)
@@ -211,18 +211,20 @@ class TVChartContainer extends React.PureComponent {
     //获取当前时间段的数据，在onMessage中执行回调onLoadedCallback
     this.paramary.limit = limit
     this.paramary.resolution = resolution
-    let param
+    let cmd//param
     // 分批次获取历史(这边区分了历史记录分批加载的请求)
-    // if (this.isHistory.isRequestHistory) {
-    //   param = {
-    //     // 获取历史记录时的参数(与全部主要区别是时间戳)
-    //   }
-    // } else {
-    //   param = {
-    //     // 获取全部记录时的参数
-    //   }
-    // }
-    this.getklinelist(param)
+    if (this.isHistory.isRequestHistory) {
+      cmd = "req2"
+      // param = {
+      //   // 获取历史记录时的参数(与全部主要区别是时间戳)
+      // }
+    } else {
+      cmd = "req"
+      // param = {
+      //   // 获取全部记录时的参数
+      // }
+    }
+    this.getklinelist(cmd)
   }
 
   sendMessage = (data) => {
@@ -237,21 +239,22 @@ class TVChartContainer extends React.PureComponent {
     }
   }
 
-  getklinelist = (param) => {
+  getklinelist = (cmd) => {
+    console.log("===getklinelist", this.cacheData)
     const that = this
     if (that.interval < 60) {
       that.socket.send({
-        cmd: 'req',
+        cmd,
         args: ["candle.M" + that.interval + "." + that.symbol]
       })
     } else if (that.interval >= 60) {
       that.socket.send({
-        cmd: 'req',
+        cmd,
         args: ["candle.H" + (that.interval / 60) + "." + that.symbol]
       })
     } else {
       that.socket.send({
-        cmd: 'req',
+        cmd,
         args: ["candle.D1." + that.symbol]
       })
     }
@@ -276,6 +279,17 @@ class TVChartContainer extends React.PureComponent {
     return limit;
   }
 
+  /**
+   * 
+   * @param {object} symbolInfo 商品信息对象
+   * @param {string} resolution 周期
+   * @param {*} rangeStartDate unix时间戳，最左边请求的K线时间
+   * @param {*} rangeEndDate unix时间戳，最右边请求的K线时间
+   * @param {*} onLoadedCallback function(数组bars, meta = { noData = false }) 历史数据的回调函数。每次请求只应该被调用一次：
+   * bars: Bar对象数组： { time, close, open, high, low, volume }[]
+   * meta: object { noData = true | false, nextTime = unix time }
+   * @returns 
+   */
   getBars = (symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback) => {
     const timeInterval = resolution // 当前时间维度
     // this.interval = resolution
@@ -307,6 +321,7 @@ class TVChartContainer extends React.PureComponent {
     // 拿到历史数据，更新图表
     if (this.cacheData[ticker] && this.cacheData[ticker].length > 1) {
       this.isLoading = false
+      console.log("====拿到历史数据，更新图表", this.cacheData)
       onLoadedCallback(this.cacheData[ticker])
     } else {
       let self = this
@@ -316,25 +331,28 @@ class TVChartContainer extends React.PureComponent {
     }
     // 这里很重要，画圈圈----实现了往前滑动，分次请求历史数据，减小压力
     // 根据可视窗口区域最左侧的时间节点与历史数据第一个点的时间比较判断，是否需要请求历史数据
-    if (this.cacheData[ticker] && this.cacheData[ticker].length > 1 && this.widgets && this.widgets._ready && timeInterval !== '1D') {
-      const rangeTime = this.widgets.chart().getVisibleRange() // 可视区域时间值(秒) {from, to}
+    if (this.cacheData[ticker] && this.cacheData[ticker].length > 1 && this.tvWidget && this.tvWidget._ready) {  // && timeInterval !== '1D'
+    console.log("3 if")
+      const rangeTime = this.tvWidget.chart().getVisibleRange() // 可视区域时间值(秒) {from, to}
       const dataTime = this.cacheData[ticker][0].time // 返回数据第一条时间
-      if (rangeTime.from * 1000 <= dataTime + 28800000) { // true 不用请求 false 需要请求后续
+      console.log(rangeTime.from * 1000, dataTime, rangeTime.from * 1000, dataTime + 28800000)
+      if (rangeTime.from * 1000 <= dataTime + 28800000) { // (dateTime + 28800000)? true 不用请求 false 需要请求后续
+        console.log("3.1 if")
         this.isHistory.endTime = dataTime / 1000
         this.isHistory.isRequestHistory = true
         // 发起历史数据的请求
         this.initMessage(symbolInfo, resolution, rangeStartDate, rangeEndDate, onLoadedCallback)
+        // this.cacheData[tickerstate] = !0;
       }
     }
   }
 
   // 渲染数据
   onMessage = (data) => { // 通过参数将数据传递进来    
-    // console.log("====tvc data:", data)
+    if(!["req", "req2", "update"].includes(data.type)) return  // 非K线数据则直接返回
     let that = this
     // 计算当前resolution
-    let _type = data.data.ticks ? data.data.id : data.data.type
-    if(!_type) return  // 非K线数据则直接返回
+    let _type = data.data.ticks ? data.data.id : data.data.type  // candle.M1.CADCHF
     data.resolution = that.getResolutionByCh(_type.split(".")[1])
     // 引入新数据的原因，是我想要加入缓存，这样在大数据量的时候，切换时间维度可以大大的优化请求时间
     let newdata = []
@@ -353,7 +371,6 @@ class TVChartContainer extends React.PureComponent {
     } else {
       newdata[0] = data.data
     }
-    // }
     const ticker = `${that.symbol}-${that.interval}`
     // 第一次全部更新(增量数据是一条一条推送，等待全部数据拿到后再请求)
     if (newdata && newdata.length >= 1 && !that.cacheData[ticker]) { //  && data.firstHisFlag === 'true'
@@ -368,7 +385,6 @@ class TVChartContainer extends React.PureComponent {
       }
       // 新数据即当前时间段需要的数据，直接喂给图表插件
       if (onLoadedCallback) {
-        console.log("====newdata:", newdata)
         onLoadedCallback(newdata);
         delete that.cacheData[tickerCallback];
       }
@@ -382,7 +398,12 @@ class TVChartContainer extends React.PureComponent {
       that.lastTime = that.cacheData[ticker][that.cacheData[ticker].length - 1].time
     }
     // 更新历史数据 (这边是添加了滑动按需加载，后面我会说明)
-    if (newdata && newdata.length > 1 && data.type === "update" && this.paramary.resolution === data.resolution && that.cacheData[ticker] && this.isHistory.isRequestHistory) { //  && this.paramary.klineId === data.klineId && data.firstHisFlag === 'true'
+    if (newdata && newdata.length > 1 && data.type === "req2" && this.paramary.resolution === data.resolution && that.cacheData[ticker] && this.isHistory.isRequestHistory) { //  && this.paramary.klineId === data.klineId && data.firstHisFlag === 'true'
+      // var tickerstate = `${ticker}state`
+      // //请求完成，设置状态为false
+      // that.cacheData[tickerstate] = false
+      // console.log(that.cacheData)
+
       that.cacheData[ticker] = newdata.concat(that.cacheData[ticker])
       this.isHistory.isRequestHistory = false
     }

@@ -57,8 +57,8 @@ const SymbolInfoModal = ({ _getSymbolInfo, symbol, visible, onCancel }) => {
               <Descriptions.Item label="1点的名义价值">
                 {info.contract_size}&nbsp;{info.currency}
               </Descriptions.Item>
-              <Descriptions.Item label="最小头寸规模">0.001</Descriptions.Item>
-              <Descriptions.Item label="最大头寸规模">1.0</Descriptions.Item>
+              {/* <Descriptions.Item label="最小头寸规模">0.001</Descriptions.Item>
+              <Descriptions.Item label="最大头寸规模">1.0</Descriptions.Item> */}
               <Descriptions.Item label="每日掉期点">
                 <p>
                   <span>买多：{info.swap_long}</span>

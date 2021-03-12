@@ -26,6 +26,7 @@ class socket {
     this.heartBeatTimer = setInterval(this.checkHeartbeat.bind(this), 20000)
     this.onReceiver({
       Event: 'open'
+
     })
   }
   checkOpen() {
@@ -58,7 +59,7 @@ class socket {
     try {
       const data = JSON.parse(message)
       const quoteType = ['symbol', 'quote', 'mini'],
-            KLineTypes = ['req', 'update'],
+            KLineTypes = ['req', 'update', 'req2'],
             orderType = ['order']  // 'quote'
       // if(data.type === 'symbol') {
       //   this.onReceiver({

@@ -14,13 +14,14 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
   }, [])
   return (
     <>
-      <div className="user-x">
-        {/* <span className="account-type">DEMO</span>
-        <Avatar icon={<UserOutlined />} size={24} />
-        <span className="account">11593</span> */}
+      <div 
+        className="user-x"
+        onClick={() => window.open("https://www.alphazone.com.cn/login.html") }
+      >
         <Image 
           width={'90%'} 
           src="./img/logo_fff.png"
+          preview={false}
         />
       </div>
       <div className="account-info-x">

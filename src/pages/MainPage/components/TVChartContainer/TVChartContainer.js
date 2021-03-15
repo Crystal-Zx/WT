@@ -240,7 +240,7 @@ class TVChartContainer extends React.PureComponent {
   }
 
   getklinelist = (cmd) => {
-    console.log("===getklinelist", this.cacheData)
+    // console.log("===getklinelist", this.cacheData)
     const that = this
     if (that.interval < 60) {
       that.socket.send({
@@ -321,7 +321,7 @@ class TVChartContainer extends React.PureComponent {
     // 拿到历史数据，更新图表
     if (this.cacheData[ticker] && this.cacheData[ticker].length > 1) {
       this.isLoading = false
-      console.log("====拿到历史数据，更新图表", this.cacheData)
+      // console.log("====拿到历史数据，更新图表", this.cacheData)
       onLoadedCallback(this.cacheData[ticker])
     } else {
       let self = this
@@ -332,12 +332,12 @@ class TVChartContainer extends React.PureComponent {
     // 这里很重要，画圈圈----实现了往前滑动，分次请求历史数据，减小压力
     // 根据可视窗口区域最左侧的时间节点与历史数据第一个点的时间比较判断，是否需要请求历史数据
     if (this.cacheData[ticker] && this.cacheData[ticker].length > 1 && this.tvWidget && this.tvWidget._ready) {  // && timeInterval !== '1D'
-    console.log("3 if")
+    // console.log("3 if")
       const rangeTime = this.tvWidget.chart().getVisibleRange() // 可视区域时间值(秒) {from, to}
       const dataTime = this.cacheData[ticker][0].time // 返回数据第一条时间
-      console.log(rangeTime.from * 1000, dataTime, rangeTime.from * 1000, dataTime + 28800000)
+      // console.log(rangeTime.from * 1000, dataTime, rangeTime.from * 1000, dataTime + 28800000)
       if (rangeTime.from * 1000 <= dataTime + 28800000) { // (dateTime + 28800000)? true 不用请求 false 需要请求后续
-        console.log("3.1 if")
+        // console.log("3.1 if")
         this.isHistory.endTime = dataTime / 1000
         this.isHistory.isRequestHistory = true
         // 发起历史数据的请求

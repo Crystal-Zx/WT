@@ -6,11 +6,17 @@ import reportWebVitals from './reportWebVitals';
 
 import { store } from './store/store'
 import { Provider } from 'react-redux'
+// 国际化
+import zhCh from 'antd/lib/locale/zh_CN'
+import enUs from 'antd/lib/locale/en_US'
+import { ConfigProvider } from 'antd';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />,
-  </Provider>,
+  <ConfigProvider locale={enUs}>
+    <Provider store={store}>
+      <App />,
+    </Provider>
+  </ConfigProvider>,
   document.getElementById('root')
 );
 

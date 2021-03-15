@@ -8,6 +8,7 @@ import SymbolInfoModal from '../SymbolInfoModal/SymbolInfoModal'
 
 function TableBox (props) {
   const { data, addToKLine, isExpandAll } = props  // isLogin
+  // console.log("====TableBox RENDER", data)
   const [expandedRows, setExpandedRows] = useState()
   const [visible, setVisible] = useState(false)
   const [symbol, setSymbol] = useState(null)
@@ -42,9 +43,15 @@ function TableBox (props) {
             <IconFont 
               type="iconKLine"
               className="icon-kline"
-              onClick={(e) => 
-                addToKLine(e,row.symbol, row.bid.split(".")[1].length)
-              }
+              onClick={(e) => {
+                console.log(row)
+                if(!Number(row.ask)) {
+                  e.stopPropagation()
+                  return
+                }
+                addToKLine(e,row.symbol, row.digits)
+              }}
+              disabled={!Number(row.ask)}
             />
             {/* <IconFont 
               type="iconFavorite"
@@ -63,12 +70,15 @@ function TableBox (props) {
       dataIndex: 'symbol',
       key: 'symbol',
       width: '40.68%',
-      render: symbol => (
-        <>
-          <IconFont type="iconDown" className="iconDown" />
-          <span style={{ marginLeft: '8px' }}>{symbol}</span>
-        </>
-      )
+      render: (symbol, row) => {
+        // console.log(symbol, row)
+        return (
+          <>
+            <IconFont type="iconDown" className="iconDown" />
+            <span style={{ marginLeft: '8px' }}>{symbol}</span>
+          </>
+        )
+      }
     },
     {
       title: '调查',

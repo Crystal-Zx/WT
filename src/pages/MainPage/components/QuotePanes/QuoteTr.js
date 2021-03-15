@@ -80,7 +80,11 @@ const QuoteTr = ({ isSuspension, dispatch, data }) => {
           {data.holc.high ? toDecimal(data.holc.high, data.digits) : '---'}
         </span>
         <span>
-          {Math.floor((data.holc.high - data.holc.low) / data.holc.low * 10000) / 100 + '%'}
+          {
+            data.holc.high ?
+            Math.floor((data.holc.high - data.holc.low) / data.holc.low * 10000) / 100 + '%'
+            : '---'
+          }
         </span>
         <span className="qtr-val qtr-low">Low: &nbsp;
           {data.holc.low ? toDecimal(data.holc.low, data.digits) : '---'}

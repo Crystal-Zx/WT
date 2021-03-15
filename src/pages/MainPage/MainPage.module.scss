@@ -191,6 +191,7 @@ $bottomH: 4.3vh;
             justify-content: center;
             align-items: center;
             font-size: 12px;
+            cursor: pointer;
             @include themify {
               color: themed('color-hl');
               background-color: themed('bg-color-hl');

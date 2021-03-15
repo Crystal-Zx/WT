@@ -9,6 +9,7 @@ import { addToKLine } from '../../MainAction'
 const { Search } = Input
 
 const QuoteSPane = (props) => {
+  // console.log("====QSP RENDER")
   const { list, addToKLine } = props
   const [searchVal, setSearchVal] = useState("")
   const [isExpandAll, setIsExpandAll] = useState(false)
@@ -48,14 +49,14 @@ const QuoteSPane = (props) => {
     </>
   )
 }
-const areEqual = (prevProps, nextProps) => {
-  // console.log(JSON.stringify(prevProps.list), JSON.stringify(nextProps.list), JSON.stringify(prevProps.list) === JSON.stringify(nextProps.list))
-  if(JSON.stringify(prevProps.list) === JSON.stringify(nextProps.list)) {
-    return true
-  } else {
-    return false
-  }
-}
+// const areEqual = (prevProps, nextProps) => {
+//   console.log(prevProps.list, nextProps.list, JSON.stringify(prevProps.list) === JSON.stringify(nextProps.list))
+//   if(JSON.stringify(prevProps.list) === JSON.stringify(nextProps.list)) {
+//     return true
+//   } else {
+//     return false
+//   }
+// }
 
 export default connect(
   state => {
@@ -82,4 +83,4 @@ export default connect(
       }
     }
   }
-)(React.memo(QuoteSPane, areEqual))
+)(QuoteSPane)

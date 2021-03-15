@@ -16,7 +16,7 @@ import styles from './QuotePanes.module.scss';
 
 
 const QuotePanes = (props) => {
-  // console.log("====QuotePanes render", props)
+  // console.log("====QP RENDER")
   const {
     dispatch, symbolList, filterGroup, socket, orderSymbols, klineSymbols
   } = props
@@ -71,12 +71,13 @@ const QuotePanes = (props) => {
         if(item.symbol === data.symbol) {
           data.isUp = item.bid ? data.bid >= item.bid : 1
           data.size = data.contract_size
-          data.spread = toDecimal((data.ask - data.bid) / (Number(data.ask )=== 0 ? 1 : data.ask) * 100, data.digits < 2 ? data.digits : 2) + "%"
+          data.spread = item.holc.open && toDecimal((data.bid - item.holc.open) * 100 / item.holc.open, 2) + "%"
           delete data.contract_size
           Object.assign(item, data)
           break
         }
       }
+      // console.log(cacheList)
     } 
     // else if(data.type === "mini") {
     //   data = data.data
@@ -150,7 +151,7 @@ const QuotePanes = (props) => {
        */ 
       const cacheVal = JSON.stringify(cacheListRef.current),
             prevVal = JSON.stringify(prevListRef.current)
-            
+      
       if(cacheVal !== prevVal) {
         prevListRef.current = JSON.parse(cacheVal)
         dispatch(setSymbols(JSON.parse(cacheVal)))

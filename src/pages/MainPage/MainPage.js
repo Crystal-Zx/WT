@@ -13,13 +13,47 @@ import { connect } from 'react-redux'
 import { getCurrDate } from '../../utils/utilFunc'
 import { setTheme, isSuspension } from './MainAction'
 import user from '../../services/user'
+// 国际化
+import { addLocaleData, FormattedDate, FormattedMessage, FormattedTime, IntlProvider } from 'react-intl';
+// import en from 'react-intl/locale-data/en';
+// import zh from 'react-intl/locale-data/zh';
+import zh_CN from '../../locales/zh_CN'
+import zh_HK from '../../locales/zh_HK'
+import en_US from '../../locales/en_US'
+// addLocaleData([...en, ...zh])   // 引入多语言环境的数据
 
 const { Option } = Select
 
 function MainPage ({ theme, dispatch }) {
+
+  const messages = {
+    "zhcn": zh_CN,
+    "zhhk": zh_HK,
+    "enus": en_US,
+  }
   
   const [currDate, setCurrDate] = useState(getCurrDate())
   const [isLoading, setIsLoading] = useState(false)
+  const [locale, setLocale] = useState("zhhk")
+
+  const langOverlay = () => {
+    const overlay = [
+      { key: "zhcn", abbr: "CN", name: '简体中文' },
+      { key: "zhhk", abbr: "HK", name: '繁體中文' },
+      { key: "enus", abbr: "US", name: 'English' },
+    ]
+    return (
+      <Menu onClick={val => setLocale(val.key)} selectedKeys={locale}>
+        {
+          overlay.map(item => (
+            <Menu.Item key={item.key}>
+              <span className="menu-item-abbr">{item.abbr}</span>{item.name}
+            </Menu.Item>
+          ))
+        }
+      </Menu>
+    )
+  }
 
   const changeTheme = () => {
     if(theme === 'light') {
@@ -71,78 +105,113 @@ function MainPage ({ theme, dispatch }) {
   },[document.readyState])
 
   return (
-    <Spin
-      className={styles['main-spin-x']}
-      wrapperClassName={styles['main-spin-x']}
-      spinning={isLoading}
-      size="large"
-    >
-      <div className='main-x'>
-        <div className="main-top-x">
-          <QuotePanes />
-          <TopRPanes />
-        </div>
-        <div className="main-middle-x card-container">
-          <OrderPanes />
-        </div>
-        <div className="main-bottom-x">
-          <AccountInfo />
-        </div>
-        <div className="main-topright-x">
-          <span className="tr-currtime-x">{currDate}</span>
-          {/* <IconFont type="iconLayout" className="main-icon-layout" /> */}
-          {/* <Switch className="tr-switch-theme" /> */}
-          <Button 
-            type="default" 
-            className="tr-btn-changetheme"
-            onClick={changeTheme}
-          >
-            {
-              theme === 'light' &&
-              <IconFont type="iconDark" className="wt-icon main-icon-dark" />
-            }
-            {
-              theme === 'dark' &&
-              <IconFont type="iconLight" className="wt-icon main-icon-light" />
-            }
-          </Button>
-          {/* <IconFont type="iconWifi" className="main-icon-wifi" /> */}
-          <Select 
-            className="tr-select-changeAcc"
-            defaultValue={user.getCurrAcc() && user.getCurrAcc().account}
-            suffixIcon={<IconFont type="iconDD" className="main-icon-dd" />}
-            onChange={onChangeAcc}
-          >
-            {
-              Array.isArray(user.getAccInfo()) && user.getAccInfo().map(item => {
-                return (
-                  <Option key={item.account} value={item.account}>
-                    {Number(item.type) === 1 ? 'DEMO' : 'REAL'}&nbsp;
-                    {item.account}
-                  </Option>
-                )
-              })
-            }
-          </Select>
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item>
-                  <IconFont type="iconLogout" />&nbsp;
-                  <a href="javascrip:;" onClick={onLogout}>退出登录</a>
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomRight"
-          >
-            <Button type="default" className="tr-btn-menu">
-              <IconFont type="iconMenu" className="main-icon-menu" />
+    <IntlProvider locale={locale.slice(0, 2)} messages={messages[locale]}>
+      <Spin
+        className={styles['main-spin-x']}
+        wrapperClassName={styles['main-spin-x']}
+        spinning={isLoading}
+        size="large"
+      >
+        <div className='main-x'>
+          <div className="main-top-x">
+            <QuotePanes />
+            <TopRPanes />
+          </div>
+          <div className="main-middle-x card-container">
+            <OrderPanes />
+          </div>
+          <div className="main-bottom-x">
+            <AccountInfo />
+          </div>
+          <div className="main-topright-x">
+            <span className="tr-currtime-x">{
+              <>
+                <FormattedDate 
+                  value={currDate}
+                  year="numeric"
+                  month="long"
+                  day="2-digit"
+                  hour="numeric"
+                  minute="numeric"
+                  second="numeric"
+                />
+                {/* <FormattedTime 
+                  value={currDate}
+                  hour="numeric"
+                  minute="numeric"
+                /> */}
+              </>
+            }</span>
+            {/* <IconFont type="iconLayout" className="main-icon-layout" /> */}
+            {/* <Switch className="tr-switch-theme" /> */}
+            <Button 
+              type="default" 
+              className="tr-btn-changetheme"
+              onClick={changeTheme}
+            >
+              {
+                theme === 'light' &&
+                <IconFont type="iconDark" className="wt-icon main-icon-dark" />
+              }
+              {
+                theme === 'dark' &&
+                <IconFont type="iconLight" className="wt-icon main-icon-light" />
+              }
             </Button>
-          </Dropdown>
+            {/* <IconFont type="iconWifi" className="main-icon-wifi" /> */}
+            <Dropdown
+              overlay={langOverlay}
+              overlayClassName={["menu-lang-x", styles['menu-lang-x']]}
+            >
+              <Button type="default">
+                <IconFont 
+                  type="iconLang"
+                  style={{ marginTop: "2px", fontSize: "17px"}} 
+                />
+              </Button>
+            </Dropdown>
+            <Select 
+              className="tr-select-changeAcc"
+              defaultValue={user.getCurrAcc() && user.getCurrAcc().account}
+              suffixIcon={<IconFont type="iconDD" className="main-icon-dd" />}
+              onChange={onChangeAcc}
+            >
+              {
+                Array.isArray(user.getAccInfo()) && user.getAccInfo().map(item => {
+                  return (
+                    <Option key={item.account} value={item.account}>
+                      {Number(item.type) === 1 ? 'DEMO' : 'REAL'}&nbsp;
+                      {item.account}
+                    </Option>
+                  )
+                })
+              }
+            </Select>
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <IconFont type="iconLogout" />&nbsp;
+                    <a href="javascrip:;" onClick={onLogout}>
+                      <FormattedMessage 
+                        id="navBar.menu.logout"
+                        defaultMessage="退出登录"
+                      />
+                    </a>
+                  </Menu.Item>
+                </Menu>
+              }
+              placement="bottomRight"
+            >
+              <Button type="default" className="tr-btn-menu">
+                <IconFont type="iconMenu" className="main-icon-menu" />
+              </Button>
+            </Dropdown>
+          </div>
+          <Login />
         </div>
-        <Login />
-      </div>
-    </Spin>
+      </Spin>
+    </IntlProvider>
   )
 }
 

@@ -4,7 +4,9 @@ import SettingsPage from './pages/SettingsPage/SettingsPage';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+
 function App(props) {
+
   return (
     <Router>
       <Route exact path="/" component={MainPage} />

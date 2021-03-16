@@ -5,14 +5,18 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { addToKLine } from '../../MainAction'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const { Search } = Input
+
+
 
 const QuoteSPane = (props) => {
   // console.log("====QSP RENDER")
   const { list, addToKLine } = props
   const [searchVal, setSearchVal] = useState("")
   const [isExpandAll, setIsExpandAll] = useState(false)
+  const intl = useIntl()
 
   // const addToFavorite = (e) => {
   //   console.log("addToFavorite",e)
@@ -26,7 +30,10 @@ const QuoteSPane = (props) => {
     <>
       <div className="qsp-search-x">
         <Search
-          placeholder="搜索例如EURCHF" 
+          placeholder={intl.formatMessage({
+            id: "quote.search.placeHolder",
+            defaultMessage: "搜索例如EURCHF",
+          })} 
           allowClear
           onSearch={(val) => setSearchVal(val.trim())}
         />

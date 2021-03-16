@@ -252,7 +252,8 @@ p {
   .ant-dropdown-menu-item:not(.ant-dropdown-menu-item-disabled) > a {
     color: inherit;
   }
-  .ant-dropdown-menu-item:hover {
+  .ant-dropdown-menu-item:hover,
+  .ant-dropdown-menu-item-selected {
     @include themify {
       background-color: themed('bg-color-trHover');
     }

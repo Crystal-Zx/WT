@@ -3,16 +3,15 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
-// import http from '../../../../http'
 
 import { getCalendarData, getEcoDetail } from '../../MainAction'
 import styles from './TopRPanes.module.scss'
 import EcoDetailModal from './EcoDetailModal'
+import { FormattedDate, FormattedMessage, useIntl } from 'react-intl'
 
 const CalendarPanes = ({ dispatch }) => {
   const { Option } = Select
-  const chWeek = '日一二三四五六'
-  // let currStamp = moment().valueOf()
+  
   const [currStamp, setCurrStamp] = useState(moment().valueOf())
   const [ecoData, setEcoData] = useState({ list: [], isFetching: false})
   const [ecoEvent, setEcoEvent] = useState({ list: [], isFetching: false})
@@ -20,6 +19,7 @@ const CalendarPanes = ({ dispatch }) => {
   const [keyword, setKeyword] = useState()
   const [visible, setVisible] = useState(false)
   const [ecoDetail, setEcoDetail] = useState({})
+  const intl = useIntl()
 
   const getEcoList = (timestamp) => {
     if(!timestamp && ecoData.isFetching) return
@@ -81,13 +81,23 @@ const CalendarPanes = ({ dispatch }) => {
   }
   const getDataCol = [
     {
-      title: '时间',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.date"
+          defaultMessage="时间"
+        />
+      ),
       dataIndex: 'date',
       key: 'date',
       align: 'center'
     },
     {
-      title: '地区',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.country"
+          defaultMessage="国家"
+        />
+      ),
       dataIndex: 'country',
       key: 'country',
       align: 'center',
@@ -100,7 +110,12 @@ const CalendarPanes = ({ dispatch }) => {
       }
     },
     {
-      title: '指标名称',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.title"
+          defaultMessage="指标名称"
+        />
+      ),
       dataIndex: 'title',
       key: 'title',
       align: 'center',
@@ -113,7 +128,12 @@ const CalendarPanes = ({ dispatch }) => {
       }
     },
     {
-      title: '重要性',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.impact"
+          defaultMessage="重要性"
+        />
+      ),
       dataIndex: 'star',
       key: 'star',
       width: '13%',
@@ -121,7 +141,12 @@ const CalendarPanes = ({ dispatch }) => {
       render: star => <Rate disabled defaultValue={star} />
     },
     {
-      title: '今值',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.actual"
+          defaultMessage="今值"
+        />
+      ),
       dataIndex: 'actual',
       key: 'actual',
       align: 'center',
@@ -130,7 +155,12 @@ const CalendarPanes = ({ dispatch }) => {
       }
     },
     {
-      title: '预期',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.consensus"
+          defaultMessage="预期"
+        />
+      ),
       dataIndex: 'consensus',
       key: 'consensus',
       align: 'center',
@@ -139,7 +169,12 @@ const CalendarPanes = ({ dispatch }) => {
       }
     },
     {
-      title: '前值',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.previous"
+          defaultMessage="前值"
+        />
+      ),
       dataIndex: 'previous',
       key: 'previous',
       align: 'center',
@@ -148,17 +183,17 @@ const CalendarPanes = ({ dispatch }) => {
       }
     },
     {
-      title: '数据解读',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.detail"
+          defaultMessage="数据解读"
+        />
+      ),
       dataIndex: 'detail',
       key: 'detail',
       align: 'center',
       width: '8%',
       render: (detail,item) => {
-        // return <a 
-        //   className="cp-btn-ecoDetail"
-        //   href={"javascript:;"}
-        //   onClick={() => showEcoDetail(item.id)}
-        // >详情</a>
         return <Button
           className="cp-btn-ecoDetail"
           onClick={() => showEcoDetail(item.id)}
@@ -168,13 +203,23 @@ const CalendarPanes = ({ dispatch }) => {
   ]
   const getEventCol = [
     {
-      title: '时间',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.date"
+          defaultMessage="时间"
+        />
+      ),
       dataIndex: 'date',
       key: 'date',
       align: 'center'
     },
     {
-      title: '地区',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.country"
+          defaultMessage="地区"
+        />
+      ),
       dataIndex: 'country',
       key: 'country',
       align: 'center',
@@ -187,7 +232,12 @@ const CalendarPanes = ({ dispatch }) => {
       }
     },
     {
-      title: '城市',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoEventTable.city"
+          defaultMessage="城市"
+        />
+      ),
       dataIndex: 'region',
       key: 'region',
       align: 'center',
@@ -195,7 +245,12 @@ const CalendarPanes = ({ dispatch }) => {
       render: region => region || '---'
     },
     {
-      title: '指标名称',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.title"
+          defaultMessage="指标名称"
+        />
+      ),
       dataIndex: 'title',
       key: 'title',
       align: 'center',
@@ -216,7 +271,12 @@ const CalendarPanes = ({ dispatch }) => {
       }
     },
     {
-      title: '重要性',
+      title: (
+        <FormattedMessage 
+          id="calendar.ecoDataTable.impact"
+          defaultMessage="重要性"
+        />
+      ),
       dataIndex: 'star',
       key: 'star',
       width: '13%',
@@ -252,9 +312,24 @@ const CalendarPanes = ({ dispatch }) => {
           value={moment(currStamp).format("YYYY-MM-DD")}
           onChange={(e) => onChangeDate(moment(e.target.value))}
         >
-          <Radio.Button value={moment().subtract(1, 'd').format("YYYY-MM-DD")}>昨天</Radio.Button>
-          <Radio.Button value={moment().format("YYYY-MM-DD")}>今天</Radio.Button>
-          <Radio.Button value={moment().add(1, 'd').format("YYYY-MM-DD")}>明天</Radio.Button>
+          <Radio.Button value={moment().subtract(1, 'd').format("YYYY-MM-DD")}>
+            <FormattedMessage
+              id="moment.yesterday"
+              defaultMessage="昨天"
+            />
+          </Radio.Button>
+          <Radio.Button value={moment().format("YYYY-MM-DD")}>
+            <FormattedMessage
+              id="moment.today"
+              defaultMessage="今天"
+            />
+          </Radio.Button>
+          <Radio.Button value={moment().add(1, 'd').format("YYYY-MM-DD")}>
+            <FormattedMessage
+              id="moment.tomorrow"
+              defaultMessage="昨天"
+            />
+          </Radio.Button>
         </Radio.Group>
         <DatePicker
           allowClear={false}
@@ -265,27 +340,96 @@ const CalendarPanes = ({ dispatch }) => {
           placeholder={moment().format("YYYY-MM-DD")}
         />
         <Select 
-          placeholder="地区"
+          dropdownMatchSelectWidth={false}
+          placeholder={
+            intl.formatMessage({
+              id: "calendar.country.placeholder",
+              defaultMessage: "国家"
+            })
+          }
           suffixIcon={<IconFont type="iconDD" className="main-icon-dd mt-0" />}
+          defaultValue="1"
           onChange={value => setRegion(value)}
         >
-          <Option value="1">全部</Option>
-          <Option value="欧元区">欧元区</Option>
-          <Option value="美国">美国</Option>
-          <Option value="英国">英国</Option>
-          <Option value="日本">日本</Option>
-          <Option value="加拿大">加拿大</Option>
-          <Option value="瑞士">瑞士</Option>
+          <Option value="1">
+            <FormattedMessage
+              id="calendar.country.all"
+              defaultMessage="全部"
+            />
+          </Option>
+          <Option value="欧元区">
+            <FormattedMessage
+              id="calendar.country.euro"
+              defaultMessage="欧元区"
+            />
+          </Option>
+          <Option value="美国">
+            <FormattedMessage
+              id="calendar.country.us"
+              defaultMessage="美国"
+            />
+          </Option>
+          <Option value="英国">
+            <FormattedMessage
+              id="calendar.country.uk"
+              defaultMessage="英国"
+            />
+          </Option>
+          <Option value="日本">
+            <FormattedMessage
+              id="calendar.country.jp"
+              defaultMessage="日本"
+            />
+          </Option>
+          <Option value="加拿大">
+            <FormattedMessage
+              id="calendar.country.canada"
+              defaultMessage="加拿大"
+            />
+          </Option>
+          <Option value="澳大利亚">
+            <FormattedMessage
+              id="calendar.country.australia"
+              defaultMessage="澳大利亚"
+            />
+          </Option>
         </Select>
         <Select 
-          placeholder="关键字"
+          dropdownMatchSelectWidth={false}
+          placeholder={
+            intl.formatMessage({
+              id: "calendar.keyword.placeholder",
+              defaultMessage: "关键字"
+            })
+          }
           suffixIcon={<IconFont type="iconDD" className="main-icon-dd mt-0" />}
+          defaultValue="1"
           onChange={value => setKeyword(value)}
         >
-          <Option value="1">全部</Option>
-          <Option value="会议纪要">会议纪要</Option>
-          <Option value="央行">央行</Option>
-          <Option value="失业率">失业率</Option>
+          <Option value="1">
+            <FormattedMessage
+              id="calendar.keyword.all"
+              defaultMessage="全部关键字"
+            />
+          </Option>
+          <Option value="会议纪要">
+            <FormattedMessage
+              id="calendar.keyword.meetingSummary"
+              defaultMessage="会议纪要"
+            />
+          </Option>
+          <Option value="央行">
+            <FormattedMessage
+              id="calendar.keyword.centralBank"
+              defaultMessage="央行"
+            />
+          </Option>
+          <Option value="失业率">
+            <FormattedMessage
+              id="calendar.keyword.unemploymentRate"
+              defaultMessage="失业率"
+            />
+          </Option>
           <Option value="CPI">CPI</Option>
           <Option value="GDP">GDP</Option>
         </Select>
@@ -296,7 +440,20 @@ const CalendarPanes = ({ dispatch }) => {
         size="large"
       >
         <Table 
-          title={() => `${moment(currStamp).format('YYYY-MM-DD')} 周${chWeek.substr(moment(currStamp).day(), 1)} 经济数据一览表`}
+          title={() =>
+            <FormattedMessage
+              id="calendar.ecoDataTable.tableName"
+              defaultMessage="{date} {weekday} 经济数据一览表"
+              values={{
+                date: intl.formatDate(currStamp, {
+                  year: 'numeric', month: 'long', day: '2-digit',
+                }),
+                weekday: intl.formatDate(currStamp, {
+                  weekday: 'short'
+                })
+              }}
+            />
+          }
           className="cp-table-li"
           dataSource={getFilterList(ecoData.list)}
           columns={getDataCol}
@@ -304,7 +461,21 @@ const CalendarPanes = ({ dispatch }) => {
           pagination={false}
         />
         <Table 
-          title={() => `${moment(currStamp).format('YYYY-MM-DD')} 周${chWeek.substr(moment(currStamp).day(), 1)} 财经大事一览表`}
+          title={() =>
+            <FormattedMessage
+              id="calendar.ecoEventTable.tableName"
+              defaultMessage="{date} {weekday} 财经大事一览表"
+              values={{
+                date: intl.formatDate(currStamp, {
+                  year: 'numeric', month: 'long', day: '2-digit',
+                }),
+                weekday: intl.formatDate(currStamp, {
+                  weekday: 'short'
+                })
+              }}
+            />
+          }
+          // title={() => `${moment(currStamp).format('YYYY-MM-DD')} 周${chWeek.substr(moment(currStamp).day(), 1)} 财经大事一览表`}
           className="cp-table-li"
           dataSource={getFilterList(ecoEvent.list)}
           columns={getEventCol}

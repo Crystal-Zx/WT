@@ -325,3 +325,14 @@ $bottomH: 4.3vh;
   }
 
 }
+
+.menu-lang-x {
+  color: red !important;
+  :global {
+    .menu-item-abbr {
+      position: relative;
+      top: .2em;
+      font-size: .5em;
+    }
+  }
+}

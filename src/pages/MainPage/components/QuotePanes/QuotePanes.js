@@ -10,9 +10,9 @@ import {
   setSymbolGroup
 } from '../../MainAction'
 import { toDecimal } from '../../../../utils/utilFunc'
-
 import QuoteSPane from './QuoteSPanes.js';
 import styles from './QuotePanes.module.scss';
+import { FormattedMessage } from 'react-intl'
 
 
 const QuotePanes = (props) => {
@@ -191,7 +191,12 @@ const QuotePanes = (props) => {
       <CardTabs
         initialPanes={[
           {
-            title: '品种报价', 
+            title: (
+              <FormattedMessage
+                id="quote.tabName"
+                defaultMessage="品种报价"
+              />
+            ), 
             content: (
               <LineTabs
                 initialPanes={qspTemp}

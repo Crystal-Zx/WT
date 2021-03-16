@@ -3,11 +3,25 @@ import ChartPanes from '../ChartPanes/ChartPanes.js'
 import CalendarPanes from './CalendarPanes'
 
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 const topRPanes = [
-  { title: '图表', content: <ChartPanes />, key: '1' },
+  { title: (
+      <FormattedMessage
+        id="chart.tabName"
+        defaultMessage="图表"
+      />
+    ), 
+    content: <ChartPanes />, key: '1'
+  },
   // { title: '新闻信息', content: <NewsPanes />, key: '2' },
-  { title: '财经日历', content: <CalendarPanes />, key: '3' },
+  { title: (
+      <FormattedMessage 
+        id="calendar.tabName"
+        defaultMessage="财经日历"
+      />
+    ), content: <CalendarPanes />, key: '3'
+  },
   // { title: '市场分析', content: '市场分析', key: '4' }
 ]
 

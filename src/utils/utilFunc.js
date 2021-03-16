@@ -77,7 +77,8 @@ export const getCurrDate = () => {
     minute = ('00' + _date.getMinutes()).slice(-2),
     second = ('00' + _date.getSeconds()).slice(-2)
 
-  return `${year}年${month}月${date}日 ${hour}:${minute}:${second}`
+  return _date
+  // return `${year}年${month}月${date}日 ${hour}:${minute}:${second}`
 }
 
 // 交易相关

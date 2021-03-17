@@ -1,4 +1,4 @@
-import { Menu, Dropdown, Button, Select, Spin } from 'antd';
+import { Menu, Dropdown, Button, Select, Spin, ConfigProvider } from 'antd';
 
 import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
@@ -14,13 +14,10 @@ import { getCurrDate } from '../../utils/utilFunc'
 import { setTheme, isSuspension } from './MainAction'
 import user from '../../services/user'
 // 国际化
-import { addLocaleData, FormattedDate, FormattedMessage, FormattedTime, IntlProvider } from 'react-intl';
-// import en from 'react-intl/locale-data/en';
-// import zh from 'react-intl/locale-data/zh';
+import { FormattedDate, FormattedMessage, FormattedTime, IntlProvider } from 'react-intl';
 import zh_CN from '../../locales/zh_CN'
 import zh_HK from '../../locales/zh_HK'
 import en_US from '../../locales/en_US'
-// addLocaleData([...en, ...zh])   // 引入多语言环境的数据
 
 const { Option } = Select
 
@@ -165,6 +162,7 @@ function MainPage ({ theme, dispatch }) {
             >
               <Button type="default">
                 <IconFont 
+                  className="wt-icon"
                   type="iconLang"
                   style={{ marginTop: "2px", fontSize: "17px"}} 
                 />

@@ -3,11 +3,13 @@ import { connect } from 'react-redux'
 import { Button, InputNumber, Spin } from 'antd'
 import { openNotificationWithIcon, toDecimal } from '../../../../utils/utilFunc'
 import { openOrder } from '../../MainAction'
+import { useIntl } from 'react-intl'
 
 const QuoteTr = ({ isSuspension, dispatch, data }) => {
   const [volume, setVolume] = useState(0.01)
   const [isFetching0, setIsFetching0] = useState(false)
   const [isFetching1, setIsFetching1] = useState(false)
+  const intl = useIntl()
 
   const onChange = (value) => {
     setVolume(value)
@@ -20,18 +22,27 @@ const QuoteTr = ({ isSuspension, dispatch, data }) => {
       })).then(res => {
         !!cmd ? setIsFetching1(false) : setIsFetching0(false)
         openNotificationWithIcon({
-          type: 'success', msg: '创建订单成功'
+          type: 'success', msg: intl.formatMessage({
+            id: "tradeModal.noti.success",
+            defaultMessage: "创建订单成功"
+          })
         })
       }).catch(err => {
         !!cmd ? setIsFetching1(false) : setIsFetching0(false)
         openNotificationWithIcon({
-          type: 'error', msg: '创建订单失败', desc: err.msg || `${err}`
+          type: 'error', msg: intl.formatMessage({
+            id: "tradeModal.noti.error",
+            defaultMessage: "创建订单失败"
+          }), desc: err.msg || `${err}`
         })
       })
     } else {
       !!cmd ? setIsFetching1(false) : setIsFetching0(false)
       openNotificationWithIcon({
-        type: 'error', msg: '停盘期间无法交易'
+        type: 'error', msg: intl.formatMessage({
+          id: "tradeModal.noti.timeError",
+          defaultMessage: "停盘期间无法交易"
+        })
       })
     }
   }

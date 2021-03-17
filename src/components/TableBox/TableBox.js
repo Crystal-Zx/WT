@@ -5,6 +5,7 @@ import QuoteTr from '../../pages/MainPage/components/QuotePanes/QuoteTr'
 import styles from './TableBox.module.scss'
 import { useState,useEffect } from 'react'
 import SymbolInfoModal from '../SymbolInfoModal/SymbolInfoModal'
+import { useIntl } from 'react-intl'
 
 function TableBox (props) {
   const { data, addToKLine, isExpandAll } = props  // isLogin
@@ -12,6 +13,7 @@ function TableBox (props) {
   const [expandedRows, setExpandedRows] = useState()
   const [visible, setVisible] = useState(false)
   const [symbol, setSymbol] = useState(null)
+  const intl = useIntl()
 
   const renderContent = (val, row, index, type) => {
     const obj = {
@@ -44,7 +46,6 @@ function TableBox (props) {
               type="iconKLine"
               className="icon-kline"
               onClick={(e) => {
-                console.log(row)
                 if(!Number(row.ask)) {
                   e.stopPropagation()
                   return
@@ -66,10 +67,13 @@ function TableBox (props) {
   }
   const getColumns = () => [
     {
-      title: '品种',
+      title: intl.formatMessage({
+        id: "quote.subTabName.symbol",
+        defaultMessage: "品种"
+      }),
       dataIndex: 'symbol',
       key: 'symbol',
-      width: '40.68%',
+      width: '38.68%',
       render: (symbol, row) => {
         // console.log(symbol, row)
         return (
@@ -81,24 +85,33 @@ function TableBox (props) {
       }
     },
     {
-      title: '调查',
+      title: intl.formatMessage({
+        id: "quote.subTabName.spread",
+        defaultMessage: "调查"
+      }),
       dataIndex: 'spread',
       key: 'spread',
-      width: '19.5%',
+      width: '21.5%',
       align: 'center',
       textWrap: 'word-break',
       ellipsis: true,
       render: (...args) => renderContent(...args, 'spread')
     },
     {
-      title: '卖',
+      title: intl.formatMessage({
+        id: "quote.subTabName.bid",
+        defaultMessage: "卖"
+      }),
       dataIndex: 'bid',
       key: 'bid',
       align: 'center',
       render: (...args) => renderContent(...args, 'bid')
     },
     {
-      title: '买',
+      title: intl.formatMessage({
+        id: "quote.subTabName.ask",
+        defaultMessage: "买"
+      }),
       dataIndex: 'ask',
       key: 'ask',
       align: 'center',

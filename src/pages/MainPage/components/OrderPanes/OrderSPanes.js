@@ -3,6 +3,7 @@ import { Table, Menu, Dropdown, Button, Badge } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import EditOrderPop from './EditOrderPop'
 import { getCmdArr, toDecimal } from '../../../../utils/utilFunc'
+import { FormattedMessage } from 'react-intl'
 
 const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }) => {
   
@@ -39,19 +40,28 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         onClick={() => onShowConfirmForAll(getTicketsFor0)}
         disabled={!getTicketsFor0 || !getTicketsFor0.length}
       >
-        <>对所有头寸进行平仓</>
+        <FormattedMessage 
+          id="order.position.menuItem1"
+          defaultMessage="对所有头寸进行平仓"
+        />
       </Menu.Item>
       <Menu.Item 
         onClick={() => onShowConfirmForAll(getTicketsFor1)}
         disabled={!getTicketsFor1 || !getTicketsFor1.length}
       >
-        <>对盈利头寸进行平仓（净利）</>
+        <FormattedMessage 
+          id="order.position.menuItem2"
+          defaultMessage="对盈利头寸进行平仓（净利）"
+        />
       </Menu.Item>
       <Menu.Item 
         onClick={() => onShowConfirmForAll(getTicketsFor2)}
         disabled={!getTicketsFor2 || !getTicketsFor2.length}
       >
-        <>对亏损头寸进行平仓（净利）</>
+        <FormattedMessage 
+          id="order.position.menuItem3"
+          defaultMessage="对亏损头寸进行平仓（净利）"
+        />
       </Menu.Item>
     </Menu>
   )
@@ -62,7 +72,12 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
   const getColumns = () => {
     return [
       {
-        title: '品种',
+        title: (
+          <FormattedMessage 
+            id="order.position.th1"
+            defaultMessage="品种"
+          />
+        ),
         dataIndex: 'symbol',
         key: 'symbol',
         width: '20.02%',
@@ -95,21 +110,41 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         }
       },
       {
-        title: '手数',
+        title: (
+          <FormattedMessage 
+            id="order.position.th2"
+            defaultMessage="手数"
+          />
+        ),
         dataIndex: 'volume',
         key: 'volume',
         width: '7.94%',
         align: 'left'
       },
       {
-        title: '方向',
+        title: (
+          <FormattedMessage 
+            id="order.position.th3"
+            defaultMessage="方向"
+          />
+        ),
         dataIndex: 'cmdForCh',
         key: 'cmdForCh',
         width: '7.46%',
         align: 'left'
       },
       {
-        title: `${Number(type) === 0 ? "开仓" : "挂单"}价/即时价`,
+        title: (
+          Number(type) === 0 ?
+          <FormattedMessage 
+            id="order.position.th4"
+            defaultMessage="开仓价/即时价"
+          /> : 
+          <FormattedMessage 
+            id="order.order.th4"
+            defaultMessage="挂单价/即时价"
+          />
+        ),
         dataIndex: 'open_price',
         key: 'openPrice',
         width: '13.12%',
@@ -130,14 +165,24 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         }
       },
       {
-        title: '开仓时间',
+        title: (
+          <FormattedMessage
+            id="order.position.th5"
+            defaultMessage="开仓时间"
+          />
+        ),
         dataIndex: 'open_time',
         key: 'openTime',
         width: '12.06%',
         align: 'left'
       },
       {
-        title: '止盈',
+        title: (
+          <FormattedMessage
+            id="order.position.th6"
+            defaultMessage="止盈"
+          />
+        ),
         dataIndex: 'tp',
         key: 'tp',
         width: '8.98%',
@@ -154,7 +199,12 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         }
       },
       {
-        title: '止损',
+        title: (
+          <FormattedMessage
+            id="order.position.th7"
+            defaultMessage="止损"
+          />
+        ),
         dataIndex: 'sl',
         key: 'sl',
         width: '8.09%',
@@ -172,14 +222,24 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
         }
       },
       {
-        title: '隔夜利息',
+        title: (
+          <FormattedMessage
+            id="order.position.th8"
+            defaultMessage="隔夜利息"
+          />
+        ),
         dataIndex: 'storage',
         key: 'storage',
         width: '7.94%',
         align: 'center'
       },
       {
-        title: '盈利',
+        title: (
+          <FormattedMessage
+            id="order.position.th9"
+            defaultMessage="隔夜利息"
+          />
+        ),
         dataIndex: 'profit',
         key: 'profit',
         width: '7.95%',
@@ -198,7 +258,14 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
             return (
               <Dropdown overlay={lastColMenu} placement="bottomRight">
                 <Button type="primary">
-                  <span>{Number(type) === 0 ? "平仓" : "取消"}</span>
+                  <span>{Number(type) === 0 ? 
+                    <FormattedMessage
+                      id="order.position.th10" defaultMessage="平仓"
+                    /> : 
+                    <FormattedMessage 
+                      id="order.position.th10Cancel" defaultMessage="取消"
+                    />
+                  }</span>
                   <IconFont type="iconDD" className="iconDD" />
                 </Button>
               </Dropdown>
@@ -211,7 +278,10 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
                 disabled={!getTicketsForOrder || !getTicketsForOrder.length}
                 onClick={() => onShowConfirmForAll(getTicketsForOrder)}
               >
-                全部删除
+                <FormattedMessage 
+                  id="order.order.th10"
+                  defaultMessage="全部删除"
+                />
               </Button>
             )
           }
@@ -242,31 +312,56 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
   // 历史订单columns配置项
   const getHistoryCol = () => [
     {
-      title: '品种',
+      title: (
+        <FormattedMessage 
+          id="order.history.th1"
+          defaultMessage="品种"
+        />
+      ),
       dataIndex: 'symbol',
       key: 'symbol',
       width: '8.4%'
     },
     {
-      title: '订单',
+      title: (
+        <FormattedMessage 
+          id="order.history.th2"
+          defaultMessage="订单"
+        />
+      ),
       dataIndex: 'ticket',
       key: 'ticket',
       width: '10%'
     },
     {
-      title: '手数',
+      title: (
+        <FormattedMessage 
+          id="order.history.th3"
+          defaultMessage="手数"
+        />
+      ),
       dataIndex: 'volume',
       key: 'volume',
       width: '7.94%'
     },
     {
-      title: '方向',
+      title: (
+        <FormattedMessage 
+          id="order.history.th4"
+          defaultMessage="方向"
+        />
+      ),
       dataIndex: 'cmdForCh',
       key: 'cmdForCh',
       width: '9.06%'
     },
     {
-      title: '开仓价/平仓价',
+      title: (
+        <FormattedMessage 
+          id="order.history.th5"
+          defaultMessage="开仓价/平仓价"
+        />
+      ),
       dataIndex: 'open_price',
       key: 'openPrice',
       width: '18.14%',
@@ -280,26 +375,46 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
       }
     },
     {
-      title: '开仓时间',
+      title:  (
+        <FormattedMessage 
+          id="order.history.th6"
+          defaultMessage="开仓时间"
+        />
+      ),
       dataIndex: 'open_time',
       key: 'openTime',
       width: '15.06%'
     },
     {
-      title: '平仓时间',
+      title: (
+        <FormattedMessage 
+          id="order.history.th7"
+          defaultMessage="平仓时间"
+        />
+      ),
       dataIndex: 'close_time',
       key: 'openTime',
       width: '14.06%'
     },
     {
-      title: '隔夜利息',
+      title: (
+        <FormattedMessage 
+          id="order.history.th8"
+          defaultMessage="隔夜利息"
+        />
+      ),
       dataIndex: 'storage',
       key: 'storage',
       width: '6.94%',
       align: 'center'
     },
     {
-      title: '盈利',
+      title: (
+        <FormattedMessage 
+          id="order.history.th9"
+          defaultMessage="盈利"
+        />
+      ),
       dataIndex: 'profit',
       key: 'profit',
       align: 'center',

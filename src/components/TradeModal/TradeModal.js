@@ -6,6 +6,7 @@ import LineTabs from '../LineTabs/LineTabs'
 import styles from '../../components/Login/Login.module.scss'
 import { openNotificationWithIcon, toDecimal } from '../../utils/utilFunc'
 import { openOrder } from '../../pages/MainPage/MainAction'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
 
@@ -24,6 +25,7 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
   const oInitialValues = {
     price: orderForm.getFieldValue('price'), volume: 0.01, tp: 0.00, sl: 0.00
   }
+  const intl = useIntl()
 
   const handleOrderChange = (changedValues, allValues) => {  // 均为对象形式
     // 若当前更新值为挂单--->价格
@@ -47,19 +49,25 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
     changeLoading(index, true)
     const values = cmd < 2 ? positionForm.getFieldsValue() : orderForm.getFieldsValue()
     const { volume, price = 0, tp, sl } = values
-    console.log(volume, price, tp, sl)
+    
     dispatch(openOrder({
       lots: volume, cmd, open_price: price, tp, sl, symbol: symbolInfo.symbol, comment: ''
     })).then(res => {
       onHideTradeModal()
       changeLoading(index, false)
       openNotificationWithIcon({
-        type: 'success', msg: '创建订单成功'
+        type: 'success', msg: intl.formatMessage({
+          id: "tradeModal.noti.success",
+          defaultMessage: "创建订单成功"
+        })
       })
     }).catch(err => {
       changeLoading(index, false)
       openNotificationWithIcon({
-        type: 'error', msg: '创建订单失败', desc: err.msg || `${err}`
+        type: 'error', msg: intl.formatMessage({
+          id: "tradeModal.noti.error",
+          defaultMessage: "创建订单失败"
+        }), desc: err.msg || `${err}`
       })
     })
   }
@@ -71,11 +79,15 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
           <div className="wt-trade-x">
             <div className="tm-desc-ul">
               <p className="tm-desc-li">
-                <span>合约大小</span>
+                <span>
+                  <FormattedMessage id="tradeModal.size" defaultMessage="合约大小" />
+                </span>
                 <span>{symbolInfo.size}&nbsp;{symbolInfo.margin_currency}</span>
               </p>
               <p className="tm-desc-li">
-                <span>点差</span>
+                <span>
+                  <FormattedMessage id="tradeModal.spread" defaultMessage="点差" />
+                </span>
                 <span>{symbolInfo.ask ? ((symbolInfo.ask - symbolInfo.bid) / symbolInfo.point / 10).toFixed(2) : '---'}</span>
               </p>
             </div>
@@ -85,7 +97,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
             >
               <Form.Item
                 name="volume"
-                label="交易量"
+                label={intl.formatMessage({
+                  id: "tradeModal.volume",
+                  defaultMessage: "交易量"
+                })}
                 colon={false}
               >
                 <InputNumber
@@ -96,7 +111,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
               </Form.Item>
               <Form.Item
                 name="tp"
-                label="止盈"
+                label={intl.formatMessage({
+                  id: "tradeModal.tp",
+                  defaultMessage: "止盈"
+                })}
                 colon={false}
               >
                 <InputNumber
@@ -107,7 +125,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
               </Form.Item>
               <Form.Item
                 name="sl"
-                label="止损"
+                label={intl.formatMessage({
+                  id: "tradeModal.sl",
+                  defaultMessage: "止损"
+                })}
                 colon={false}
               >
                 <InputNumber
@@ -144,11 +165,15 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
           <div className="wt-trade-x">
             <div className="tm-desc-ul">
               <p className="tm-desc-li">
-                <span>合约大小</span>
+                <span>
+                  <FormattedMessage id="tradeModal.size" defaultMessage="合约大小" />
+                </span>
                 <span>{symbolInfo.size}&nbsp;{symbolInfo.margin_currency}</span>
               </p>
               <p className="tm-desc-li">
-                <span>点差</span>
+                <span>
+                  <FormattedMessage id="tradeModal.spread" defaultMessage="点差" />
+                </span>
                 <span>{symbolInfo.ask ? ((symbolInfo.ask - symbolInfo.bid) / symbolInfo.point / 10).toFixed(2) : '---'}</span>
               </p>
             </div>
@@ -159,7 +184,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
             >
               <Form.Item
                 name="price"
-                label="价格"
+                label={intl.formatMessage({
+                  id: "tradeModal.price",
+                  defaultMessage: "价格"
+                })}
                 colon={false}
                 // initialValue={toDecimal(symbolInfo.ask, symbolInfo.digits)}
               >
@@ -171,7 +199,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
               </Form.Item>
               <Form.Item
                 name="volume"
-                label="交易量"
+                label={intl.formatMessage({
+                  id: "tradeModal.volume",
+                  defaultMessage: "交易量"
+                })}
                 colon={false}
               >
                 <InputNumber
@@ -182,7 +213,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
               </Form.Item>
               <Form.Item
                 name="tp"
-                label="止盈"
+                label={intl.formatMessage({
+                  id: "tradeModal.tp",
+                  defaultMessage: "止盈"
+                })}
                 colon={false}
               >
                 <InputNumber
@@ -193,7 +227,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
               </Form.Item>
               <Form.Item
                 name="sl"
-                label="止损"
+                label={intl.formatMessage({
+                  id: "tradeModal.sl",
+                  defaultMessage: "止损"
+                })}
                 colon={false}
               >
                 <InputNumber
@@ -213,7 +250,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
                   )}
                 >
                   <span className="wt-trans-cmd">
-                    { price <= symbolInfo.bid ? '卖出止损' :  '限价卖出'}
+                    { price <= symbolInfo.bid ? 
+                      intl.formatMessage({ id: "orderType.sellStop", defaultMessage: "卖出止损" }) : 
+                      intl.formatMessage({ id: "orderType.sellLimit", defaultMessage: "限价卖出"})
+                    }
                   </span>
                 </Button>
                 <Button 
@@ -225,7 +265,10 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
                   )}
                 >
                   <span className="wt-trans-cmd">
-                    { price > symbolInfo.bid ? '买入止损' : '限价买入' }
+                    { price > symbolInfo.bid ? 
+                      intl.formatMessage({ id: "orderType.buyStop", defaultMessage: "买入止损" }) : 
+                      intl.formatMessage({ id: "orderType.buyLimit", defaultMessage: "限价买入"})
+                    }
                   </span>
                 </Button>
               </Form.Item>
@@ -272,8 +315,14 @@ const TradeModal = ({ dispatch, symbolInfo, visible, onHideTradeModal }) => {
         >
           <LineTabs 
             initialPanes={[
-              { title: "即时交易", content: getTradeJSX('0'), key: '0' },
-              { title: "挂单交易", content: getTradeJSX('1'), key: '1' }
+              { title: intl.formatMessage({
+                id: "tradeModal.tabName.position",
+                defaultMessage: "即时交易"
+              }), content: getTradeJSX('0'), key: '0' },
+              { title: intl.formatMessage({
+                id: "tradeModal.tabName.order",
+                defaultMessage: "挂单交易"
+              }), content: getTradeJSX('1'), key: '1' }
             ]}
           />  
         </Modal>

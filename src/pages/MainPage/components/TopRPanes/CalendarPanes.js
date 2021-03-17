@@ -197,7 +197,12 @@ const CalendarPanes = ({ dispatch }) => {
         return <Button
           className="cp-btn-ecoDetail"
           onClick={() => showEcoDetail(item.id)}
-        >详情</Button>
+        >
+          <FormattedMessage 
+            id="calendar.ecoDataTable.detailBtn"
+            defaultMessage="详情"
+          />
+        </Button>
       }
     }
   ]

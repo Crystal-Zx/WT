@@ -13,6 +13,7 @@ import {
 import { setAccountInfo } from '../../MainAction'
 import { openNotificationWithIcon, toDecimal, isBuy } from '../../../../utils/utilFunc'
 import IconFont from '../../../../utils/iconfont/iconfont'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   // console.log("====OrderPanes", quoteList)
@@ -20,6 +21,7 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   const { info } = accountInfo
   const [activeKey, setActiveKey] = useState("0")
   const volumeRef = useRef(null)
+  const intl = useIntl()
 
   const _getPositions = (activeKey) => {
     return dispatch(getPositions()).then(res => {
@@ -86,47 +88,76 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
       dispatch(setAccountInfo(info))
     }
   }
-  const onCloseOrder = (tickets) => {
+  const onCloseOrder = (tickets, volume = 0) => {
     const ticketsStr = Array.isArray(tickets) ? tickets.join(",") : tickets
-    const lots = volumeRef.current ? volumeRef.current.input.value : 0.00
+    const lots = volume // volumeRef.current ? volumeRef.current.input.value : 0.00
     return dispatch(closeOrder({
       lots, ticket: ticketsStr, activeKey
     })).then(res => {
       const { ticket } = res.value
       openNotificationWithIcon({
-        type: 'success', msg: `${Number(activeKey) === 0 ? '平仓' : '删除挂单'}成功`, desc: `被操作的订单编号为：${ticket.join(",")}`
+        type: 'success', 
+        msg: (
+          Number(activeKey) === 0 ?
+          intl.formatMessage({ id: "order.noti.closePositionSuccess", defaultMessage: "平仓成功" }) : 
+          intl.formatMessage({ id: "order.noti.closeOrderSuccess", defaultMessage: "删除挂单成功" })
+        ),
+        desc: intl.formatMessage({ 
+          id: "order.noti.closeDesc", 
+          defaultMessage: "被操作的订单编号为： {ticketsStr}"
+        }, {
+          ticketsStr: ticket.join(",")
+        })
       })
       // 重新获取持仓/挂单列表
       _getPositions(activeKey)
     }).catch(err => {
       openNotificationWithIcon({
-        type: 'error', msg: `${Number(activeKey) === 0 ? '平仓' : '删除挂单'}失败`, desc: err
+        type: 'error', 
+        msg: (
+          Number(activeKey) === 0 ?
+          intl.formatMessage({ id: "order.noti.closePositionError", defaultMessage: "平仓失败" }) : 
+          intl.formatMessage({ id: "order.noti.closeOrderError", defaultMessage: "删除挂单失败" })
+        ), 
+        desc: err
       })
     })
   }
   const onShowConfirmForSingle = (item) => {
     confirm({
-      title: `确定${Number(activeKey) === 0 ? '平仓' : '删除该挂单'}？`,
-      icon: <IconFont type="iconWarning" />,
-      content: (
-        <>
-          <span>请选择操作手数：</span>
-          <InputNumber
-            ref={volumeRef}
-            min={0.01}
-            max={item.volume}
-            step={0.01}
-            defaultValue={item.volume}
-            size="small"
-          />
-        </>
+      title: (
+        Number(activeKey) === 0 ? 
+        intl.formatMessage({
+          id: "order.confirm.closePositionForSingle",
+          defaultMessage: "确定平仓？"
+        })
+        :
+        intl.formatMessage({
+          id: "order.confirm.closeOrderForSingle",
+          defaultMessage: "确定删除该挂单？"
+        })
       ),
+      icon: <IconFont type="iconWarning" />,
+      // 部分平仓（待接口完善）
+      // content: (  
+      //   <>
+      //     <span>请选择操作手数：</span>
+      //     <InputNumber
+      //       ref={volumeRef}
+      //       min={0.01}
+      //       max={item.volume}
+      //       step={0.01}
+      //       defaultValue={item.volume}
+      //       size="small"
+      //     />
+      //   </>
+      // ),
       className: "op-confirm-closeOrder",
-      okText: "确定",
-      cancelText: "取消",
+      okText: intl.formatMessage({ id: "common.okText", defaultMessage:"确定" }),
+      cancelText: intl.formatMessage({ id: "common.cancelText", defaultMessage: "取消" }),
       getContainer: () => document.querySelector(".main-middle-x .ant-tabs-card"),
       onOk: () => {
-        return onCloseOrder(item.ticket)
+        return onCloseOrder(item.ticket, item.volume)
       },
       onCancel: () => {
         console.log("cancel")
@@ -135,14 +166,24 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   }
   const onShowConfirmForAll = (tickets) => {
     confirm({
-      title: `确定${Number(activeKey) === 0 ? '平仓' : '删除'}下列订单号的订单？`,
+      title: (
+        Number(activeKey) === 0 ?
+        intl.formatMessage({ 
+          id: "order.confirm.closePositionForAll", 
+          defaultMessage: "确定平仓下列订单号的订单？"
+        }) : 
+        intl.formatMessage({
+          id: "order.confirm.closeOrderForAll",
+          defaultMessage: "确定删除下列订单号的订单？"
+        })
+      ),
       icon: <IconFont type="iconWarning" />,
       content: (
         <p>{tickets.join(",")}</p>
       ),
       className: "op-confirm-closeOrder",
-      okText: "确定",
-      cancelText: "取消",
+      okText: intl.formatMessage({ id: "common.okText", defaultMessage: "確定" }),
+      cancelText: intl.formatMessage({ id: "common.cancelText", defaultMessage: "取消" }),
       getContainer: () => document.querySelector(".main-middle-x .ant-tabs-card"),
       onOk: () => onCloseOrder(tickets),
       onCancel: () => {
@@ -173,7 +214,12 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     <CardTabs
       className={styles['order-x']}
       initialPanes={[
-        { title: '持仓单', content: 
+        { title: (
+          <FormattedMessage
+            id="order.tabName.position"
+            defaultMessage="持仓单"
+          />
+        ), content: 
           <OrderSPanes 
             data={listArr[0]}
             type="0"
@@ -182,14 +228,24 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
           />,
           key: '0'
         },
-        { title: '挂单交易', content: 
+        { title: (
+          <FormattedMessage
+            id="order.tabName.order"
+            defaultMessage="挂单交易"
+          />
+        ), content: 
           <OrderSPanes 
             data={listArr[1]}
             type="1" 
             onShowConfirmForSingle={onShowConfirmForSingle}
             onShowConfirmForAll={onShowConfirmForAll}
           />, key: '1' },
-        { title: '历史订单', content: <OrderSPanes data={listArr[2]} type="2" />, key: '2' }
+        { title: (
+          <FormattedMessage
+            id="order.tabName.history"
+            defaultMessage="历史订单"
+          />
+        ), content: <OrderSPanes data={listArr[2]} type="2" />, key: '2' }
       ]}
       activeKey={activeKey}
       onChange={onChange}

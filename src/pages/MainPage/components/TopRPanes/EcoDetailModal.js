@@ -4,9 +4,11 @@ import { DualAxes } from '@ant-design/charts'
 import IconFont from '../../../../utils/iconfont/iconfont'
 
 import { connect } from 'react-redux'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const EcoDetailModal = (props) => {
   const { visible, data, onCancel, theme } = props
+  const intl = useIntl()
   // console.log(data)
   const ecoCharts = data[0] && data[0].data.map(item => {
     if(item.time_period.indexOf("季度") !== -1) {
@@ -16,8 +18,14 @@ const EcoDetailModal = (props) => {
   })
   const ecoDesc = data[1]
   const seriesForCh = {
-    'actual': '实际值',
-    'consensus': '预测值'
+    'actual': intl.formatMessage({
+      id: "calendar.ecoDetailModal.seriesActual",
+      defaultMessage: "实际值"
+    }),
+    'consensus': intl.formatMessage({
+      id: "calendar.ecoDetailModal.seriesConsensus",
+      defaultMessage: "预测值"
+    }),
   }
   const ref = useRef()
   
@@ -132,9 +140,6 @@ const EcoDetailModal = (props) => {
       ]
     }
   }
-  // const chartsConfig = {
-    
-  // }
 
   // 下载图表
   const onDownload = () => {
@@ -162,38 +167,77 @@ const EcoDetailModal = (props) => {
               onClick={onDownload}
             >
               <IconFont type="iconxiazai" className="icon-download" />
-              <span>保存为图片</span>
+              <span>
+                <FormattedMessage 
+                  id="calendar.ecoDetailModal.savePic"
+                  defaultMessage="保存为图片"
+                />
+              </span>
             </Button>
             <DualAxes {...getChartsConfig(theme)} chartRef={ref} />
           </>
         }
         <div className="ecod-desc-x">
           <p>
-            <span>数据影响：</span>
+            <span>
+              <FormattedMessage 
+                id="calendar.ecoDetailModal.desc1"
+                defaultMessage="数据影响"
+              />：
+            </span>
             <span>{ecoDesc.impact}</span>
           </p>
           <p>
-            <span>数据释义：</span>
+            <span>
+              <FormattedMessage 
+                id="calendar.ecoDetailModal.desc2"
+                defaultMessage="数据释义"
+              />：
+            </span>
             <span>{ecoDesc.paraphrase}</span>
           </p>
           <p>
-            <span>趣味解读：</span>
+            <span>
+              <FormattedMessage 
+                id="calendar.ecoDetailModal.desc3"
+                defaultMessage="趣味解读"
+              />：
+            </span>
             <span>{ecoDesc.concern}</span>
           </p>
           <p>
-            <span>下次公布时间：</span>
+            <span>
+              <FormattedMessage 
+                id="calendar.ecoDetailModal.desc4"
+                defaultMessage="下次公布时间"
+              />：</span>
             <span>{ecoDesc.public_time}</span>
           </p>
           <p>
-            <span>数据公布机构：</span>
+            <span>
+              <FormattedMessage 
+                id="calendar.ecoDetailModal.desc5"
+                defaultMessage="数据公布机构"
+              />：
+            </span>
             <span>{ecoDesc.institutions}</span>
           </p>
           <p>
-            <span>发布频率：</span>
+            <span>
+              <FormattedMessage 
+                id="calendar.ecoDetailModal.desc6"
+                defaultMessage="发布频率"
+              />：
+            </span>
             <span>{ecoDesc.frequency}</span>
           </p>
           <p>
-            <span>统计方法：</span>
+            <span>
+              <FormattedMessage 
+                id="calendar.ecoDetailModal.desc7"
+                defaultMessage="统计方法"
+              />：
+            </span>
             <span>{ecoDesc.method}</span>
           </p>
         </div>

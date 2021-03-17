@@ -5,11 +5,9 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { addToKLine } from '../../MainAction'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 
 const { Search } = Input
-
-
 
 const QuoteSPane = (props) => {
   // console.log("====QSP RENDER")

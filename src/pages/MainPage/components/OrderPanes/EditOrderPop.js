@@ -5,6 +5,7 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import { openNotificationWithIcon, isBuy } from '../../../../utils/utilFunc'
 
 import { modifyOrder } from '../../MainAction'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const EditOrderPop = ({ data, dispatch }) => {
   // console.log("====EOP:", data)
@@ -12,6 +13,7 @@ const EditOrderPop = ({ data, dispatch }) => {
   const [visible, setVisible] = useState(false)
   const tpRef = useRef(null)
   const slRef = useRef(null)
+  const intl = useIntl()
 
   const digits = (data.close_price + "").indexOf(".") !== -1 ? (data.close_price + "").split(".")[1].length : 0
   
@@ -45,13 +47,20 @@ const EditOrderPop = ({ data, dispatch }) => {
       activeKey: data.cmdForCh.toUpperCase().indexOf("LIMIT") === -1 ? 0 : 1
     })).then(res => {
       openNotificationWithIcon({
-        type: 'success', msg: '修改订单成功'
+        // type: 'success', msg: '修改订单成功'
+        type: 'success', msg: intl.formatMessage({
+          id: "order.eopModal.notiSuccess",
+          defaultMessage: "修改订单成功"
+        })
       })
       setLoading(false)
       setVisible(false)
     }).catch(err => {
       openNotificationWithIcon({
-        type: 'error', msg: '修改订单失败', desc: err.msg || err
+        type: 'error', msg: intl.formatMessage({
+          id: "order.eopModal.notiError",
+          defaultMessage: "修改订单失败"
+        }), desc: err.msg || err
       })
       setLoading(false)
     })
@@ -86,7 +95,7 @@ const EditOrderPop = ({ data, dispatch }) => {
             className="wt-btn-cancel"
             onClick={handleCancel}
           >
-            取消
+            <FormattedMessage id="common.cancelText" defaultMessage="取消" />
           </Button>,
           <Button 
             key="submit" 
@@ -96,7 +105,7 @@ const EditOrderPop = ({ data, dispatch }) => {
             onClick={handleOk}
             // disabled={isTpError || isSlError}
           >
-            确认
+            <FormattedMessage id="common.okText" defaultMessage="确定" />
           </Button>,
         ]}
       >
@@ -112,13 +121,22 @@ const EditOrderPop = ({ data, dispatch }) => {
               <span>{data.close_price}</span>
             </p>
           </div>
-          <p className="eop-profit">浮动盈亏：
+          <p className="eop-profit">
+            <FormattedMessage 
+              id="order.eopModal.profit"
+              defaultMessage="浮动盈亏"
+            />：
             <span className={data.profit >= 0 ? 'color-up' : 'color-down'}>{data.profit}</span>
           </p>
         </div>
         <div className="eop-body-x">
           <div className="eop-input-x">
-            <span>止盈</span>
+            <span>
+              <FormattedMessage 
+                id="order.eopModal.tp"
+                defaultMessage="止盈"
+              />
+            </span>
             <InputNumber
               ref={tpRef}
               min={0.00}
@@ -129,7 +147,12 @@ const EditOrderPop = ({ data, dispatch }) => {
             />
           </div>
           <div className="eop-input-x">
-            <span>止损</span>
+            <span>
+              <FormattedMessage 
+                id="order.eopModal.sl"
+                defaultMessage="止损"
+              />
+            </span>
             <InputNumber
               ref={slRef}
               min={0.00}
@@ -141,23 +164,48 @@ const EditOrderPop = ({ data, dispatch }) => {
           </div>
           <div className="eop-info-x">
             <p>
-              <span>订单号</span>
+              <span>
+                <FormattedMessage 
+                  id="order.eopModal.ticket"
+                  defaultMessage="订单号"
+                />
+              </span>
               <span>{data.ticket[0] || data.ticket}</span>
             </p>
             <p>
-              <span>开仓时间</span>
+              <span>
+                <FormattedMessage 
+                  id="order.eopModal.openTime"
+                  defaultMessage="开仓时间"
+                />
+              </span>
               <span>{data.open_time}</span>
             </p>
             <p>
-              <span>手数</span>
+              <span>
+                <FormattedMessage 
+                  id="order.eopModal.volume"
+                  defaultMessage="手数"
+                />
+              </span>
               <span>{data.volume}</span>
             </p>
             <p>
-              <span>手续费</span>
+              <span>
+                <FormattedMessage 
+                  id="order.eopModal.commission"
+                  defaultMessage="手续费"
+                />
+              </span>
               <span>{data.commission}</span>
             </p>
             <p>
-              <span>库存费</span>
+              <span>
+                <FormattedMessage 
+                  id="order.eopModal.swap"
+                  defaultMessage="库存费"
+                />
+              </span>
               <span>{data.storage}</span>
             </p>
           </div>

@@ -21,6 +21,7 @@ function initOpt () {
   } else if(cacheAccInfo.length >= 1 && (!cacheCurrAcc || !Object.keys(cacheCurrAcc).length)) {  // 有账号列表缓存但当前没有选中账号  ---> 默认登录账号列表中的第一个账号
     // this.option.cacheCurrAcc = cacheAccInfo[0]
     cacheCurrAcc = cacheAccInfo[0]
+    console.log("123")
     sessionStorage.setItem("wt_currAcc", JSON.stringify(cacheCurrAcc))
   }
   //  else {
@@ -82,7 +83,7 @@ const user = {
 
           return Promise.resolve()
         }).catch(err => {
-          console.log(err)
+          // console.log(err)
           return Promise.reject(err)
         })
       case 'oa2':
@@ -149,6 +150,7 @@ const user = {
       // 存本地：不刷新页面时的数据保持
       this.option.currAcc = currAcc
       // 存session：刷新页面时的数据保持
+      console.log("456")
       sessionStorage.setItem("wt_currAcc", JSON.stringify(this.option.currAcc))
       // dispatch(setCurrAcc(currAcc))
     // }

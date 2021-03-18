@@ -1,0 +1,212 @@
+.login-x {
+  position: fixed;
+  top: 0;bottom: 0;
+  left: 0;right: 0;
+  background: url(../../assets/image/login_bg.jpg) center center / auto 100% no-repeat;
+  // @media screen and (max-width: 768px) {
+  //   position: fixed;
+  //   left: 0;right: 0;
+  //   top: 0;bottom: unset;
+  //   height: auto;
+  //   padding: 64px;
+  // }
+  :global {
+    .container-x {
+      width: 1570px;
+      height: 100%;
+      margin: auto;
+      .row-x {
+        margin: unset !important;
+        width: 100%;
+        height: 100%;
+        .col-desc-x {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          color: #fff;
+          .img-logo {
+            margin-bottom: 16px;
+          }
+          h1 {
+            color: inherit;
+            font-weight: 400;
+            white-space: nowrap;
+          }
+          .qrcode-ul {
+            margin-top: 48px;
+            .qrcode-li {
+              display: inline-flex;
+              flex-direction: column;
+              align-items: center;
+              & + .qrcode-li {
+                margin-left: 40px;
+              }
+              .img-qrcode {
+                width: 150px;
+                display: inline-block;
+              }
+              .qrcode-desc {
+                font-size: 14px;
+                margin-top: 16px;
+              }
+            }
+          }
+          .scan-tip {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #dee3e4;
+          }
+        }
+        .col-login-x {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .login-x {
+            width: 100%;
+            padding: 32px;
+            padding-bottom: 56px;
+            background-color: rgba($color: #fff, $alpha: .85);
+            .title {
+              font-size: 36px;
+              // font-weight: bold;
+              text-align: center;
+            }
+            // linetabs
+            .ant-tabs-top > .ant-tabs-nav {
+              &::before {
+                border-bottom-color: #9ea4a9;
+              }
+              & .ant-tabs-ink-bar {
+                background: $themeBlue;
+              }
+              & .ant-tabs-tab {
+                // tab默认
+                font-size: 18px;
+                font-weight: 600;
+                color: #889399;
+                // tab选中
+                &.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+                  font-weight: inherit;
+                  color: $themeBlue;
+                }
+              }
+            }
+            .ant-form {
+              .ant-form-item-label > label {
+                font-size: 16px;
+                font-weight: 600;
+              }
+              .ant-input-affix-wrapper {
+                line-height: 40px;
+                .ant-input {
+                  background-color: transparent !important;
+                }
+                // 取消自动填充的背景色
+                input:-webkit-autofill,
+                input:-webkit-autofill:hover,
+                input:-webkit-autofill:focus,
+                input:-webkit-autofill:active {
+                  -webkit-transition-delay: 111111s;
+                  -webkit-transition: color 11111s ease-out, background-color 111111s ease-out;
+                }
+                .ant-input-suffix {
+                  color: $themeBlue;
+                  .ant-input-password-icon {
+                    color: inherit;
+                  }
+                }
+              }
+              // input 错误提示文本
+              .ant-form-item-explain.ant-form-item-explain-error {
+                color: #fc3131;
+              }
+            }
+            // radio groop
+            .ant-radio-inner {  // 未选中状态
+              background-color: unset;
+              color: inherit;
+              border-color: #d9d9d9;
+              &::after {
+                background-color: $themeBlue;
+              }
+            }
+            .ant-radio-checked .ant-radio-inner,
+            .ant-radio-wrapper:hover .ant-radio,
+            .ant-radio:hover .ant-radio-inner,
+            .ant-radio-input:focus + .ant-radio-inner {  // 选中状态
+              border-color: $themeBlue;
+            }
+            // login btn
+            .lg-btn-submit {
+              width: 100%;
+              display: block;
+              height: 48px;
+              padding: unset;
+              line-height: 48px;
+              border: 0;
+              background-color: $themeBlue;
+              &[disabled],&[disabled]:hover {
+                opacity: .65 !important;
+              }
+            }
+          }
+        }
+      }
+    }
+    @media screen and (min-width: 576px) {  // sm
+      .container-x {
+        max-width: 540px;
+        .col-desc-x {
+          h1 {
+            font-size: 20px;
+          }
+          .img-qrcode {
+            max-width: 110px;
+          }
+        }
+      }
+    }
+    @media screen and (min-width: 768px) {  // md
+      .container-x {
+        max-width: 720px;
+        .col-desc-x {
+          .img-qrcode {
+            max-width: 90px;
+          }
+        }
+      }
+    }
+    @media screen and (min-width: 992px) {  // lg
+      .container-x {
+        max-width: 960px;
+        .col-desc-x {
+          h1 {
+            font-size: 24px;
+          }
+          .img-qrcode {
+            max-width: 120px;
+          }
+        }
+      }
+    }
+    @media screen and (min-width: 1200px) { // xl
+      .container-x {
+        max-width: 1170px;
+        .col-desc-x {
+          h1 {
+            font-size: 28px;
+          }
+          .img-qrcode {
+            max-width: 150px;
+          }
+        }
+      }
+    }
+    // @media screen and (min-width: 1600px) { // xl
+    //   .container-x {
+    //     max-width: 1570px
+    //   }
+    // }
+  }
+}

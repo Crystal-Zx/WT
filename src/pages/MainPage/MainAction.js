@@ -80,6 +80,7 @@ export const initSocket = createAction(actionTypes.INIT_SOCKET, () => {
     return ws
   }
 )
+export const clearSocket = createAction(actionTypes.CLEAR_SOCKET)
 export const openOrder = createAction(actionTypes.OPEN_ORDER, params => {
   return _openOrder(params)
 })

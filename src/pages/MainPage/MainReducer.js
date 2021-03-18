@@ -26,6 +26,9 @@ const initSocket = (state = {}, action) => {
     case actionTypes.INIT_SOCKET: {
       return payload
     }
+    case actionTypes.CLEAR_SOCKET: {
+      return null
+    }
     default: return state
   }
 }

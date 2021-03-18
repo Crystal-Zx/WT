@@ -21,8 +21,8 @@ import en_US from '../../locales/en_US'
 
 const { Option } = Select
 
-function MainPage ({ theme, dispatch }) {
-
+function MainPage ({ history, theme, socket, dispatch }) {
+  const isLogin = user.isLogin()
   const messages = {
     "zhcn": zh_CN,
     "zhhk": zh_HK,
@@ -67,13 +67,14 @@ function MainPage ({ theme, dispatch }) {
   }
   const onLogout = () => {
     sessionStorage.clear()
-    setInterval(() => {
-      window.location.reload()
-    }, 0);
+    socket.socket.destroy()
+    setTimeout(() => {
+      history.push("/login")
+    }, 0)
   }
   const onChangeAcc = (account) => {
     user.setCurrAcc(account)
-    setInterval(() => {
+    setTimeout(() => {
       window.location.reload()
     }, 0);
   }
@@ -91,6 +92,13 @@ function MainPage ({ theme, dispatch }) {
       clearInterval(t)
     }
   },[])
+
+  useEffect(() => {
+    if(isLogin === null) return
+    if(!isLogin) {
+      history.push("/login")
+    }
+  }, [isLogin])
 
   useEffect(() => {
     const readyState = document.readyState
@@ -206,7 +214,7 @@ function MainPage ({ theme, dispatch }) {
               </Button>
             </Dropdown>
           </div>
-          <Login />
+          {/* <Login /> */}
         </div>
       </Spin>
     </IntlProvider>
@@ -216,9 +224,10 @@ function MainPage ({ theme, dispatch }) {
 
 export default connect(
   state => {
-    const { theme } = state.MainReducer
+    const { theme, initSocket } = state.MainReducer
     return {
-      theme
+      theme,
+      socket: initSocket
     }
   }
 )(MainPage)

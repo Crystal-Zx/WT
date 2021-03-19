@@ -31,7 +31,7 @@ function MainPage ({ history, theme, socket, dispatch }) {
   
   const [currDate, setCurrDate] = useState(getCurrDate())
   const [isLoading, setIsLoading] = useState(false)
-  const [locale, setLocale] = useState("zhhk")
+  const [locale, setLocale] = useState("zhcn")
 
   const langOverlay = () => {
     const overlay = [
@@ -69,7 +69,8 @@ function MainPage ({ history, theme, socket, dispatch }) {
     sessionStorage.clear()
     socket.socket.destroy()
     setTimeout(() => {
-      history.push("/login")
+      history.push("/login")      
+      window.location.reload()
     }, 0)
   }
   const onChangeAcc = (account) => {

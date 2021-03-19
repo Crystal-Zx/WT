@@ -7,7 +7,6 @@ const LoginPage = (props) => {
   
   const { history } = props
   const linkToIndex = (url) => history.push(url)
-  sessionStorage.clear()
 
   return (
     <div className={styles['login-x']}>

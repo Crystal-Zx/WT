@@ -21,7 +21,6 @@ function initOpt () {
   } else if(cacheAccInfo.length >= 1 && (!cacheCurrAcc || !Object.keys(cacheCurrAcc).length)) {  // 有账号列表缓存但当前没有选中账号  ---> 默认登录账号列表中的第一个账号
     // this.option.cacheCurrAcc = cacheAccInfo[0]
     cacheCurrAcc = cacheAccInfo[0]
-    console.log("123")
     sessionStorage.setItem("wt_currAcc", JSON.stringify(cacheCurrAcc))
   }
   //  else {
@@ -57,7 +56,7 @@ const user = {
             account: login, token, type
           }
           // !!token && 
-          that.setCurrAcc(that.option.currAcc)
+          that.setCurrAcc(_currAcc) // that.option.currAcc || 
           // that.option.currAcc = _currAcc
           that.option.accInfo = new Array(_currAcc)
           // sessionStorage.setItem("wt_token", token)
@@ -83,7 +82,7 @@ const user = {
 
           return Promise.resolve()
         }).catch(err => {
-          // console.log(err)
+          console.log(err)
           return Promise.reject(err)
         })
       case 'oa2':
@@ -96,7 +95,6 @@ const user = {
          * }]
          */
         return dispatch(loginOA2(params)).then(res => {
-          console.log(res)
           that.setCurrAcc(res.value[0])
           // 改变本地值
           // that.option.currAcc = res.value[0]
@@ -150,7 +148,6 @@ const user = {
       // 存本地：不刷新页面时的数据保持
       this.option.currAcc = currAcc
       // 存session：刷新页面时的数据保持
-      console.log("456")
       sessionStorage.setItem("wt_currAcc", JSON.stringify(this.option.currAcc))
       // dispatch(setCurrAcc(currAcc))
     // }

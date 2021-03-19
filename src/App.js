@@ -8,8 +8,9 @@ function App(props) {
 
   return (
     <Router>
+      <Route path="/" component={LoginPage} />
       <Route path="/login" component={LoginPage} />
-      <Route exact path="/" component={MainPage} />
+      <Route exact path="/index" component={MainPage} />
     </Router>
   );
 }

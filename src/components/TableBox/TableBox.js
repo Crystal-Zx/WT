@@ -16,6 +16,7 @@ function TableBox (props) {
   const intl = useIntl()
 
   const renderContent = (val, row, index, type) => {
+    // console.log("====renderContent", val, row)
     const obj = {
       children: val || '---',
       props: {}

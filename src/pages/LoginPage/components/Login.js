@@ -20,7 +20,7 @@ const Login = (props) => {
       popMessage({ type: 'success', msg: '登录成功！' })
       setTimeout(() => {  // 加一个延时，否则message来不及显示
         // window.location.href = "./"
-        linkToIndex("/")
+        linkToIndex("/index")
       }, 1000);
     }).catch(err => {
       popMessage({ type: 'error', msg: '用户名或密码错误' })//err.msg || `${err}` })
@@ -33,7 +33,7 @@ const Login = (props) => {
       popMessage({ type: 'success', msg: '登录成功！' })
       setTimeout(() => {  // 加一个延时，否则message来不及显示
         // window.location.href = "./"
-        linkToIndex("/")
+        linkToIndex("/index")
       }, 1000);
     }).catch(err => {
       popMessage({ type: 'error', msg: err.msg || `${err}` })

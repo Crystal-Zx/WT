@@ -66,18 +66,20 @@ const QuotePanes = (props) => {
       // onChangeType(cacheList[0].group)
     } else if(data.type === "quote") {
       data = data.data
-      // data.symbol === "AUDUSD" && console.log("===onMsg quote data:", data)
+      // data.symbol === "BTCUSD" && console.log("===onMsg quote data:", data)
       for(let item of cacheList) {
         if(item.symbol === data.symbol) {
-          data.isUp = item.bid ? data.bid >= item.bid : 1
-          data.size = data.contract_size
-          data.spread = item.holc.open && toDecimal((data.bid - item.holc.open) * 100 / item.holc.open, 2) + "%"
+          item.isUp = item.bid ? data.bid >= item.bid : 1
+          item.size = data.contract_size
+          item.spread = item.holc.open && toDecimal((data.bid - item.holc.open) * 100 / item.holc.open, 2) + "%"
           delete data.contract_size
+          // console.log("===before assign", item, data)
           Object.assign(item, data)
+          // console.log("===after assign", item, data)
           break
         }
       }
-      // console.log(cacheList)
+      // data.symbol === "BTCUSD" && console.log(cacheList)
     } 
     // else if(data.type === "mini") {
     //   data = data.data

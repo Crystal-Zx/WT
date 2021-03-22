@@ -15,7 +15,6 @@ const SymbolInfoModal = ({ _getSymbolInfo, symbol, visible, onCancel }) => {
   const weekForEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const [info, setInfo] = useState({})
   const intl = useIntl()
-  console.log("===intl: ", intl.locale.slice(0,2))
 
   useEffect(() => {
     !Object.keys(info).length && _getSymbolInfo(symbol).then(res => {
@@ -102,7 +101,6 @@ const SymbolInfoModal = ({ _getSymbolInfo, symbol, visible, onCancel }) => {
               }>
                 {
                   info.sessions.map((item, index) => {
-                    console.log(item, index)
                     return (
                       <div className="sim-ssn-li">
                         <p className="sim-ssn-key">

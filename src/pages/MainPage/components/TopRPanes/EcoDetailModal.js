@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Modal, Button } from 'antd'
-import { DualAxes } from '@ant-design/charts'
+import DualAxes from '@ant-design/charts/lib/dualAxes'
 import IconFont from '../../../../utils/iconfont/iconfont'
 
 import { connect } from 'react-redux'

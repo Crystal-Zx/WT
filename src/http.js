@@ -16,6 +16,7 @@ axios.defaults.headers = {
 // 请求拦截
 axios.interceptors.request.use(
   config => {
+    // console.log(config)
     if(user.getToken()) {
       config.headers = {
         ...config.headers,

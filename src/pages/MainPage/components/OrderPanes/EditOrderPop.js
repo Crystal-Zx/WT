@@ -2,13 +2,12 @@ import React, { useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button, InputNumber } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
-import { openNotificationWithIcon, isBuy } from '../../../../utils/utilFunc'
+import { openNotificationWithIcon, isBuy, toDecimal } from '../../../../utils/utilFunc'
 
 import { modifyOrder } from '../../MainAction'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 const EditOrderPop = ({ data, dispatch }) => {
-  // console.log("====EOP:", data)
   const [loading, setLoading] = useState(false)
   const [visible, setVisible] = useState(false)
   const tpRef = useRef(null)
@@ -16,7 +15,8 @@ const EditOrderPop = ({ data, dispatch }) => {
   const intl = useIntl()
 
   const digits = (data.close_price + "").indexOf(".") !== -1 ? (data.close_price + "").split(".")[1].length : 0
-  
+  data.open_price = toDecimal(data.open_price, digits)
+  data.close_price = toDecimal(data.open_price, digits)
 
   const showModal = (e) => {
     e.stopPropagation()

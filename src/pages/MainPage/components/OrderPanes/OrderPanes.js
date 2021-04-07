@@ -170,31 +170,35 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     }
   }
   const onShowConfirmForAll = (tickets) => {
-    confirm({
-      title: (
-        Number(activeKey) === 0 ?
-        intl.formatMessage({ 
-          id: "order.confirm.closePositionForAll", 
-          defaultMessage: "确定平仓下列订单号的订单？"
-        }) : 
-        intl.formatMessage({
-          id: "order.confirm.closeOrderForAll",
-          defaultMessage: "确定删除下列订单号的订单？"
-        })
-      ),
-      icon: <IconFont type="iconWarning" />,
-      content: (
-        <p>{tickets.join(",")}</p>
-      ),
-      className: "op-confirm-closeOrder",
-      okText: intl.formatMessage({ id: "common.okText", defaultMessage: "確定" }),
-      cancelText: intl.formatMessage({ id: "common.cancelText", defaultMessage: "取消" }),
-      getContainer: () => document.querySelector(".main-middle-x .ant-tabs-card"),
-      onOk: () => onCloseOrder(tickets),
-      onCancel: () => {
-        console.log("cancel")
-      }
-    })
+    if(closeOrderComfirm) {
+      confirm({
+        title: (
+          Number(activeKey) === 0 ?
+          intl.formatMessage({ 
+            id: "order.confirm.closePositionForAll", 
+            defaultMessage: "确定平仓下列订单号的订单？"
+          }) : 
+          intl.formatMessage({
+            id: "order.confirm.closeOrderForAll",
+            defaultMessage: "确定删除下列订单号的订单？"
+          })
+        ),
+        icon: <IconFont type="iconWarning" />,
+        content: (
+          <p>{tickets.join(",")}</p>
+        ),
+        className: "op-confirm-closeOrder",
+        okText: intl.formatMessage({ id: "common.okText", defaultMessage: "確定" }),
+        cancelText: intl.formatMessage({ id: "common.cancelText", defaultMessage: "取消" }),
+        getContainer: () => document.querySelector(".main-middle-x .ant-tabs-card"),
+        onOk: () => onCloseOrder(tickets),
+        onCancel: () => {
+          console.log("cancel")
+        }
+      })
+    } else {
+      onCloseOrder(tickets)
+    }
   }
 
   useEffect(() => {

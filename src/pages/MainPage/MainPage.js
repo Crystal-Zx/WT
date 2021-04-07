@@ -14,7 +14,7 @@ import { getCurrDate } from '../../utils/utilFunc'
 import { setTheme, isSuspension } from './MainAction'
 import user from '../../services/user'
 // 国际化
-import { FormattedDate, FormattedMessage, FormattedTime, IntlProvider } from 'react-intl';
+import { FormattedDate, FormattedMessage, IntlProvider } from 'react-intl';
 import zh_CN from '../../locales/zh_CN'
 import zh_HK from '../../locales/zh_HK'
 import en_US from '../../locales/en_US'

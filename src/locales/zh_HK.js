@@ -11,6 +11,7 @@ const zh_HK = {
   'orderType.buyLimit': '限價買入',
   // navBar
   'navBar.menu.logout': '退出登錄',
+  'navBar.menu.settings': '設置',
   // quote
   'quote.tabName': '品種報價',
   'quote.search.placeHolder': '搜索例如EURCHF',

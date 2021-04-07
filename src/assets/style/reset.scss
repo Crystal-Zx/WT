@@ -321,6 +321,11 @@ p {
 //     color: themed('color-red');
 //   }
 // }
+.ant-notification-notice {
+  @include themify {
+    background-color: themed('bg-color-notiNormal');
+  }
+}
 .ant-notification-notice-close,
 .ant-notification-notice-message,
 .ant-notification-notice-description {
@@ -519,4 +524,10 @@ p {
   @include themify {
     color: themed('color-red') !important;
   }
+}
+.f-14 {
+  font-size: 14px !important;
+}
+.f-16 {
+  font-size: 16px !important;
 }

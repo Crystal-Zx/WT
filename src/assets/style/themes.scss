@@ -35,6 +35,10 @@ $themes: (
     bg-color-hl: $themeBlue,
     bg-color-notiSuccess: #fff,
     bg-color-notiError: #fff,
+    bg-color-notiNormal: #fff,
+    bg-color-switchUncheck: #dcdedf,
+    bg-color-switchChecked: $themeBlue,
+    bg-color-switchHandle: #fff,
 
     // border color
     border-color-main: #e2e6e9,
@@ -81,6 +85,10 @@ $themes: (
     bg-color-hl: $themeGolden,
     bg-color-notiSuccess: #24a06b,
     bg-color-notiError: #cc2e3c,
+    bg-color-notiNormal: #2d3940,
+    bg-color-switchUncheck: #434d51,
+    bg-color-switchChecked: #fff,
+    bg-color-switchHandle: #152126,
 
     // border color
     border-color-main: #000,

@@ -22,6 +22,7 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   const [activeKey, setActiveKey] = useState("0")
   const volumeRef = useRef(null)
   const intl = useIntl()
+  const { closeOrderComfirm } = JSON.parse(localStorage.getItem("wt_settings"))
 
   const _getPositions = (activeKey) => {
     return dispatch(getPositions()).then(res => {
@@ -124,45 +125,49 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
     })
   }
   const onShowConfirmForSingle = (item) => {
-    confirm({
-      title: (
-        Number(activeKey) === 0 ? 
-        intl.formatMessage({
-          id: "order.confirm.closePositionForSingle",
-          defaultMessage: "确定平仓？"
-        })
-        :
-        intl.formatMessage({
-          id: "order.confirm.closeOrderForSingle",
-          defaultMessage: "确定删除该挂单？"
-        })
-      ),
-      icon: <IconFont type="iconWarning" />,
-      // 部分平仓（待接口完善）
-      // content: (  
-      //   <>
-      //     <span>请选择操作手数：</span>
-      //     <InputNumber
-      //       ref={volumeRef}
-      //       min={0.01}
-      //       max={item.volume}
-      //       step={0.01}
-      //       defaultValue={item.volume}
-      //       size="small"
-      //     />
-      //   </>
-      // ),
-      className: "op-confirm-closeOrder",
-      okText: intl.formatMessage({ id: "common.okText", defaultMessage:"确定" }),
-      cancelText: intl.formatMessage({ id: "common.cancelText", defaultMessage: "取消" }),
-      getContainer: () => document.querySelector(".main-middle-x .ant-tabs-card"),
-      onOk: () => {
-        return onCloseOrder(item.ticket, item.volume)
-      },
-      onCancel: () => {
-        console.log("cancel")
-      }
-    })
+    if(closeOrderComfirm) {
+      confirm({
+        title: (
+          Number(activeKey) === 0 ? 
+          intl.formatMessage({
+            id: "order.confirm.closePositionForSingle",
+            defaultMessage: "确定平仓？"
+          })
+          :
+          intl.formatMessage({
+            id: "order.confirm.closeOrderForSingle",
+            defaultMessage: "确定删除该挂单？"
+          })
+        ),
+        icon: <IconFont type="iconWarning" />,
+        // 部分平仓（待接口完善）
+        // content: (  
+        //   <>
+        //     <span>请选择操作手数：</span>
+        //     <InputNumber
+        //       ref={volumeRef}
+        //       min={0.01}
+        //       max={item.volume}
+        //       step={0.01}
+        //       defaultValue={item.volume}
+        //       size="small"
+        //     />
+        //   </>
+        // ),
+        className: "op-confirm-closeOrder",
+        okText: intl.formatMessage({ id: "common.okText", defaultMessage:"确定" }),
+        cancelText: intl.formatMessage({ id: "common.cancelText", defaultMessage: "取消" }),
+        getContainer: () => document.querySelector(".main-middle-x .ant-tabs-card"),
+        onOk: () => {
+          return onCloseOrder(item.ticket, item.volume)
+        },
+        onCancel: () => {
+          console.log("cancel")
+        }
+      })
+    } else {
+      onCloseOrder(item.ticket, item.volume)
+    }
   }
   const onShowConfirmForAll = (tickets) => {
     confirm({

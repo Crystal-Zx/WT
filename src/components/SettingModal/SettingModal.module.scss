@@ -1,0 +1,41 @@
+.wt-settings-x {
+  :global {
+    // antd reset
+    .ant-form-item-control-input-content {
+      text-align: right;
+    }
+    .ant-form-item-label > label {
+      @include themify {
+        color: themed('color-primary');
+      }
+    }
+    .ant-switch {
+      @include themify {
+        background-color: themed('bg-color-switchUncheck');
+      }
+    }
+    .ant-switch-checked {
+      @include themify {
+        background-color: themed('bg-color-switchChecked');
+      }
+    }
+    .ant-switch-handle::before {
+      @include themify {
+        background-color: themed('bg-color-switchHandle');
+      }
+    }
+
+    .st-title {
+      font-size: 14px;
+      text-align: center;
+    }
+    .st-desc {
+      margin-bottom: 8px;
+      font-size: 12px;
+      text-align: center;
+      @include themify {
+        color: themed('color-default');
+      }
+    }
+  }
+}

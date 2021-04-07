@@ -17,12 +17,14 @@ export const openNotificationWithIcon = params => {
   const {
     type,
     msg,
-    desc
+    desc,
+    duration = 4.5
   } = params
   notification[type]({
     className: `wt-noti-${type}`,
     message: msg,
-    description: desc
+    description: desc,
+    duration
   })
 }
 export const popMessage = params => {

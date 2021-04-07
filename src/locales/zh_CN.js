@@ -11,6 +11,7 @@ const zh_CN = {
   'orderType.buyLimit': '限价买入',
   // navBar
   'navBar.menu.logout': '退出登录',
+  'navBar.menu.settings': '设置',
   // quote
   'quote.tabName': '品种报价',
   'quote.search.placeHolder': '搜索例如EURCHF',

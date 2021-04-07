@@ -4,7 +4,7 @@ import QuotePanes from './components/QuotePanes/QuotePanes.js'
 import TopRPanes from './components/TopRPanes/TopRPanes.js';
 import OrderPanes from './components/OrderPanes/OrderPanes.js'
 import AccountInfo from './components/AccountInfo/AccountInfo.js'
-import Login from '../../components/Login/Login'
+import SettingModal from '../../components/SettingModal/SettingModal.js'
 import IconFont from '../../utils/iconfont/iconfont';
 import styles from './MainPage.module.scss';
 
@@ -32,6 +32,7 @@ function MainPage ({ history, theme, socket, dispatch }) {
   const [currDate, setCurrDate] = useState(getCurrDate())
   const [isLoading, setIsLoading] = useState(false)
   const [locale, setLocale] = useState("zhcn")
+  const [settingVisible, setSettingVisible] = useState(false)
 
   const langOverlay = () => {
     const overlay = [
@@ -198,13 +199,22 @@ function MainPage ({ history, theme, socket, dispatch }) {
               overlay={
                 <Menu>
                   <Menu.Item>
-                    <IconFont type="iconLogout" />&nbsp;
-                    <a href="javascrip:;" onClick={onLogout}>
+                    <IconFont className={styles["f-14"]} type="iconLogout" />&nbsp;
+                    <span onClick={onLogout}>
                       <FormattedMessage 
                         id="navBar.menu.logout"
                         defaultMessage="退出登录"
                       />
-                    </a>
+                    </span>
+                  </Menu.Item>
+                  <Menu.Item onClick={() => setSettingVisible(true)}>
+                    <IconFont className={styles["f-16"]} type="iconSetting" />&nbsp;
+                    <span>
+                      <FormattedMessage 
+                        id="navBar.menu.settings"
+                        defaultMessage="设置"
+                      />
+                    </span>
                   </Menu.Item>
                 </Menu>
               }
@@ -215,7 +225,10 @@ function MainPage ({ history, theme, socket, dispatch }) {
               </Button>
             </Dropdown>
           </div>
-          {/* <Login /> */}
+          <SettingModal 
+            visible={settingVisible}
+            onCancel={() => setSettingVisible(false)}
+          />
         </div>
       </Spin>
     </IntlProvider>

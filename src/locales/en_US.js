@@ -11,6 +11,7 @@ const en_US = {
   'orderType.buyLimit': 'Buy Limit',
   // navBar
   'navBar.menu.logout': 'Logout',
+  'navBar.menu.settings': 'Settings',
   // quote
   'quote.tabName': 'QUOTATION',
   'quote.search.placeHolder': 'Search e.g. EURCHF',

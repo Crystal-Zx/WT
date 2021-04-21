@@ -1,11 +1,23 @@
-import { Tabs } from 'antd'
+import { Tabs, Select } from 'antd'
 import propTypes from 'prop-types'
 
 const { TabPane } = Tabs
 
 const LineTabs = ({ onChange, initialPanes, defaultActiveKey }) => {
-  // console.log("====LineTabs render", initialPanes, defaultActiveKey)
+  // console.log("====LineTabs render", initialPanes)
   // activeKey = activeKey || initialPanes[0].key
+  // const getTab = (pane) => {
+  //   // console.log(pane)
+  //   if(!pane.subGroups || !pane.subGroups.length) {
+  //     return pane.title
+  //   } else {
+  //     return (
+  //       <Select default='全部' onChange>
+
+  //       </Select>
+  //     )
+  //   }
+  // }
   return (
     <Tabs 
       type="line"

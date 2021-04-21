@@ -10,8 +10,8 @@ import { useIntl } from 'react-intl'
 const { Search } = Input
 
 const QuoteSPane = (props) => {
-  // console.log("====QSP RENDER")
   const { list, addToKLine } = props
+  // console.log("====QSP", list)
   const [searchVal, setSearchVal] = useState("")
   const [isExpandAll, setIsExpandAll] = useState(false)
   const intl = useIntl()
@@ -74,7 +74,7 @@ export default connect(
     if(filterGroup === '自选') {
       list = JSON.parse(localStorage.getItem('wt_symbolList')) || []
     } else {
-      list = symbolList.list.filter(item => item.group === filterGroup)
+      list = symbolList.list.filter(item => item.groupBy === filterGroup)
     }
     return {
       list

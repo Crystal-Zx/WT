@@ -28,12 +28,24 @@ const QuotePanes = (props) => {
   const cacheListRef = useRef(null)  // 在组件整个生命周期内保存该变量的值，以便useEffect中的interval定时器能拿到值，定时存一次store
   
   // 获取报价QSP页面
-  const getQuoteSPanes = (types) => {
-    const temp = types.map((sType) => {
+  const getQuoteSPanes = (groups) => {
+    let _groups = {}
+    groups.map(item => {
+      const [groupBy, subGroup] = item.split("|")
+      if(Object.keys(_groups).includes(groupBy)) {
+        _groups[groupBy].push(subGroup || '其他')
+      } else {
+        _groups[groupBy] = subGroup ? new Array(subGroup) : []
+      }
+    })
+    // console.log(_groups)
+
+    const temp = Object.keys(_groups).map(item => {
       return {
-        title: sType,
+        title: item,
         content: <QuoteSPane />,
-        key: sType
+        key: item,
+        subGroups: _groups[item]
       }
     })
     // temp.unshift({
@@ -48,18 +60,19 @@ const QuotePanes = (props) => {
   const onMessage = (data) => {
     if(data.type === "symbol") {
       data = data.data
-      // console.log("===onMsg symbol data:", data)
       cacheList = data.map(item => {
         var obj = {
           ...item,
           key: item.name,
-          symbol: item.name
+          symbol: item.name,
+          groupBy: item.group.split("|")[0],
+          subGroup: item.group.split("|")[1] || '其他'
         }
         delete obj.name
         return obj
       })
       dispatch(getSymbols({ isFetching: false, list: cacheList }))
-      dispatch(setSymbolGroup(cacheList[0].group))
+      dispatch(setSymbolGroup(cacheList[0].groupBy))
       // init qsp
       const groups = [...new Set(cacheList.map(item => item.group))]  // set去重
       setQspTemp(getQuoteSPanes(groups))
@@ -108,7 +121,7 @@ const QuotePanes = (props) => {
     cacheListRef.current = cacheList.concat([])
   }
   const getQuoteSymbols = () => {
-    const qspList = cacheList.filter(item => item.group === filterGroup)
+    const qspList = cacheList.filter(item => item.groupBy === filterGroup)
     return qspList.map(item => item.symbol)
   }
   const sendQuoteMsg = (quoteSymbols) => {
@@ -133,7 +146,7 @@ const QuotePanes = (props) => {
     // setActiveKey(sType)
     // 获取需监听quote信息的货币对列表
     // --- 报价板块
-    const qspList = cacheList.filter(item => item.group === sType)
+    const qspList = cacheList.filter(item => item.groupBy === sType)
     const quoteSymbols = qspList.map(item => item.symbol)
     sendQuoteMsg(quoteSymbols)
     // const args = quoteSymbols.join(".")

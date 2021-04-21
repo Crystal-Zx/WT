@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl'
 const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }) => {
   
   let { list, isFetching } = data
-  // console.log("====OrderSPanes render", list)
+  // console.log("====OrderSPanes render", data)
   
   // 表头平仓
   // --- 获取对应平仓/删除项的订单号

@@ -16,7 +16,7 @@ import IconFont from '../../../../utils/iconfont/iconfont'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
-  // console.log("====OrderPanes", quoteList)
+  // console.log("====OrderPanes", listArr)
   const { confirm } = Modal
   const { info } = accountInfo
   const [activeKey, setActiveKey] = useState("0")
@@ -85,7 +85,6 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
       info.freeMargin = info.equity - info.margin
       // 保证金比例
       info.marginLevel = info.equity - info.freeMargin ? Math.floor(info.equity / (info.equity - info.freeMargin) * 10000) / 100 : 0
-      // console.log("info", info,ospData)
       dispatch(setAccountInfo(info))
     }
   }
@@ -209,7 +208,7 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   }, [])
 
   useEffect(() => {
-    if(Object.keys(socket).length && listArr[0].list && listArr[0].list.length) {
+    if(Object.keys(socket).length && listArr[0].list) {  //  && listArr[0].list.length
       socket.on("order", () => _getPositions(activeKey))
     }
   }, [JSON.stringify(socket), JSON.stringify(listArr[0])])

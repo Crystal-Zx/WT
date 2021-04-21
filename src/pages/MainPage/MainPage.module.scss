@@ -194,7 +194,7 @@ $bottomH: 4.3vh;
             cursor: pointer;
             @include themify {
               color: themed('color-hl');
-              background-color: themed('bg-color-hl');
+              background-color: themed('bg-color-logo');
             }
             .account-type,.account {
               font-weight: bold;

@@ -239,6 +239,7 @@ function MainPage ({ history, theme, socket, dispatch }) {
 export default connect(
   state => {
     const { theme, initSocket } = state.MainReducer
+    // console.log(state.MainReducer.positionOrder)
     return {
       theme,
       socket: initSocket

@@ -22,7 +22,7 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
   const [activeKey, setActiveKey] = useState("0")
   const volumeRef = useRef(null)
   const intl = useIntl()
-  const { closeOrderComfirm } = JSON.parse(localStorage.getItem("wt_settings"))
+  const { closeOrderComfirm = true } = JSON.parse(localStorage.getItem("wt_settings") || "{}")
 
   const _getPositions = (activeKey) => {
     return dispatch(getPositions()).then(res => {

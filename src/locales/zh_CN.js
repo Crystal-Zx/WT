@@ -131,6 +131,10 @@ const zh_CN = {
   'symbolInfo.descItem.swapLong': '买多',
   'symbolInfo.descItem.swapShort': '卖空',
   'symbolInfo.descItem.marketHours': '市场小时',
+  'settingModal.title': '设置',
+  'settingModal.tab1.title': '平台确认',
+  'settingModal.tab1.desc': '如打开选项，关闭未平仓仓位之前需要用户确认。',
+  'settingModal.tab1.positionClosing': '平仓',
 }
 
 export default zh_CN

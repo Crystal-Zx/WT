@@ -131,6 +131,10 @@ const zh_HK = {
   'symbolInfo.descItem.swapLong': '買多',
   'symbolInfo.descItem.swapShort': '賣空',
   'symbolInfo.descItem.marketHours': '市場小時',
+  'settingModal.title': '設置',
+  'settingModal.tab1.title': '平台確認',
+  'settingModal.tab1.desc': '如打開選項，關閉未平倉倉位之前需要用戶確認。',
+  'settingModal.tab1.positionClosing': '平倉',
 }
 
 export default zh_HK

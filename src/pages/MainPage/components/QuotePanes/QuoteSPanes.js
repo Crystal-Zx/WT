@@ -73,6 +73,8 @@ export default connect(
     let list
     if(filterGroup === '自选') {
       list = JSON.parse(localStorage.getItem('wt_symbolList')) || []
+    } else if (filterGroup === '全部') {
+      list = [...symbolList.list]
     } else {
       list = symbolList.list.filter(item => item.groupBy === filterGroup)
     }

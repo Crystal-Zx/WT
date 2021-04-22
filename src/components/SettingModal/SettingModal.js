@@ -1,8 +1,10 @@
 import { Modal, Form, Switch } from 'antd'
 import styles from './SettingModal.module.scss'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const SettingModal = ({ visible = false, onCancel }) => {
   
+  const intl = useIntl()
   const local_settings = JSON.parse(localStorage.getItem("wt_settings")) || {}
   const onValuesChange = (changeValues, allValues) => {
     console.log("===onValuesChange", changeValues, allValues)
@@ -15,7 +17,10 @@ const SettingModal = ({ visible = false, onCancel }) => {
   return (
     <>
       <Modal
-        title="设置"
+        title={intl.formatMessage({
+          id: "settingModal.title",
+          defaultMessage: "设置"
+        })}
         width={360}
         visible={visible}
         destroyOnClose={true}
@@ -24,8 +29,18 @@ const SettingModal = ({ visible = false, onCancel }) => {
         className={styles['wt-settings-x']}  // sim: symbolInfo Modal
         wrapClassName="wt-settings-x"
       >
-        <p className="st-title">平台确认</p>
-        <p className="st-desc">如打开选项，关闭未平仓仓位之前需要用户确认。</p>
+        <p className="st-title">
+          <FormattedMessage
+            id="settingModal.tab1.title"
+            defaultMessage="平台确认"
+          />
+        </p>
+        <p className="st-desc">
+          <FormattedMessage
+            id="settingModal.tab1.desc"
+            defaultMessage="如打开选项，关闭未平仓仓位之前需要用户确认。"
+          />
+        </p>
         <Form
           name="settings"
           initialValues={{
@@ -33,7 +48,13 @@ const SettingModal = ({ visible = false, onCancel }) => {
           }}
           onValuesChange={onValuesChange}
         >
-          <Form.Item name="closeOrderComfirm" label="平仓" valuePropName="checked">
+          <Form.Item 
+            name="closeOrderComfirm" 
+            label={intl.formatMessage({
+              id: 'settingModal.tab1.positionClosing',
+              defaultMessage: '平仓'
+            })} 
+            valuePropName="checked">
             <Switch />
           </Form.Item>
         </Form>

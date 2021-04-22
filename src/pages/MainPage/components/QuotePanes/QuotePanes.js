@@ -38,7 +38,7 @@ const QuotePanes = (props) => {
         _groups[groupBy] = subGroup ? new Array(subGroup) : []
       }
     })
-    // console.log(_groups)
+    const allSubGroups = Object.values(_groups).reduce((prev, curr) => prev.concat(curr), [])
 
     const temp = Object.keys(_groups).map(item => {
       return {
@@ -48,18 +48,24 @@ const QuotePanes = (props) => {
         subGroups: _groups[item]
       }
     })
+    temp.unshift({
+      title: '全部',
+      content: <QuoteSPane />,
+      key: '全部',
+      subGroups: allSubGroups
+    })
     // temp.unshift({
     //   title: '自选',
     //   content: <QuoteSPane />,
     //   key: '自选'
     // })
-    // console.log(temp)
     return temp
   }
   // 获取报价列表数据
   const onMessage = (data) => {
     if(data.type === "symbol") {
       data = data.data
+      console.log("onMsg")
       cacheList = data.map(item => {
         var obj = {
           ...item,
@@ -72,11 +78,11 @@ const QuotePanes = (props) => {
         return obj
       })
       dispatch(getSymbols({ isFetching: false, list: cacheList }))
-      dispatch(setSymbolGroup(cacheList[0].groupBy))
+      dispatch(setSymbolGroup('FOREX'))  // cacheList[0].groupBy
       // init qsp
       const groups = [...new Set(cacheList.map(item => item.group))]  // set去重
       setQspTemp(getQuoteSPanes(groups))
-      // onChangeType(cacheList[0].group)
+      // onChangeType('FOREX')  // cacheList[0].group
     } else if(data.type === "quote") {
       data = data.data
       // data.symbol === "BTCUSD" && console.log("===onMsg quote data:", data)
@@ -146,9 +152,12 @@ const QuotePanes = (props) => {
     // setActiveKey(sType)
     // 获取需监听quote信息的货币对列表
     // --- 报价板块
-    const qspList = cacheList.filter(item => item.groupBy === sType)
+      
+    const qspList = sType === '全部' ? cacheList : cacheList.filter(item => item.groupBy === sType)
     const quoteSymbols = qspList.map(item => item.symbol)
     sendQuoteMsg(quoteSymbols)
+    
+    // 暂时不需要 ↓
     // const args = quoteSymbols.join(".")
     // quoteSymbols.length > 0 && socket.send({
     //   "cmd": "mini",
@@ -215,7 +224,7 @@ const QuotePanes = (props) => {
             content: (
               <LineTabs
                 initialPanes={qspTemp}
-                defaultActiveKey={qspTemp.length > 1 ? qspTemp[1].key : '自选'}
+                defaultActiveKey={'FOREX'}  // qspTemp.length > 1 ? qspTemp[1].key : '全部'
                 onChange={sType => dispatch(setSymbolGroup(sType))}
                 // dispatch(setSymbolGroup(sType))}
               ></LineTabs>

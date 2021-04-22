@@ -1,10 +1,10 @@
-import { Tabs, Select } from 'antd'
+import { Tabs } from 'antd'
 import propTypes from 'prop-types'
 
 const { TabPane } = Tabs
 
 const LineTabs = ({ onChange, initialPanes, defaultActiveKey }) => {
-  // console.log("====LineTabs render", initialPanes)
+  // console.log("====LineTabs render", initialPanes, defaultActiveKey)
   // activeKey = activeKey || initialPanes[0].key
   // const getTab = (pane) => {
   //   // console.log(pane)
@@ -18,6 +18,7 @@ const LineTabs = ({ onChange, initialPanes, defaultActiveKey }) => {
   //     )
   //   }
   // }
+  if(!initialPanes.length) return <></>
   return (
     <Tabs 
       type="line"

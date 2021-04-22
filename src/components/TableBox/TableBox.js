@@ -7,6 +7,7 @@ import { useState,useEffect } from 'react'
 import SymbolInfoModal from '../SymbolInfoModal/SymbolInfoModal'
 import { useIntl } from 'react-intl'
 
+// 目前仅用于报价板块数据
 function TableBox (props) {
   const { data, addToKLine, isExpandAll } = props  // isLogin
   // console.log("====TableBox RENDER", data)

@@ -131,6 +131,10 @@ const en_US = {
   'symbolInfo.descItem.swapLong': 'Long',
   'symbolInfo.descItem.swapShort': 'Short',
   'symbolInfo.descItem.marketHours': 'Market hours',
+  'settingModal.title': 'Settings',
+  'settingModal.tab1.title': 'PLATFORM CONFIRMATIONS',
+  'settingModal.tab1.desc': 'If the option is enabled, user confirmation is required before closing open positions.',
+  'settingModal.tab1.positionClosing': 'Position closing',
 }
 
 export default en_US

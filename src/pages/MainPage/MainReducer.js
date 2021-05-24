@@ -102,45 +102,39 @@ const filterGroup = (state = "", action) => {
 
 // K线
 const kLineList = (state = JSON.parse(localStorage.getItem("wt_kline")) || [
-  { symbol: 'EURUSD', digits: 5, isActive: false },
-  { symbol: 'GBPUSD', digits: 5, isActive: true }
+  { symbol: 'EURUSD', cnName: '欧元兑美元', digits: 5, isActive: false },
+  { symbol: 'GBPUSD', cnName: '英镑兑美元', digits: 5, isActive: true }
 ], action) => {
   const { type, payload } = action
   switch(type) {
     case actionTypes.ADD_TO_KLINE: {
-      const currSymbol = payload.symbol,
-            symbols = state.map(item => item.symbol)
-      if(symbols.includes(currSymbol)) {
-        const _state = state.map(item => {
-          if(item.symbol === currSymbol) {
-            item.isActive = true
-          } else {
-            item.isActive = false
-          }
-          return item
-        })
-        localStorage.setItem("wt_kline", JSON.stringify(_state))
-        return _state
-      } else {
-        state = state.map(item => {
+      console.log(payload, state)
+      const { symbol, digits, cn_name: cnName } = payload
+      // const currSymbol = payload.symbol,
+      // const symbols = state.map(item => item.symbol)
+      let isIncludes = false
+      const _state = state.map(item => {
+        if(item.symbol === symbol) {
+          item.isActive = true
+          isIncludes = true
+        } else {
           item.isActive = false
-          return item
-        })
-        const _state = [
-          ...state,
-          payload
-        ]
-        localStorage.setItem("wt_kline", JSON.stringify(_state))
-        return _state
-      }
-
+        }
+        return item
+      })
+      !isIncludes && _state.push({ symbol, digits, cnName, isActive: true })
+      localStorage.setItem("wt_kline", JSON.stringify(_state))
+      return _state
     }
     case actionTypes.DELETE_FROM_KLINE: {
       const _state = state.filter(item => item.symbol !== payload)
       localStorage.setItem("wt_kline", JSON.stringify(_state))
       return _state
     }
-    default: return state
+    default: {
+      localStorage.setItem("wt_kline", JSON.stringify(state))
+      return state
+    }
   }
 }
 

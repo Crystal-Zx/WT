@@ -103,6 +103,14 @@ export const isBuy = (type, filter = ["buy", "buylimit", "buystop"]) => {
 export const getCmdArr = () => (
   ['Buy', 'Sell', 'Buy Limit', 'Sell Limit', 'Buy Stop', 'Sell Stop', 'Balance']
 )
+export const getSymbolForCh = (symbol) => {
+  const symbols = JSON.parse(localStorage.getItem("wt_symbols"))
+  for(let item of symbols) {
+    if(item.symbol === symbol) {
+      return item.symbolForCh
+    }
+  }
+}
 
 // 日期相关
 export const currDateInfo = () => {

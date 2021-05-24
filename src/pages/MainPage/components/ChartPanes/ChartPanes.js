@@ -8,6 +8,7 @@ import styles from './ChartPanes.module.scss'
 import { connect } from 'react-redux'
 import { deleteFromKLine } from '../../MainAction'
 import TradeModal from '../../../../components/TradeModal/TradeModal'
+import { useIntl } from 'react-intl'
 
 const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => {
   
@@ -20,7 +21,8 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => 
         symbol: item.symbol,
         resolution: '1',
         closable: kLineList.length !== 1 ? true : false,
-        pricePrecision: item.digits
+        pricePrecision: item.digits,
+        cnName: item.cnName,
       }
     })
   }
@@ -30,6 +32,7 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => 
   // const [symbol, setSymbol] = useState('')
   const [socket, setSocket] = useState({})
   const [isShowModal, setIsShowModal] = useState(false)
+  const intl = useIntl()
    
   const sbStyle = (sbl) => {
     const len = sbl.length
@@ -138,7 +141,6 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => 
             
       setSymbolList(symbolList)
       setActiveKey(activeKey || symbolList[kLineList.length - 1].key)
-      // setSymbol(symbolList[kLineList.length - 1].symbol)
     }
   }, [JSON.stringify(kLineList)])
 
@@ -188,7 +190,10 @@ const ChartPanes = ({ kLineList, initSocket, deleteFromKLine, _symbolList }) => 
                 style={sbStyle(symbolList)}
                 onClick={() => changeSymbol(sb)}
               >
-                <span>{sb.symbol}（{getResolutionForCh(sb.resolution)}）</span>
+                <span>
+                  { intl.locale === 'zh' ? sb.cnName : sb.symbol }
+                  （{getResolutionForCh(sb.resolution)}）
+                </span>
                 {
                   sb.closable
                   && 
@@ -215,7 +220,7 @@ export default connect(
       initSocket,
       symbolList
     } = state.MainReducer
-    
+
     return {
       kLineList,
       initSocket,

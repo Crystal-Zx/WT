@@ -1,15 +1,17 @@
 @charset 'utf-8';
 @import './themes.scss';
 
+// $themes变量定义在导入文件'./themes.scss'中
 @mixin themify {
   @each $theme-name, $theme-map in $themes {
     $theme-map: $theme-map !global;
-    [data-theme=#{$theme-name}] & {
-      @content;
+    [data-theme=#{$theme-name}] & {  // #{} 插值
+      @content;   // @include themify后面跟的花括号内容
     }
   }
 }
 
 @function themed($key) {
+  // 从$theme-map中找出键名为$key对应的键值
   @return map-get($theme-map, $key)
 }

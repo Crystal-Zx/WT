@@ -65,7 +65,14 @@ const QuotePanes = (props) => {
   const onMessage = (data) => {
     if(data.type === "symbol") {
       data = data.data
-      console.log("onMsg")
+      // console.log("onMsg", data)
+      // 存一份货币对名称中英在本地localStorage
+      const localData = data.map(item => ({
+        symbol: item.name,
+        symbolForCh: item.cn_name
+      }))
+      localStorage.setItem("wt_symbols", JSON.stringify(localData))
+
       cacheList = data.map(item => {
         var obj = {
           ...item,

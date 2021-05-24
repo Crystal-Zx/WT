@@ -9,7 +9,7 @@ import { getForTwoDigits, toDecimal } from '../../utils/utilFunc'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 
-const SymbolInfoModal = ({ _getSymbolInfo, symbol, visible, onCancel }) => {
+const SymbolInfoModal = ({ _getSymbolInfo, symbol, symbolForCh, visible, onCancel }) => {
 
   const weekForCh = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   const weekForEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -25,7 +25,7 @@ const SymbolInfoModal = ({ _getSymbolInfo, symbol, visible, onCancel }) => {
   return (
     <>
       <Modal 
-        title={symbol}
+        title={intl.locale === 'zh' ? symbolForCh : symbol}
         width={550}
         className={styles['wt-sim-x']}  // sim: symbolInfo Modal
         wrapClassName="wt-sim-x"

@@ -52,7 +52,8 @@ function TableBox (props) {
                   e.stopPropagation()
                   return
                 }
-                addToKLine(e,row.symbol, row.digits)
+                addToKLine(e,row)
+                // addToKLine(e,row.symbol, row.digits)
               }}
               disabled={!Number(row.ask)}
             />
@@ -81,7 +82,7 @@ function TableBox (props) {
         return (
           <>
             <IconFont type="iconDown" className="iconDown" />
-            <span style={{ marginLeft: '8px' }}>{symbol}</span>
+            <span style={{ marginLeft: '8px' }}>{intl.locale === 'zh' ? row.cn_name : symbol }</span>
           </>
         )
       }
@@ -120,6 +121,7 @@ function TableBox (props) {
       render: (...args) => renderContent(...args, 'ask')
     }
   ]
+  const getSymbolCnName = symbol => data.filter(item => item.symbol === symbol)[0].cn_name
 
   useEffect(() => {
     const changeExpandedRowKeys = () => {
@@ -169,7 +171,8 @@ function TableBox (props) {
               }
             },
             onDoubleClick: event => {
-              addToKLine(event, record.symbol, record.digits)
+              addToKLine(event, record)
+              // addToKLine(event, record.symbol, record.digits)
             }
           }
         }}
@@ -177,6 +180,7 @@ function TableBox (props) {
       { visible && symbol &&
         <SymbolInfoModal
           symbol={symbol}
+          symbolForCh={getSymbolCnName(symbol)}
           visible={visible}
           onCancel={() => setVisible(false) }
         />

@@ -2,12 +2,13 @@ import React from 'react'
 import { Table, Menu, Dropdown, Button, Badge } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
 import EditOrderPop from './EditOrderPop'
-import { getCmdArr, toDecimal } from '../../../../utils/utilFunc'
-import { FormattedMessage } from 'react-intl'
+import { getCmdArr, toDecimal, getSymbolForCh } from '../../../../utils/utilFunc'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }) => {
   
   let { list, isFetching } = data
+  const intl = useIntl()
   // console.log("====OrderSPanes render", data)
   
   // 表头平仓
@@ -68,6 +69,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
   const isFoldRow = (key) => { // 非折叠行->0；折叠行->1
     return !isNaN(Number(key))
   }
+  
   // 持仓单columns配置项
   const getColumns = () => {
     return [
@@ -90,7 +92,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
                 {
                   item.ticket.length > 1 &&
                   <>
-                    <span className="op-rkey-badge">{item.key}</span>
+                    <span className="op-rkey-badge">{intl.locale === 'zh' ? getSymbolForCh(item.key) : item.key}</span>
                     <Badge 
                       size="small"
                       count={item.ticket.length}
@@ -101,7 +103,7 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
                 {
                   item.ticket.length <= 1 &&
                   <>
-                    <span className="op-rkey-ticket">{item.key}</span>
+                    <span className="op-rkey-ticket">{intl.locale === 'zh' ? getSymbolForCh(item.key) : item.key}</span>
                     <span>{item.ticket[0]}</span>
                   </>
                 }
@@ -320,7 +322,10 @@ const OrderSPanes = ({ data, type, onShowConfirmForSingle, onShowConfirmForAll }
       ),
       dataIndex: 'symbol',
       key: 'symbol',
-      width: '8.4%'
+      width: '8.4%',
+      render: (symbol) => {
+        return <span>{ intl.locale === 'zh' ? getSymbolForCh(symbol) : symbol }</span>
+      }
     },
     {
       title: (

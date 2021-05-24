@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button, InputNumber } from 'antd'
 import IconFont from '../../../../utils/iconfont/iconfont'
-import { openNotificationWithIcon, isBuy, toDecimal } from '../../../../utils/utilFunc'
+import { openNotificationWithIcon, isBuy, toDecimal, getSymbolForCh } from '../../../../utils/utilFunc'
 
 import { modifyOrder } from '../../MainAction'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -112,7 +112,7 @@ const EditOrderPop = ({ data, dispatch }) => {
         <div className="eop-top-x">
           <div>
             <p>
-              <span className="eop-symbol">{data.symbol}</span>
+              <span className="eop-symbol">{intl.locale === 'zh' ? getSymbolForCh(data.symbol) : data.symbol}</span>
               <span className={`eop-cmd ${isBuy(data.cmdForCh) ? "color-up" : "color-down"}`}>{data.cmdForCh}</span>
             </p>
             <p className="eop-price">

@@ -45,7 +45,10 @@ const QuoteSPane = (props) => {
       </div>
       <TableBox
         data={
-          searchVal ? list.filter(item => item.key.toUpperCase().indexOf(searchVal.toUpperCase()) !== -1) : list
+          searchVal ? list.filter(item => {
+            const key = intl.locale === 'zh' ? item.cn_name : item.key
+            return key.toUpperCase().indexOf(searchVal.toUpperCase()) !== -1
+          }) : list
         }
         // addToFavorite={addToFavorite}
         addToKLine={addToKLine}
@@ -84,9 +87,9 @@ export default connect(
   },
   dispatch => {
     return {
-      addToKLine: (e, symbol, digits) => {
+      addToKLine: (e, symbol) => {
         e.stopPropagation()
-        dispatch(addToKLine({ symbol, digits, isActive: true }))
+        dispatch(addToKLine(symbol))
       }
     }
   }

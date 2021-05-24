@@ -3,10 +3,10 @@ import { Form, Input, Button, Radio } from 'antd'
 import LineTabs from '../../../components/LineTabs/LineTabs'
 import IconFont from '../../../utils/iconfont/iconfont'
 import user from '../../../services/user'
-import {  popMessage } from '../../../utils/utilFunc'
+import { getQueryString, popMessage } from '../../../utils/utilFunc'
 
 const Login = (props) => {
-  const { linkToIndex } = props
+  const { history } = props
 
   const [loading, setLoading] = useState(false)
   const [activeKey, setActiveKey] = useState('0')
@@ -20,7 +20,7 @@ const Login = (props) => {
       popMessage({ type: 'success', msg: '登录成功！' })
       setTimeout(() => {  // 加一个延时，否则message来不及显示
         // window.location.href = "./"
-        linkToIndex("/index")
+        history.push("/index")
       }, 1000);
     }).catch(err => {
       popMessage({ type: 'error', msg: '用户名或密码错误' })//err.msg || `${err}` })
@@ -33,12 +33,27 @@ const Login = (props) => {
       popMessage({ type: 'success', msg: '登录成功！' })
       setTimeout(() => {  // 加一个延时，否则message来不及显示
         // window.location.href = "./"
-        linkToIndex("/index")
+        history.push("/index")
       }, 1000);
     }).catch(err => {
       popMessage({ type: 'error', msg: err.msg || `${err}` })
       setLoading(false)
     })
+  }
+  const autoLogin = () => {
+    const token = getQueryString('t')
+    if(token) {
+      user.login({ token }, 'oa1').then(res => {
+        popMessage({ type: 'success', msg: '已为您自动登入账号' })
+
+        history.push("/index")
+        history.location.search = ''
+      }).catch(err => {
+        history.location.search = ''
+        popMessage({ type: 'error', msg: '出错啦，请手动登入' })//err.msg || `${err}` })
+        setLoading(false)
+      })
+    }
   }
   const onChangeAcc = (acc) => {
     setActiveKey(acc)
@@ -148,6 +163,10 @@ const Login = (props) => {
       default: return
     }
   }
+
+  useEffect(() => {
+    autoLogin()
+  }, [])
 
   return (
     <div className="login-x">

@@ -6,9 +6,18 @@ import {
 /**
  * @param {string} name 需要获取的qs的键名
  */
+// export const getQueryString = (name) => { 
+//   const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i"),
+//         r = window.location.search.substr(1).match(reg); 
+//   if (r!=null) return (r[2]); return null;
+// }
+
+// hash下获取search
 export const getQueryString = (name) => { 
   const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i"),
-        r = window.location.search.substr(1).match(reg); 
+        href = window.location.href,
+        r = href.substr(href.indexOf("?") + 1).match(reg); 
+        console.log(href, r)
   if (r!=null) return (r[2]); return null;
 }
 

@@ -6,7 +6,7 @@ import Login from './components/Login'
 const LoginPage = (props) => {
   
   const { history } = props
-  const linkToIndex = (url) => history.push(url)
+  // const linkToIndex = url => history.push(url)
 
   return (
     <div className={styles['login-x']}>
@@ -16,7 +16,7 @@ const LoginPage = (props) => {
             <Description />
           </Col>
           <Col className="col-login-x" xs={24} sm={24} md={14} lg={14} xl={14}>
-            <Login linkToIndex={linkToIndex} />
+            <Login history={history} />
           </Col>
         </Row>
       </div>

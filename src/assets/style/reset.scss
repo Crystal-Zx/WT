@@ -352,6 +352,14 @@ p {
   }
   
 }
+// --- antd tabs
+.ant-tabs-content-holder {
+  display: flex;
+  flex-direction: column;
+  & > div {
+    flex: 1;
+  }
+}
 
 
 // wt common

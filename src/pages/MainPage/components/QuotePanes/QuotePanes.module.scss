@@ -151,7 +151,9 @@ $gap: 6px;
       }
 
     }
-
-    
+    // 解决Safari下滚动区域问题
+    .quote-cardTabs-x .ant-tabs-content.ant-tabs-content-top {
+      overflow: hidden;
+    }
   }
 }

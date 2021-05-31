@@ -220,6 +220,7 @@ const QuotePanes = (props) => {
       className={styles['quote-panes-x']}
     > 
       <CardTabs
+        className="quote-cardTabs-x"
         initialPanes={[
           {
             title: (

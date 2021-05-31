@@ -220,7 +220,7 @@ const OrderPanes = ({ socket, accountInfo, listArr, quoteList, dispatch}) => {
 
   return (
     <CardTabs
-      className={styles['order-x']}
+      className={[styles['order-x'], styles.fixSafari]}
       initialPanes={[
         { title: (
           <FormattedMessage

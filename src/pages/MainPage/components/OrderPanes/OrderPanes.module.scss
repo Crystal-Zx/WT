@@ -213,4 +213,16 @@
     //   color: $sellColor;
     // }
   }
+  // 解决Safari下滚动区域问题
+  // &.order-carTab-x .ant-tabs-content.ant-tabs-content-top {
+  //   overflow: hidden;
+  // }
+}
+.fixSafari {
+  :global {
+    .ant-tabs-content.ant-tabs-content-top {
+      overflow: hidden;
+      background-color: aqua;
+    }
+  }
 }

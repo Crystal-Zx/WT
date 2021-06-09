@@ -198,21 +198,21 @@ function MainPage ({ history, theme, socket, dispatch }) {
             <Dropdown
               overlay={
                 <Menu>
-                  <Menu.Item>
-                    <IconFont className={styles["f-14"]} type="iconLogout" />&nbsp;
-                    <span onClick={onLogout}>
-                      <FormattedMessage 
-                        id="navBar.menu.logout"
-                        defaultMessage="退出登录"
-                      />
-                    </span>
-                  </Menu.Item>
                   <Menu.Item onClick={() => setSettingVisible(true)}>
                     <IconFont className={styles["f-16"]} type="iconSetting" />&nbsp;
                     <span>
                       <FormattedMessage 
                         id="navBar.menu.settings"
                         defaultMessage="设置"
+                      />
+                    </span>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <IconFont className={styles["f-14"]} type="iconLogout" />&nbsp;
+                    <span onClick={onLogout}>
+                      <FormattedMessage 
+                        id="navBar.menu.logout"
+                        defaultMessage="退出登录"
                       />
                     </span>
                   </Menu.Item>

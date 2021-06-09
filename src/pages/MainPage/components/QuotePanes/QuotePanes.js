@@ -74,18 +74,20 @@ const QuotePanes = (props) => {
       localStorage.setItem("wt_symbols", JSON.stringify(localData))
 
       cacheList = data.map(item => {
+        const _group = item.group.toUpperCase() === 'FOREX' ? '货币' : item.group
         var obj = {
           ...item,
           key: item.name,
           symbol: item.name,
-          groupBy: item.group.split("|")[0],
-          subGroup: item.group.split("|")[1] || '其他'
+          group: _group,
+          groupBy: _group.split("|")[0],
+          subGroup: _group.split("|")[1] || '其他'
         }
         delete obj.name
         return obj
       })
       dispatch(getSymbols({ isFetching: false, list: cacheList }))
-      dispatch(setSymbolGroup('FOREX'))  // cacheList[0].groupBy
+      dispatch(setSymbolGroup('货币'))  // cacheList[0].groupBy
       // init qsp
       const groups = [...new Set(cacheList.map(item => item.group))]  // set去重
       setQspTemp(getQuoteSPanes(groups))
@@ -159,7 +161,7 @@ const QuotePanes = (props) => {
     // setActiveKey(sType)
     // 获取需监听quote信息的货币对列表
     // --- 报价板块
-      
+
     const qspList = sType === '全部' ? cacheList : cacheList.filter(item => item.groupBy === sType)
     const quoteSymbols = qspList.map(item => item.symbol)
     sendQuoteMsg(quoteSymbols)
@@ -232,7 +234,7 @@ const QuotePanes = (props) => {
             content: (
               <LineTabs
                 initialPanes={qspTemp}
-                defaultActiveKey={'FOREX'}  // qspTemp.length > 1 ? qspTemp[1].key : '全部'
+                defaultActiveKey={'货币'}  // qspTemp.length > 1 ? qspTemp[1].key : '全部'
                 onChange={sType => dispatch(setSymbolGroup(sType))}
                 // dispatch(setSymbolGroup(sType))}
               ></LineTabs>

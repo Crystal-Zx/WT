@@ -26,17 +26,17 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
         />
       </div>
       <div className="account-info-x">
-        <div className="ai-li">
+        {/* <div className="ai-li">
           <span>
             <FormattedMessage id="accountInfo.item1" defaultMessage="余额" />
           </span>
           <span>
             {isFetching ? '---' : `$ ${toDecimal(info.balance, 2)}`}
           </span>
-        </div>
+        </div> */}
         <div className="ai-li">
           <span>
-          <FormattedMessage id="accountInfo.item2" defaultMessage="净值" />
+          <FormattedMessage id="accountInfo.item2" defaultMessage="当前权益（HP）" />
           </span>
           <span>
             {isFetching ? '---' : `$ ${toDecimal(info.equity, 2)}`}
@@ -44,30 +44,39 @@ const AccountInfo = ({ accountInfo, getAccountInfo }) => {
         </div>
         <div className="ai-li">
           <span>
-            <FormattedMessage id="accountInfo.item3" defaultMessage="可用保证金" />
+            <FormattedMessage id="accountInfo.item3" defaultMessage="可用资金" />
           </span>
           <span>
             {isFetching ? '---' : `$ ${toDecimal(info.freeMargin, 2)}`}
           </span>
         </div>
-        <div className="ai-li">
+        {/* <div className="ai-li">
           <span>
             <FormattedMessage id="accountInfo.item4" defaultMessage="保证金比例" />
           </span>
           <span>
             {isFetching ? '---' : `$ ${toDecimal(info.marginLevel, 2)}%`}
           </span>
+        </div> */}
+        <div className="ai-li">
+          <span>
+            <FormattedMessage id="accountInfo.item4" defaultMessage="风险度" />
+          </span>
+          <span>
+            {isFetching ? '---' : `${toDecimal((info.margin / info.equity) * 100, 2)}%`}
+          </span>
         </div>
         <div className="ai-li profit">
           <span>
-            <FormattedMessage id="accountInfo.item5" defaultMessage="盈利" />：&nbsp;
+            <FormattedMessage id="accountInfo.item5" defaultMessage="持仓盈亏" />：&nbsp;
           </span>
           <span
             className={info.profit > 0 ? 'color-up' : 'color-down'}
+            style={{ marginTop: '-1px' }}
           >
             {isFetching ? '---' : toDecimal(info.profit, 2)}
           </span>
-          <span>&nbsp;USD</span>
+          <span>&nbsp;HP</span>
         </div>
       </div>
     </>

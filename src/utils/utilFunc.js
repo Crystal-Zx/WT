@@ -17,7 +17,7 @@ export const getQueryString = (name) => {
   const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i"),
         href = window.location.href,
         r = href.substr(href.indexOf("?") + 1).match(reg); 
-        console.log(href, r)
+        // console.log(href, r)
   if (r!=null) return (r[2]); return null;
 }
 

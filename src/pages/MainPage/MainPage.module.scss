@@ -232,7 +232,18 @@ $bottomH: 4.3vh;
                 justify-content: flex-end;
                 flex-direction: row;
               }
+              .ai-li-tip {
+                font-size: 14px;
+                font-weight: normal;
+                cursor: pointer;
+              }
+              &:nth-child(3) .ai-li-tip {
+                margin-left: .3em;
+              }
             }
+          }
+          .ai-modal-key {
+            font-weight: 600;
           }
           .btn-more {
             width: 38px;

@@ -171,14 +171,56 @@ const Login = (props) => {
   return (
     <div className="login-x">
       <h1 className="title">登录</h1>
-      <LineTabs 
+      {/* <LineTabs 
         onChange={onChangeAcc}
         initialPanes={[
           { title: "ALPHAZONE账号登录", content: getFormJSX('0'), key: '0' },
           { title: "MT4账号登录", content: getFormJSX('1'), key: '1' }
         ]}
         activeKey={activeKey}
-      />
+      /> */}
+      <Form
+        name="wt-login-oa"
+        className="wt-login"
+        layout="vertical"
+        initialValues={{ remember: true }}
+        onFinish={onFinishByOA}
+      >
+        <Form.Item 
+          name="username"
+          label="ALPHAZONE账号"
+          rules={[{ required: true, message: '请输入ALPHAZONE账号'}]}
+        >
+          <Input 
+            prefix={<IconFont type="iconUser" className="wt-icon" />}
+            placeholder="请输入ALPHAZONE账号"
+          />
+        </Form.Item>
+        <Form.Item 
+          name="password"
+          label="密码"
+          rules={[{ required: true, message: '请输入密码'}]}
+        >
+          <Input.Password 
+            prefix={<IconFont type="iconLock" className="wt-icon" />}
+            placeholder="请输入密码"
+          />
+        </Form.Item>
+        <Form.Item >
+          没有ALPHAZONE账号？&nbsp;&nbsp;
+          <a href="https://www.alphazone.com.cn/register.html">创建一个&nbsp;&gt;&gt;</a>
+        </Form.Item>
+        <Form.Item noStyle>
+          <Button 
+            type="primary"
+            htmlType="submit"
+            className="wt-btn-ok lg-btn-submit"
+            loading={loading}
+          >
+            登录
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   )
 }

@@ -16,7 +16,7 @@ const zh_HK = {
   'quote.tabName': '品種報價',
   'quote.search.placeHolder': '搜索例如EURCHF',
   'quote.subTabName.symbol': '品種',
-  'quote.subTabName.spread': '調查',
+  'quote.subTabName.spread': '漲跌幅',
   'quote.subTabName.bid': '賣',
   'quote.subTabName.ask': '買',
   // chart

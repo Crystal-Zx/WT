@@ -16,7 +16,7 @@ const zh_CN = {
   'quote.tabName': '品种报价',
   'quote.search.placeHolder': '搜索例如EURCHF',
   'quote.subTabName.symbol': '品种',
-  'quote.subTabName.spread': '调查',
+  'quote.subTabName.spread': '涨跌幅',
   'quote.subTabName.bid': '卖',
   'quote.subTabName.ask': '买',
   // chart

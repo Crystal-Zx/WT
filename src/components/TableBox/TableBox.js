@@ -90,7 +90,7 @@ function TableBox (props) {
     {
       title: intl.formatMessage({
         id: "quote.subTabName.spread",
-        defaultMessage: "调查"
+        defaultMessage: "涨跌幅"
       }),
       dataIndex: 'spread',
       key: 'spread',
